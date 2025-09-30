@@ -1,0 +1,71 @@
+{
+  "__plugin-vue_export-helper-bvfxiCSt.js": {
+    "file": "assets/_plugin-vue_export-helper-bvfxiCSt.js"
+  },
+  "_bootstrap-OiABZ7MP.js": {
+    "file": "assets/bootstrap-OiABZ7MP.js"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DoI5dTOJ.css",
+    "src": "resources/js/app.js"
+  },
+  "resources/js/addBrand.js": {
+    "file": "assets/addBrand-YsXN7xvm.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-bvfxiCSt.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addBrand.js"
+  },
+  "resources/js/addModelVehicle.js": {
+    "file": "assets/addModelVehicle-LpvIVmRi.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-bvfxiCSt.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addModelVehicle.js"
+  },
+  "resources/js/addTypeArticle.js": {
+    "file": "assets/addTypeArticle-lRdH76wd.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-bvfxiCSt.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addTypeArticle.js"
+  },
+  "resources/js/app.js": {
+    "css": [
+      "assets/app-DoI5dTOJ.css"
+    ],
+    "file": "assets/app-QRcK2_54.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/finalizeSell.js": {
+    "file": "assets/finalizeSell-5OPr6QvO.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-bvfxiCSt.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/finalizeSell.js"
+  },
+  "resources/js/productsSell.js": {
+    "css": [
+      "assets/productsSell--XVCC26b.css"
+    ],
+    "file": "assets/productsSell-mRBdzwoI.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-bvfxiCSt.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/productsSell.js"
+  }
+}

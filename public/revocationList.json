@@ -1,0 +1,11 @@
+{
+    "id": "https://ventasdemo.tech/revocationList.json",
+    "issuer": "https://territium.com",
+    "revokedCredentials": [
+        {
+            "id": "https://lfexams.prueba.la/api/credential/verifiable/eyJpdiI6InlsNHZML2RFRFgrSHZGTHVlb0FtWnc9PSIsInZhbHVlIjoiMkhVNU00QU5KbDFGWStySWp0VDhzQT09IiwibWFjIjoiYjA0ZmI0NzQ4NzI3MmQwMGQxNzMwZDg4ODg5ZGMxZWI1MjkwNTM4OGYyOGViZWIwOWFjMzkwOTRhMDlkNTdiNSIsInRhZyI6IiJ9",
+            "revoked": "true",
+            "revocationReason": "Pruebas Luis"
+        }
+    ]
+}

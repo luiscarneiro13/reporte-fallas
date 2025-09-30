@@ -1,0 +1,118 @@
+{
+	"@context": [
+		"https://www.w3.org/ns/credentials/v2",
+		"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json",
+		"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json"
+	],
+	"id": "urn:uuid:0a86c635-4432-4d64-8ae1-d25252d10b9a",
+	"type": [
+		"VerifiableCredential",
+		"OpenBadgeCredential"
+	],
+	"name": "Astucia 2",
+	"description": "No contaban con su astucia",
+	"image": {
+		"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+		"type": "Image",
+		"caption": "No contaban con su astucia"
+	},
+	"issuer": {
+		"type": [
+			"Profile"
+		],
+		"id": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+		"name": "Chavón",
+		"url": "https://google.com",
+		"image": {
+			"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+			"type": "Image",
+			"caption": "No contaban con su astucia"
+		}
+	},
+	"awardedDate": "2021-09-01T19:23:24Z",
+	"validFrom": "2021-09-01T19:23:24Z",
+	"validUntil": "2022-02-01T19:23:24Z",
+	"credentialSubject": {
+		"id": "did:key:z6Mkq1G7iZSouV3oxyV2AhSmkdTD4Xtu2B3CsyvceQRgh9n6",
+		"type": [
+			"AchievementSubject"
+		],
+		"identifier": [
+			{
+				"type": "IdentityObject",
+				"identityHash": "did:key:z6Mkq1G7iZSouV3oxyV2AhSmkdTD4Xtu2B3CsyvceQRgh9n6",
+				"identityType": "identifier",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "Luis Carneiro Carneiro",
+				"identityType": "name",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "luis.carneiro@territorium.com",
+				"identityType": "emailAddress",
+				"hashed": false,
+				"salt": "not-used"
+			}
+		],
+		"achievement": {
+			"id": "https://lfexams.prueba.la/issuedBadge?id=0a86c635-4432-4d64-8ae1-d25252d10b9a",
+			"type": [
+				"Achievement"
+			],
+			"alignment": [
+				{
+					"type": [
+						"Alignment"
+					],
+					"targetCode": "Award",
+					"targetDescription": "LO description",
+					"targetName": "ST 2024-05-22",
+					"targetFramework": "LO 2024-05-22",
+					"targetType": "CFItem",
+					"targetUrl": "https://lfexams.prueba.la/#/statement/public?uuid=c5c8529e-cc0b-4ae4-a84d-37df34104da5"
+				}
+			],
+			"achievementType": "Award",
+			"name": "ACH01 2024-05-22",
+			"description": "2024-05-22",
+			"fieldOfStudy": "2024-05-22",
+			"tag": [],
+			"criteria": {
+				"narrative": "Astucia 2"
+			},
+			"image": {
+				"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+				"type": "Image",
+				"caption": "No contaban con su astucia"
+			}
+		}
+	},
+	"refreshService": {
+		"id": "https://ventasdemo.tech/example-renewed.json",
+		"type": "1EdTechCredentialRefresh",
+		"validFrom": "2021-09-01T19:23:24Z",
+		"validUntil": "2022-02-01T19:23:24Z"
+	},
+	"credentialSchema": [
+		{
+			"id": "https://purl.imsglobal.org/spec/ob/v3p0/schema/json/ob_v3p0_achievementcredential_schema.json",
+			"type": "1EdTechJsonSchemaValidator2019"
+		}
+	],
+	"proof": [
+		{
+			"type": "DataIntegrityProof",
+			"created": "2024-05-22T13:20:07.696Z",
+			"verificationMethod": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av#z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+			"cryptosuite": "eddsa-rdfc-2022",
+			"proofPurpose": "assertionMethod",
+			"proofValue": "zagkxKnUapykf1H3KLdJqMkVqKFYCSqhRwSFv4pqwTxbsadUbKswjKChUobmxhw3aLoKAmQLWuQpBz4BrCv58HmQ"
+		}
+	]
+}

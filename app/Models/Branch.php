@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Branch extends Model
+{
+    use HasFactory;
+
+    protected $table = "branches";
+
+    protected $fillable = ['name', 'description', 'phone', 'email', 'logo', 'rif', 'address'];
+
+    public function brands()
+    {
+        return $this->hasMany(Brand::class, 'branch_id');
+    }
+
+    public function typeArticles()
+    {
+        return $this->hasMany(TypeArticle::class, 'branch_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_branch');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'branch_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class, 'branch_id');
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(User::class, 'user_branch');
+    }
+}

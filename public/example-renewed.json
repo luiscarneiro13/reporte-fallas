@@ -1,0 +1,115 @@
+{
+	"@context": [
+		"https://www.w3.org/ns/credentials/v2",
+		"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json",
+		"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json"
+	],
+	"id": "urn:uuid:144a3215-4eb2-4fb9-aa38-029a4d995863",
+	"type": [
+		"VerifiableCredential",
+		"OpenBadgeCredential"
+	],
+	"name": "test",
+	"description": "testtesttesttest",
+	"image": {
+		"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/gyBksyJpgjuQvgCRcKjYXYRNaPai7IEDtTQpLu51.png",
+		"type": "Image",
+		"caption": "testtesttesttest"
+	},
+	"issuer": {
+		"type": [
+			"Profile"
+		],
+		"id": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+		"name": "Chavón",
+		"url": "https://google.com",
+		"image": {
+			"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/gyBksyJpgjuQvgCRcKjYXYRNaPai7IEDtTQpLu51.png",
+			"type": "Image",
+			"caption": "testtesttesttest"
+		}
+	},
+	"validFrom": "2024-06-04T19:15:35.384841Z",
+	"credentialSubject": {
+		"id": "did:key:z6MkjD3DwDqr6oCTpcJruA5TY2PRBt1ruD3CVT8Y84tpFny8",
+		"type": [
+			"AchievementSubject"
+		],
+		"identifier": [
+			{
+				"type": "IdentityObject",
+				"identityHash": "did:key:z6MkjD3DwDqr6oCTpcJruA5TY2PRBt1ruD3CVT8Y84tpFny8",
+				"identityType": "identifier",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "Luis Carneiro Carneiro",
+				"identityType": "name",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "luis.carneiro@territorium.com",
+				"identityType": "emailAddress",
+				"hashed": false,
+				"salt": "not-used"
+			}
+		],
+		"achievement": {
+			"id": "https://lj-upgrade.prueba.la/issuedBadge?id=144a3215-4eb2-4fb9-aa38-029a4d995863",
+			"type": [
+				"Achievement"
+			],
+			"alignment": [
+				{
+					"type": [
+						"Alignment"
+					],
+					"targetCode": "Degree",
+					"targetDescription": "LO 2024-05-21sdgfsdgsdgsdgfghjfghj",
+					"targetName": "ST 2024-05-21",
+					"targetFramework": "LO 2024-05-21",
+					"targetType": "CFItem",
+					"targetUrl": "https://lj-upgrade.prueba.la/#/statement/public?uuid=1065825e-cf3f-4629-9fdd-6c0f8b96feb7"
+				}
+			],
+			"achievementType": "Degree",
+			"name": "ACH15 2024-05-21",
+			"description": "ACH15 2024-05-21",
+			"fieldOfStudy": "ACH15 2024-05-21",
+			"tag": [],
+			"criteria": {
+				"narrative": "test"
+			},
+			"image": {
+				"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/gyBksyJpgjuQvgCRcKjYXYRNaPai7IEDtTQpLu51.png",
+				"type": "Image",
+				"caption": "testtesttesttest"
+			}
+		}
+	},
+	"credentialSchema": [
+		{
+			"id": "https://purl.imsglobal.org/spec/ob/v3p0/schema/json/ob_v3p0_achievementcredential_schema.json",
+			"type": "1EdTechJsonSchemaValidator2019"
+		}
+	],
+	"refreshService": {
+		"id": "https://ventasdemo.tech/example-renewed.json",
+		"type": "1EdTechCredentialRefresh",
+		"validFrom": "2024-06-04T19:15:35.384841Z"
+	},
+	"proof": [
+		{
+			"type": "DataIntegrityProof",
+			"created": "2024-06-04T19:22:56.514Z",
+			"verificationMethod": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av#z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+			"cryptosuite": "eddsa-rdfc-2022",
+			"proofPurpose": "assertionMethod",
+			"proofValue": "z2dwcFskDtxhMVqB5XZk2tMSqLhZYBfTcXA6v784XQNn7jx7h8UNJa73FTq5x6oxVNAJUvgecHCMKARakMijmxQgX"
+		}
+	]
+}

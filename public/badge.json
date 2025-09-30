@@ -1,0 +1,117 @@
+{
+	"@context": [
+		"https://www.w3.org/ns/credentials/v2",
+		"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json",
+		"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json"
+	],
+	"id": "urn:uuid:df8fe727-db13-4b17-9945-c4955a5aae21",
+	"type": [
+		"VerifiableCredential",
+		"OpenBadgeCredential"
+	],
+	"name": "Astucia 2",
+	"description": "No contaban con su astucia",
+	"image": {
+		"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+		"type": "Image",
+		"caption": "ACH06 2024-05-22"
+	},
+	"issuer": {
+		"type": [
+			"Profile"
+		],
+		"id": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+		"name": "Chavón",
+		"url": "https://territorium.com",
+		"image": {
+			"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+			"type": "Image",
+			"caption": "Chavón"
+		}
+	},
+	"validFrom": "2024-06-07T00:03:55.316740Z",
+	"validUntil": "2024-06-08T00:03:55.000000Z",
+	"credentialSubject": {
+		"id": "did:key:z6Mkq1G7iZSouV3oxyV2AhSmkdTD4Xtu2B3CsyvceQRgh9n6",
+		"type": [
+			"AchievementSubject"
+		],
+		"identifier": [
+			{
+				"type": "IdentityObject",
+				"identityHash": "did:key:z6Mkq1G7iZSouV3oxyV2AhSmkdTD4Xtu2B3CsyvceQRgh9n6",
+				"identityType": "identifier",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "Luis Carneiro Carneiro",
+				"identityType": "name",
+				"hashed": false,
+				"salt": "not-used"
+			},
+			{
+				"type": "IdentityObject",
+				"identityHash": "luis.carneiro@territorium.com",
+				"identityType": "emailAddress",
+				"hashed": false,
+				"salt": "not-used"
+			}
+		],
+		"achievement": {
+			"id": "https://lj-upgrade.prueba.la/issuedBadge?id=df8fe727-db13-4b17-9945-c4955a5aae21",
+			"type": [
+				"Achievement"
+			],
+			"alignment": [
+				{
+					"type": [
+						"Alignment"
+					],
+					"targetCode": "CommunityService",
+					"targetDescription": "LO description",
+					"targetName": "ST 2024-05-22",
+					"targetFramework": "LO 2024-05-22",
+					"targetType": "CFItem",
+					"targetUrl": "https://lj-upgrade.prueba.la/#/statement/public/?uuid=c5c8529e-cc0b-4ae4-a84d-37df34104da5"
+				}
+			],
+			"achievementType": "CommunityService",
+			"name": "ACH06 2024-05-22",
+			"description": "2024-05-22",
+			"fieldOfStudy": "2024-05-22",
+			"tag": [],
+			"criteria": {
+				"narrative": "Astucia 2"
+			},
+			"image": {
+				"id": "https://territorio.s3.amazonaws.com/CLRDEVELOPMENT/6Xn6KNxvZKMOLssHdLkcybqORhnXUIEbZtrwV6oZ.png",
+				"type": "Image",
+				"caption": "ACH06 2024-05-22"
+			}
+		}
+	},
+	"refreshService": {
+		"id": "https://life-staging.territorium.com/credentials/df8fe727-db13-4b17-9945-c4955a5aae21",
+		"type": "1EdTechCredentialRefresh",
+		"validFrom": "2024-06-07T00:03:55.316740Z",
+		"validUntil": "2024-06-08T00:03:55.000000Z"
+	},
+	"credentialSchema": [
+		{
+			"id": "https://purl.imsglobal.org/spec/ob/v3p0/schema/json/ob_v3p0_achievementcredential_schema.json",
+			"type": "1EdTechJsonSchemaValidator2019"
+		}
+	],
+	"proof": [
+		{
+			"type": "DataIntegrityProof",
+			"created": "2024-06-07T01:08:49.706Z",
+			"verificationMethod": "did:key:z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av#z6MkhpUyKUqWP1wZAAUWaYNqhzYAvU19dhgM1UEpttPKQ9Av",
+			"cryptosuite": "eddsa-rdfc-2022",
+			"proofPurpose": "assertionMethod",
+			"proofValue": "z3MXJ14p7CxKr1xkoLvL1xsZpfBk1RiwLxaSawND1NuF3cW2z8pP7xtThoqipZnJjp2yscworbFY9TKnH2iQBv19r"
+		}
+	]
+}

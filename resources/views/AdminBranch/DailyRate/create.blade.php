@@ -14,7 +14,7 @@
             <form action="{{ route('admin.sucursal.daily.rate.store') }}" method="POST">
                 @csrf
                 <div class="row">
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <x-adminlte-input name="rate" label="Tasa BCV" value="{{ session('dailyRate') }}">
                             <x-slot name="bottomSlot">
                                 <small>Ej: 35.99</small>
@@ -27,7 +27,7 @@
                                 <small>Ej: 35.99</small>
                             </x-slot>
                         </x-adminlte-input>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row mt-5">

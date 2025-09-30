@@ -31,15 +31,7 @@ use App\Http\Controllers\AdminBranch\CajerosController as AdminBranchCajeros;
 use App\Http\Controllers\AdminBranch\AdministradoresController as AdminBranchAdministradores;
 use App\Http\Controllers\AdminBranch\CustomerController as AdminBranchCustomer;
 use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMethodPayment;
-use App\Http\Controllers\AdminBranch\SalesHistoryController as AdminBranchSalesHistory;
-use App\Http\Controllers\AdminBranch\SalesDailyController as AdminBranchSalesDaily;
-use App\Http\Controllers\Api\SalesHistoryController as ApiSale;
 use App\Http\Controllers\PruebaController;
-// *************************************************************************************
-
-// Vender
-// *************************************************************************************
-use App\Http\Controllers\SellController as Sell;
 // *************************************************************************************
 
 /*
@@ -62,10 +54,6 @@ Route::get('/clear-cache', function() {
     return 'Application cache cleared';
 });
 
-
-
-
-Route::get('/api/sale/{id}', [ApiSale::class, 'getSaleId']);
 
 Route::get('/prueba/{id}', [PruebaController::class, 'index']);
 
@@ -120,11 +108,6 @@ Route::middleware([
         Route::resource('/clientes', AdminBranchCustomer::class)->names('admin.sucursal.customers');
         Route::resource('/metodos-pago', AdminBranchMethodPayment::class)->names('admin.sucursal.method.payment');
 
-        Route::resource('/historial-ventas', AdminBranchSalesHistory::class)->names('admin.sucursal.sales.history');
-        Route::resource('/ventas-del-dia', AdminBranchSalesDaily::class)->names('admin.sucursal.sales.daily');
     });
 
-    Route::get('/vender', [Sell::class, 'index'])->name('sell.index');
-    Route::post('/api/vender', [Sell::class, 'store'])->name('sell.store');
-    Route::post('/api/finalizar/{sale_id}', [AdminBranchSalesHistory::class, 'update']);
 });

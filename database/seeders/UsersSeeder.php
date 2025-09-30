@@ -75,7 +75,7 @@ class UsersSeeder extends Seeder
         }
         $rol = Role::where('name', "Cajero")->first();
         $user4->roles()->sync([$rol->id]);
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
         $userBranch = new UserBranch();
         $userBranch->branch_id = $branch->id;
         $user4->userBranches()->save($userBranch);
@@ -94,7 +94,7 @@ class UsersSeeder extends Seeder
         }
         $rol = Role::where('name', "Vendedor")->first();
         $user5->roles()->sync([$rol->id]);
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
         $userBranch = new UserBranch();
         $userBranch->branch_id = $branch->id;
         $user5->userBranches()->save($userBranch);

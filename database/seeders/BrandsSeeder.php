@@ -15,7 +15,7 @@ class BrandsSeeder extends Seeder
     public function run(): void
     {
         $marcas = ['PDV', 'SHELL', 'MAHLE', 'PUROLATOR', 'FRAM', 'WIX', 'SAKURA', 'MANN FILTER', 'BALDWIN'];
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($marcas as $item) {
             $brand = Brand::where('name', $item)->where('branch_id', $branch->id)->first();

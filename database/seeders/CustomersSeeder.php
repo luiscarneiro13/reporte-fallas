@@ -18,7 +18,7 @@ class CustomersSeeder extends Seeder
     public function __construct()
     {
         $this->rol = Role::where('name', "Cliente")->first();
-        $this->branch = Branch::where('name', 'Cabimas')->first();
+        $this->branch = Branch::where('name', 'El Tigre')->first();
     }
     /**
      * Run the database seeds.

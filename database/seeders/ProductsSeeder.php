@@ -19,7 +19,7 @@ class ProductsSeeder extends Seeder
     {
         $cantProducts = 20;
 
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
         $brand = Brand::where('name', 'PDV')->first();
         $typeArticle = TypeArticle::where('name', 'LUBRICANTE')->first();
 

@@ -15,7 +15,7 @@ class TypeArticlesSeeder extends Seeder
     public function run(): void
     {
         $tipos = ['LUBRICANTE', 'REFRIGERANTE', 'GRASA', 'FILTRO DE ACEITE', 'FILTRO DE AIRE', 'FILTRO DE GASOLINA'];
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($tipos as $item) {
             $typeArticle = TypeArticle::where('name', $item)->where('branch_id', $branch->id)->first();

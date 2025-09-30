@@ -13,7 +13,7 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
 
         if (!$branch) {
             $branch = Branch::create([

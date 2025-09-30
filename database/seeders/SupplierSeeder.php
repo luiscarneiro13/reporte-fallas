@@ -14,7 +14,7 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
         $supplier = Supplier::where('name', 'Sin Proveedor')->first();
 
         if (!$supplier) {

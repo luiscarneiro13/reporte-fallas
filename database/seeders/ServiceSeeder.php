@@ -14,7 +14,7 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
         $services = Service::where('branch_id', $branch->id)->get();
 
         if (count($services) == 0) {

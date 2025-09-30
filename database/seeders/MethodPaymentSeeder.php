@@ -23,7 +23,7 @@ class MethodPaymentSeeder extends Seeder
             'mixto' => 'MIXTO'
         ];
 
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($methods as $key => $item) {
             $methodPayment = MethodPayment::where('name', $item)->where('branch_id', $branch->id)->first();

@@ -16,7 +16,7 @@ class ModelVehicleSeeder extends Seeder
     public function run(): void
     {
         $marcas = ['Ford Explorer 2002', 'Ford Explorer 2003', 'Ford Explorer 2004', 'Ford Explorer 2005'];
-        $branch = Branch::where('name', 'Cabimas')->first();
+        $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($marcas as $item) {
             $modelVehicle = ModelVehicle::where('name', $item)->where('branch_id', $branch->id)->first();

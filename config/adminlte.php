@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'JJ&V',
+    'title' => 'Servicios Generales Casmar, C.A',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -378,18 +378,6 @@ return [
             'icon' => 'fas fa-fw fa-cog',
         ],
         [
-            'text' => 'Vender',
-            'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Vender',
-            'route'  => 'sell.index',
-        ],
-        [
-            'text' => 'Ventas del día',
-            'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Ventas dia Ver',
-            'route'  => 'admin.sucursal.sales.daily.index',
-        ],
-        [
             'text' => 'Inventario',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'Inventario Ver',
@@ -407,12 +395,6 @@ return [
                     'route'  => 'admin.sucursal.products.index',
                 ],
             ]
-        ],
-        [
-            'text' => 'Historial de Ventas',
-            'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Historial ventas Ver',
-            'route'  => 'admin.sucursal.sales.history.index',
         ],
         [
             'text' => 'Administración',

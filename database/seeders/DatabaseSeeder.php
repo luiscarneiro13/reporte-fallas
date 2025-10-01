@@ -28,6 +28,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ModelVehicleSeeder::class);
         $this->call(MethodPaymentSeeder::class);
 
+        // Nuevo
+        $this->call(EquipmentSeeder::class);
+        $this->call(FaultSeeder::class);
+        $this->call(OwnerSeeder::class);
+        $this->call(ProjectSeeder::class);
+        $this->call(ServiceAreaSeeder::class);
+
         // $this->call(ProductsSeeder::class);
         // $this->call(ServiceSeeder::class);
         // $this->call(CustomersSeeder::class);

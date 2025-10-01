@@ -21,7 +21,7 @@ class BranchSeeder extends Seeder
                 'description' => 'Sucursal El Tigre',
                 'email' => 'carneiroluis2@gmail.com',
                 'phone' => '04248807465',
-                'logo' => 'logos/66afabda8657666afabda8657a.webp'
+                'logo' => asset('logo.webp')
             ]);
         }
     }

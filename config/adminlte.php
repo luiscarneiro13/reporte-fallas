@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Ventas</b>',
+    'logo' => '<b>Reporte de fallas</b>',
     // 'logo_img' =>  null,
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Ventas',
+    'logo_img_alt' => 'Reporte de fallas',
     'locale' => 'es',
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +84,7 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'Auth Logo',

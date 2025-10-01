@@ -42,4 +42,15 @@ class Branch extends Model
     {
         return $this->belongsToMany(User::class, 'user_branch');
     }
+
+    public function equipment()
+    {
+        return $this->hasMany(Equipment::class, 'branch_id');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'branch_id');
+    }
+
 }

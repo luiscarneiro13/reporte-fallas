@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectSeeder::class);
         $this->call(ServiceAreaSeeder::class);
 
-        // $this->call(ProductsSeeder::class);
         // $this->call(ServiceSeeder::class);
         // $this->call(CustomersSeeder::class);
 

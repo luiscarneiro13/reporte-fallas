@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => asset('logo.webp'),
+            'path' => 'logo.webp',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,

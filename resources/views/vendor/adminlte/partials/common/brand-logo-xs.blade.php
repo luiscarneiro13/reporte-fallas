@@ -17,9 +17,8 @@
     {{-- Small brand logo --}}
     {{-- <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" --}}
 
-    <img src="{{ asset('storage/'.session('branch')->logo) }}"
-        alt="{{ config('adminlte.logo_img_alt', 'Ventas') }}"
-        class="img-fluid" style="opacity:1">
+    <img src="{{ session('branch')->logo ? asset('storage/' . session('branch')->logo) : asset('logo.webp') }}"
+        alt="{{ config('adminlte.logo_img_alt', 'Reporte de fallas') }}" class="img-fluid" style="opacity:1">
 
     {{-- Brand text --}}
     <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">

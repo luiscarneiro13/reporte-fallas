@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('email', 90);
             $table->string('phone', 90);
-            $table->text('logo');
+            $table->text('logo')->nullable();
             $table->timestamps();
         });
     }

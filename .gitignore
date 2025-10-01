@@ -13,9 +13,3 @@ yarn-error.log
 /.vscode
 /vendor
 /node_modules
-
-# Exclusión estándar de Laravel para el enlace simbólico
-/public/storage
-/public/hot
-
-# Elimina cualquier excepción (líneas que empiecen con !) aquí.

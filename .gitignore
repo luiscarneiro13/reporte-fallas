@@ -1,5 +1,5 @@
 /.phpunit.cache
-/storage/*.key
+# /storage/*.key
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -15,4 +15,4 @@ yarn-error.log
 /node_modules
 
 # Pero no ignorar esta imagen específica
-!/storage/logos/logo.webp
+# !/storage/logos/logo.webp

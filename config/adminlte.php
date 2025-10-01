@@ -378,25 +378,6 @@ return [
             'icon' => 'fas fa-fw fa-cog',
         ],
         [
-            'text' => 'Inventario',
-            'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Inventario Ver',
-            'submenu' => [
-                [
-                    'text' => 'Entrada de artículos',
-                    'active' => ['admin-sucursal/mi-sucursal/entrada-productos*'],
-                    'can' => 'Inventario Editar',
-                    'route'  => 'admin.sucursal.product.entries.index',
-                ],
-                [
-                    'text' => 'Artículos/Productos',
-                    'active' => ['admin-sucursal/productos*'],
-                    'can' => 'Inventario Ver',
-                    'route'  => 'admin.sucursal.products.index',
-                ],
-            ]
-        ],
-        [
             'text' => 'Administración',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'Menu Conf Admin Sucursal',

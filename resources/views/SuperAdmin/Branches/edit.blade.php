@@ -10,7 +10,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('branchs.update', $branch) }}" method="POST">
+            <form action="{{ route('branches.update', $branch) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row">

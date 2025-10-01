@@ -10,7 +10,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('branchs.store') }}" method="POST">
+            <form action="{{ route('branches.store') }}" method="POST">
                 @csrf
                 <div class="row">
                     <x-adminlte-input name="name" label="Nombre" placeholder="Nombre de la Sucursal" fgroup-class="col-md-4"
@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="row">
-                    <a href="{{ route('branchs.index') }}" class="btn-sm mr-3 btn-default" type="submit"
+                    <a href="{{ route('branches.index') }}" class="btn-sm mr-3 btn-default" type="submit"
                         icon="fas fa-lg fa-save">Cancelar</a>
                     <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />

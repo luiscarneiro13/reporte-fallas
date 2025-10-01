@@ -84,9 +84,9 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => true,
+        'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => asset('logo.webp'),
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -357,17 +357,17 @@ return [
                     // 'can' => 'Menu Sucursales',
                     'text' => 'Sucursales',
                     'icon' => 'fas fa-industry',
-                    'active' => ['branchs*'],
+                    'active' => ['branches*'],
                     'submenu' => [
                         [
                             'text' => 'Lista de Sucursales',
                             'icon' => 'fas fa-list',
-                            'route'  => 'branchs.index',
+                            'route'  => 'branches.index',
                         ],
                         [
                             'text' => 'Nueva Sucursal',
                             'icon' => 'fas fa-plus-circle',
-                            'route'  => 'branchs.create',
+                            'route'  => 'branches.create',
                         ]
                     ]
                 ],

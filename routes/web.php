@@ -81,7 +81,7 @@ Route::middleware([
     Route::resource('/permissions', PermissionController::class)->names('permissions');
     Route::resource('/assign_role', AssignRoleController::class)->names('assign_role');
     Route::resource('/users', UserController::class)->names('users');
-    Route::resource('/branchs', BranchController::class)->names('branchs');
+    Route::resource('/branches', BranchController::class)->names('branches');
 
     Route::prefix('admin-general')->group(function () {
         // Route::resource('/brands', AdminBrand::class)->names('admin.brands');

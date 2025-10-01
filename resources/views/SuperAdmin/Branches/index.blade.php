@@ -11,7 +11,7 @@
     <div class="card">
         {{-- @can('Crear Cliente') --}}
         <div class="card-header">
-            <a href="{{ route('branchs.create') }}" class="btn btn-sm btn-primary float-right">Nueva Sucursal</a>
+            <a href="{{ route('branches.create') }}" class="btn btn-sm btn-primary float-right">Nueva Sucursal</a>
         </div>
         {{-- @endcan --}}
 
@@ -25,7 +25,7 @@
 
             <x-adminlte-datatable id="table2" :heads="$heads" head-theme="dark" :config="$config" striped hoverable
                 bordered>
-                @foreach ($branchs as $item)
+                @foreach ($branches as $item)
                     <tr>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->phone }}</td>
@@ -37,18 +37,18 @@
                                     <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                     <div class="dropdown-menu">
 
-                                        <a class="dropdown-item" href="{{ route('branchs.edit', $item) }}">
+                                        <a class="dropdown-item" href="{{ route('branches.edit', $item) }}">
                                             <i class="fa fa-edit">&nbsp;</i>
                                             Editar
                                         </a>
 
-                                        <a class="dropdown-item" href="{{ route('branchs.show', $item) }}">
+                                        <a class="dropdown-item" href="{{ route('branches.show', $item) }}">
                                             <i class="fa fa-eye">&nbsp;</i>
                                             Ver datos
                                         </a>
 
                                         <div class="dropdown-divider"></div>
-                                        <form class="formEliminar" action="{{ route('branchs.destroy', $item) }}"
+                                        <form class="formEliminar" action="{{ route('branches.destroy', $item) }}"
                                             method="post">
                                             @csrf
                                             @method('delete')

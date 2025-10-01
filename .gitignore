@@ -15,4 +15,4 @@ yarn-error.log
 /node_modules
 
 # Pero no ignorar esta imagen específica
-!/public/storage/logos/logo.webp
+!/storage/logos/logo.webp

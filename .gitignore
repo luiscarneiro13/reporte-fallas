@@ -13,3 +13,6 @@ yarn-error.log
 /.vscode
 /vendor
 /node_modules
+
+
+!public/logos/logo.webp

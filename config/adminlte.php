@@ -398,6 +398,11 @@ return [
                     'active' => ['admin-sucursal/propietarios*'],
                     'route'  => 'admin.sucursal.owners.index',
                 ],
+                [
+                    'text' => 'Proyectos',
+                    'active' => ['admin-sucursal/proyectos*'],
+                    'route'  => 'admin.sucursal.projects.index',
+                ],
                 // [
                 //     'text' => 'Marcas de artículos',
                 //     'active' => ['admin-sucursal/marcas*'],

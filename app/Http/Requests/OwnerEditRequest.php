@@ -11,7 +11,7 @@ class OwnerEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,8 +22,8 @@ class OwnerEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3',
-            'description' => 'required|min:3',
+            'first_name' => 'required|string|min:3',
+            'last_name' => 'required|string|min:3',
         ];
     }
 }

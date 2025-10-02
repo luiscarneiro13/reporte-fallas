@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\AdminBranch;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OwnerEditRequest;
+use App\Http\Requests\OwnerRequest;
 use App\Models\Owner;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
@@ -19,7 +21,10 @@ class OwnerController extends Controller
         $owners = Owner::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('name', 'like', "%{$query}%");
+                    $subQuery
+                        ->where('first_name', 'like', "%{$query}%")
+                        ->orWhere('last_name', 'like', "%{$query}%")
+                    ;
                 });
             })
             ->orderBy('last_name', 'asc')
@@ -33,7 +38,7 @@ class OwnerController extends Controller
         return view('AdminBranch.Owners.create', compact('back_url'));
     }
 
-    public function store(Request $request)
+    public function store(OwnerRequest $request)
     {
         try {
             $owner = new Owner();
@@ -63,7 +68,7 @@ class OwnerController extends Controller
         return view('AdminBranch.Owners.edit', compact('owner', 'back_url'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(OwnerEditRequest $request, string $id)
     {
         try {
             $owner = Owner::find($id);

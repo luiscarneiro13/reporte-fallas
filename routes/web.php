@@ -31,6 +31,7 @@ use App\Http\Controllers\AdminBranch\CustomerController as AdminBranchCustomer;
 use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMethodPayment;
 use App\Http\Controllers\AdminBranch\OperatorController;
 use App\Http\Controllers\AdminBranch\OwnerController;
+use App\Http\Controllers\AdminBranch\ProjectController;
 use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
 // *************************************************************************************
@@ -109,6 +110,7 @@ Route::middleware([
 
         // Rutas nuevas
         Route::resource('/propietarios', OwnerController::class)->names('admin.sucursal.owners');
+        Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
 
     });
 

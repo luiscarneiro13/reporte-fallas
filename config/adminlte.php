@@ -378,6 +378,12 @@ return [
             'icon' => 'fas fa-fw fa-cog',
         ],
         [
+            'text' => 'Proyectos',
+            'active' => ['v1/admin/proyectos*'],
+            'route'  => 'admin.sucursal.projects.index',
+            'can' => 'Proyectos Ver',
+        ],
+        [
             'text' => 'Administración',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'Menu Conf Admin',
@@ -397,11 +403,7 @@ return [
                     'active' => ['v1/admin/areas-de-servicio*'],
                     'route'  => 'admin.sucursal.service.areas.index',
                 ],
-                [
-                    'text' => 'Proyectos',
-                    'active' => ['v1/admin/proyectos*'],
-                    'route'  => 'admin.sucursal.projects.index',
-                ],
+
                 // [
                 //     'text' => 'Marcas de artículos',
                 //     'active' => ['admin-sucursal/marcas*'],

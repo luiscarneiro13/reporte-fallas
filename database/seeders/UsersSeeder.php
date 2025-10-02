@@ -47,33 +47,17 @@ class UsersSeeder extends Seeder
         $rol = Role::where('name', "Admin")->first();
         $user2->roles()->sync([$rol->id]);
 
-
-
-        $user3 = User::where('name', 'Admin Sucursal')->first();
-        if (!$user3) {
-            $user3 = User::create([
-                'name' => 'Admin Sucursal',
-                'email' => 'adminsucursal@gmail.com',
-                'password' => Hash::make('123456'),
-                'email_verified_at' => now(),
-            ]);
-        }
-        $rol = Role::where('name', "Admin Sucursal")->first();
-        $user3->roles()->sync([$rol->id]);
-
-
-
-        $user4 = User::where('name', 'Cajero')->first();
+        $user4 = User::where('name', 'Supervisor')->first();
         if (!$user4) {
             $user4 = User::create([
-                'name' => 'Cajero',
-                'email' => 'cajero@gmail.com',
+                'name' => 'Supervisor',
+                'email' => 'supervisor@gmail.com',
                 'password' => Hash::make('123456'),
                 'email_verified_at' => now(),
                 'phone' => '123456789',
             ]);
         }
-        $rol = Role::where('name', "Cajero")->first();
+        $rol = Role::where('name', "Supervisor")->first();
         $user4->roles()->sync([$rol->id]);
         $branch = Branch::where('name', 'El Tigre')->first();
         $userBranch = new UserBranch();
@@ -82,17 +66,17 @@ class UsersSeeder extends Seeder
 
 
 
-        $user5 = User::where('name', 'Vendedor')->first();
+        $user5 = User::where('name', 'Operador')->first();
         if (!$user5) {
             $user5 = User::create([
-                'name' => 'Vendedor',
-                'email' => 'vendedor@gmail.com',
+                'name' => 'Operador',
+                'email' => 'operador@gmail.com',
                 'password' => Hash::make('123456'),
                 'email_verified_at' => now(),
                 'phone' => '123456789',
             ]);
         }
-        $rol = Role::where('name', "Vendedor")->first();
+        $rol = Role::where('name', "Operador")->first();
         $user5->roles()->sync([$rol->id]);
         $branch = Branch::where('name', 'El Tigre')->first();
         $userBranch = new UserBranch();

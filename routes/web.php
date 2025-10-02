@@ -29,6 +29,9 @@ use App\Http\Controllers\AdminBranch\CajerosController as AdminBranchCajeros;
 use App\Http\Controllers\AdminBranch\AdministradoresController as AdminBranchAdministradores;
 use App\Http\Controllers\AdminBranch\CustomerController as AdminBranchCustomer;
 use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMethodPayment;
+use App\Http\Controllers\AdminBranch\OperatorController;
+use App\Http\Controllers\AdminBranch\OwnerController;
+use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
 // *************************************************************************************
 
@@ -98,11 +101,14 @@ Route::middleware([
         Route::resource('/tipos-articulos', AdminBranchTypeArticle::class)->names('admin.sucursal.type.articles');
         Route::resource('/proveedores', AdminBranchSupplier::class)->names('admin.sucursal.suppliers');
         Route::resource('/servicios', AdminBranchService::class)->names('admin.sucursal.services');
-        Route::resource('/vendedores', AdminBranchEmployee::class)->names('admin.sucursal.usuarios.employees');
-        Route::resource('/cajeros', AdminBranchCajeros::class)->names('admin.sucursal.usuarios.cajeros');
+        Route::resource('/operadores', OperatorController::class)->names('admin.sucursal.usuarios.operators');
+        Route::resource('/supervisores', SupervisorController::class)->names('admin.sucursal.usuarios.supervisors');
         Route::resource('/administradores', AdminBranchAdministradores::class)->names('admin.sucursal.usuarios.administradores');
         Route::resource('/clientes', AdminBranchCustomer::class)->names('admin.sucursal.customers');
         Route::resource('/metodos-pago', AdminBranchMethodPayment::class)->names('admin.sucursal.method.payment');
+
+        // Rutas nuevas
+        Route::resource('/propietarios', OwnerController::class)->names('admin.sucursal.owners');
 
     });
 

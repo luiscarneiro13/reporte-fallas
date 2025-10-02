@@ -1,27 +1,27 @@
 @extends('adminlte::page')
 
-@section('title', 'JJ&V')
+@section('title', 'Supervisores')
 
 @section('content_header')
-    <h1>Editar empleado vendedor</h1>
-    <small>{{ $employee->name }}</small>
+    <h1>Editar supervisor</h1>
+    <small>{{ $supervisor->name }}</small>
 @stop
 
 @section('content')
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.sucursal.usuarios.employees.update', $employee) }}" method="POST">
+            <form action="{{ route('admin.sucursal.usuarios.supervisors.update', $supervisor) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row">
-                    <input type="hidden" name="id" value="{{ $employee->id }}">
+                    <input type="hidden" name="id" value="{{ $supervisor->id }}">
                     <x-adminlte-input name="name" label="Nombre completo" placeholder="Aquí el nombre completo"
-                        fgroup-class="col-md-4" value="{{ $employee->name }}" />
+                        fgroup-class="col-md-4" value="{{ $supervisor->name }}" />
                     <x-adminlte-input type="email" name="email" label="Email" placeholder="Aquí el email"
-                        fgroup-class="col-md-4" value="{{ $employee->email }}" />
+                        fgroup-class="col-md-4" value="{{ $supervisor->email }}" />
                     <x-adminlte-input name="phone" label="Teléfono" placeholder="Aquí el teléfono" fgroup-class="col-md-4"
-                        value="{{ $employee->phone }}" />
+                        value="{{ $supervisor->phone }}" />
                     <div class="col-md-6">
                         <x-adminlte-input type="password" name="password" label="Contraseña"
                             placeholder="Aquí la contraseña" value="{{ old('password') }}" />
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row mt-5">
-                    <a href="{{ route('admin.sucursal.usuarios.employees.index') }}" class="btn-sm mr-3 btn-default" type="submit"
+                    <a href="{{ route('admin.sucursal.usuarios.supervisors.index') }}" class="btn-sm mr-3 btn-default" type="submit"
                         icon="fas fa-lg fa-save">Cancelar</a>
                     <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />

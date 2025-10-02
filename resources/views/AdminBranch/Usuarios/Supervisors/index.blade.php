@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'JJ&V')
+@section('title', 'Supervisores')
 
 @section('content')
 
@@ -8,10 +8,10 @@
         $headers = ['Nombre', 'Email', 'Teléfono', ''];
     @endphp
 
-    <x-base-data-table-search title="Empleados Vendedores" :items="$employees" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.usuarios.employees.create') }}">
+    <x-base-data-table-search title="Supervisores" :items="$supervisors" :headers="$headers"
+        urlBtnAdd="{{ route('admin.sucursal.usuarios.supervisors.create') }}">
         <x-slot name="body">
-            @forelse ($employees as $item)
+            @forelse ($supervisors as $item)
                 <tr>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->email }}</td>
@@ -23,14 +23,14 @@
                                 <div class="dropdown-menu">
 
                                     <a class="dropdown-item"
-                                        href="{{ route('admin.sucursal.usuarios.employees.edit', $item) }}">
+                                        href="{{ route('admin.sucursal.usuarios.supervisors.edit', $item) }}">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"
-                                        action="{{ route('admin.sucursal.usuarios.employees.destroy', $item) }}"
+                                        action="{{ route('admin.sucursal.usuarios.supervisors.destroy', $item) }}"
                                         method="post">
                                         @csrf
                                         @method('delete')

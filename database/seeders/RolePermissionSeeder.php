@@ -15,9 +15,8 @@ class RolePermissionSeeder extends Seeder
     {
         $this->superAdmin();
         $this->admin();
-        $this->adminSucursal();
-        $this->cajero();
-        $this->vendedor();
+        $this->supervisor();
+        $this->operador();
     }
 
     public function superAdmin()
@@ -46,12 +45,12 @@ class RolePermissionSeeder extends Seeder
         $role->permissions()->sync($permissions);
     }
 
-    public function adminSucursal()
+    public function supervisor()
     {
         $permissions = [];
-        $role = Role::where('name', 'Admin Sucursal')->first();
+        $role = Role::where('name', 'Supervisor')->first();
 
-        foreach (PermissionsSeeder::PERMISSIONS_ADMIN_SUCURSAL as $permission) {
+        foreach (PermissionsSeeder::PERMISSIONS_SUPERVISOR as $permission) {
             $per = Permission::where('name', $permission)->first();
             $permissions[] = $per->id;
         }
@@ -59,25 +58,12 @@ class RolePermissionSeeder extends Seeder
         $role->permissions()->sync($permissions);
     }
 
-    public function cajero()
+    public function operador()
     {
         $permissions = [];
-        $role = Role::where('name', 'Cajero')->first();
+        $role = Role::where('name', 'Operador')->first();
 
-        foreach (PermissionsSeeder::PERMISSIONS_CAJERO as $permission) {
-            $per = Permission::where('name', $permission)->first();
-            $permissions[] = $per->id;
-        }
-
-        $role->permissions()->sync($permissions);
-    }
-
-    public function vendedor()
-    {
-        $permissions = [];
-        $role = Role::where('name', 'Vendedor')->first();
-
-        foreach (PermissionsSeeder::PERMISSIONS_VENDEDOR as $permission) {
+        foreach (PermissionsSeeder::PERMISSIONS_OPERADOR as $permission) {
             $per = Permission::where('name', $permission)->first();
             $permissions[] = $per->id;
         }

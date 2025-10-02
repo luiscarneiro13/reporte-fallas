@@ -380,13 +380,13 @@ return [
         [
             'text' => 'Administración',
             'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Menu Conf Admin Sucursal',
+            'can' => 'Menu Conf Admin',
             'submenu' => [
                 // [
                 //     'text' => 'Configuración 22',
                 //     'icon' => 'fas fa-fw fa-cog',
                 //     'route'  => 'admin.sucursal.configuration.edit',
-                //     'can' => 'Menu Conf Admin Sucursal',
+                //     'can' => 'Menu Conf Admin',
                 // ],
                 [
                     'text' => 'Editar mi Sucursal',
@@ -394,35 +394,40 @@ return [
                     'url'  => '/admin-sucursal/mi-sucursal/edit',
                 ],
                 [
-                    'text' => 'Marcas de artículos',
-                    'active' => ['admin-sucursal/marcas*'],
-                    'route'  => 'admin.sucursal.brands.index',
+                    'text' => 'Propietarios',
+                    'active' => ['admin-sucursal/propietarios*'],
+                    'route'  => 'admin.sucursal.owners.index',
                 ],
-                [
-                    'text' => 'Modelos de vehículos',
-                    'active' => ['admin-sucursal/modelosvehiculos*'],
-                    'route'  => 'admin.sucursal.models.vehicles.index',
-                ],
-                [
-                    'text' => 'Descripión de Artículos',
-                    'active' => ['admin-sucursal/tipos-articulos*'],
-                    'route'  => 'admin.sucursal.type.articles.index',
-                ],
-                [
-                    'text' => 'Proveedores',
-                    'active' => ['admin-sucursal/proveedores*'],
-                    'route'  => 'admin.sucursal.suppliers.index',
-                ],
-                [
-                    'text' => 'Servicios',
-                    'active' => ['admin-sucursal/servicios*'],
-                    'route'  => 'admin.sucursal.services.index',
-                ],
-                [
-                    'text' => 'Clientes',
-                    'active' => ['admin-sucursal/clientes*'],
-                    'route'  => 'admin.sucursal.customers.index',
-                ],
+                // [
+                //     'text' => 'Marcas de artículos',
+                //     'active' => ['admin-sucursal/marcas*'],
+                //     'route'  => 'admin.sucursal.brands.index',
+                // ],
+                // [
+                //     'text' => 'Modelos de vehículos',
+                //     'active' => ['admin-sucursal/modelosvehiculos*'],
+                //     'route'  => 'admin.sucursal.models.vehicles.index',
+                // ],
+                // [
+                //     'text' => 'Descripión de Artículos',
+                //     'active' => ['admin-sucursal/tipos-articulos*'],
+                //     'route'  => 'admin.sucursal.type.articles.index',
+                // ],
+                // [
+                //     'text' => 'Proveedores',
+                //     'active' => ['admin-sucursal/proveedores*'],
+                //     'route'  => 'admin.sucursal.suppliers.index',
+                // ],
+                // [
+                //     'text' => 'Servicios',
+                //     'active' => ['admin-sucursal/servicios*'],
+                //     'route'  => 'admin.sucursal.services.index',
+                // ],
+                // [
+                //     'text' => 'Clientes',
+                //     'active' => ['admin-sucursal/clientes*'],
+                //     'route'  => 'admin.sucursal.customers.index',
+                // ],
                 // [
                 //     'text' => 'Métodos de pago',
                 //     'active' => ['admin-sucursal/metodos-pago*'],
@@ -433,7 +438,7 @@ return [
         [
             'text' => 'Usuarios',
             'icon' => 'fas fa-fw fa-cog',
-            'can' => 'Menu Conf Admin Sucursal',
+            'can' => 'Menu Conf Admin',
             'submenu' => [
                 [
                     'text' => 'Administradores',
@@ -441,14 +446,14 @@ return [
                     'route'  => 'admin.sucursal.usuarios.administradores.index',
                 ],
                 [
-                    'text' => 'Cajeros',
-                    'active' => ['admin-sucursal/cajeros*'],
-                    'route'  => 'admin.sucursal.usuarios.cajeros.index',
+                    'text' => 'Supervisores',
+                    'active' => ['admin-sucursal/supervisores*'],
+                    'route'  => 'admin.sucursal.usuarios.supervisors.index',
                 ],
                 [
-                    'text' => 'Vendedores',
-                    'active' => ['admin-sucursal/vendedores*'],
-                    'route'  => 'admin.sucursal.usuarios.employees.index',
+                    'text' => 'Operadores',
+                    'active' => ['admin-sucursal/operadores*'],
+                    'route'  => 'admin.sucursal.usuarios.operators.index',
                 ],
             ]
         ],

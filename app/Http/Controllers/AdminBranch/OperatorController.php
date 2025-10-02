@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\AdminBranch;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeEditRequest;
-use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\OperatorEditRequest;
+use App\Http\Requests\OperatorRequest;
+use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserBranch;
 use App\Traits\AlertResponser;
@@ -12,22 +13,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
-class CajerosController extends Controller
+class OperatorController extends Controller
 {
     use AlertResponser;
 
-    const INDEX = "admin.sucursal.usuarios.cajeros.index";
+    const INDEX = "admin.sucursal.usuarios.operators.index";
 
     public function index()
     {
         $query = request('query');
-        $employees = User::query()
+        $operators = User::query()
             ->leftJoin('model_has_roles', 'users.id', 'model_has_roles.model_id')
             ->leftJoin('roles', 'model_has_roles.role_id', 'roles.id')
             ->leftJoin('user_branch', 'users.id', 'user_branch.user_id')
             ->leftJoin('branches', 'user_branch.branch_id', 'branches.id')
             ->select('users.id', 'users.name', 'users.email', 'users.phone', 'roles.name as rol', 'branches.id as branch_id', 'branches.name as branch')
-            ->where('roles.name', 'Cajero')
+            ->where('roles.name', 'Operador')
             ->where('branches.id', session('branch')->id)
             ->where('users.id', '!=', auth()->user()->id)
             ->when($query, function ($q) use ($query) {
@@ -39,15 +40,15 @@ class CajerosController extends Controller
             })
             ->orderBy('users.name', 'asc')
             ->paginate(10);
-        return view('AdminBranch.Usuarios.Cajeros.index', compact('employees'));
+        return view('AdminBranch.Usuarios.Operadores.index', compact('operators'));
     }
 
     public function create()
     {
-        return view('AdminBranch.Usuarios.Cajeros.create');
+        return view('AdminBranch.Usuarios.Operadores.create');
     }
 
-    public function store(EmployeeRequest $request)
+    public function store(OperatorRequest $request)
     {
         try {
             $user = User::create([
@@ -59,14 +60,14 @@ class CajerosController extends Controller
                 "profile_photo_path" => 'images/user-icon.webp',
             ]);
 
-            $rol = Role::where('name', "Cajero")->first();
+            $rol = Role::where('name', "Operador")->first();
             $user->roles()->sync([$rol->id]);
 
             $userBranch = new UserBranch();
             $userBranch->branch_id = session('branch')->id;
             $user->userBranches()->save($userBranch);
 
-            return $this->alertSuccess(self::INDEX, 'Cajero creado: ' . $user->name);
+            return $this->alertSuccess(self::INDEX, 'Operador creado: ' . $user->name);
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }
@@ -74,11 +75,11 @@ class CajerosController extends Controller
 
     public function edit($id)
     {
-        $employee = User::find($id);
-        return view('AdminBranch.Usuarios.Cajeros.edit', compact('employee'));
+        $operator = User::find($id);
+        return view('AdminBranch.Usuarios.Operadores.edit', compact('operator'));
     }
 
-    public function update(EmployeeEditRequest $request, $id)
+    public function update(OperatorEditRequest $request, $id)
     {
         try {
             $user = User::find($id);
@@ -92,7 +93,7 @@ class CajerosController extends Controller
             }
 
             $user->save();
-            return $this->alertSuccess(self::INDEX, 'Cajero actualizado: ' . $user->name);
+            return $this->alertSuccess(self::INDEX, 'Operador actualizado: ' . $user->name);
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }
@@ -103,7 +104,7 @@ class CajerosController extends Controller
         try {
             $user = User::find($id);
             $user->delete();
-            return $this->alertSuccess(self::INDEX, 'Cajero eliminado: ' . $user->name);
+            return $this->alertSuccess(self::INDEX, 'Operador eliminado: ' . $user->name);
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }

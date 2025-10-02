@@ -16,7 +16,7 @@ class UserBranchSeeder extends Seeder
     public function run(): void
     {
         $branch = Branch::where('name', 'El Tigre')->first();
-        $user = User::where('name', 'Admin Sucursal')->first();
+        $user = User::where('name', 'Admin')->first();
 
         $branchUser = UserBranch::where('user_id', $user->id)->where('branch_id', $branch->id)->first();
 

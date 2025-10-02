@@ -25,28 +25,17 @@ class RolesSeeder extends Seeder
             Role::create(["name" => "Admin", "guard_name" => "sanctum"]);
         }
 
-        //Admin Sucursal
-        $rol = Role::where('name', "Admin Sucursal")->first();
+        //Supervisor
+        $rol = Role::where('name', "Supervisor")->first();
         if (is_null($rol)) {
-            Role::create(["name" => "Admin Sucursal", "guard_name" => "sanctum"]);
+            Role::create(["name" => "Supervisor", "guard_name" => "sanctum"]);
         }
 
-        //Cajero
-        $rol = Role::where('name', "Cajero")->first();
+        //Operador
+        $rol = Role::where('name', "Operador")->first();
         if (is_null($rol)) {
-            Role::create(["name" => "Cajero", "guard_name" => "sanctum"]);
+            Role::create(["name" => "Operador", "guard_name" => "sanctum"]);
         }
 
-        //Vendedor
-        $rol = Role::where('name', "Vendedor")->first();
-        if (is_null($rol)) {
-            Role::create(["name" => "Vendedor", "guard_name" => "sanctum"]);
-        }
-
-        //Cliente
-        $rol = Role::where('name', "Cliente")->first();
-        if (is_null($rol)) {
-            Role::create(["name" => "Cliente", "guard_name" => "sanctum"]);
-        }
     }
 }

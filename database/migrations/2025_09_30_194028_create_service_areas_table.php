@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('service_areas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('branch_id');
             $table->string('name', 90)->index();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

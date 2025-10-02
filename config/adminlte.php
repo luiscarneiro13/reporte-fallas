@@ -382,25 +382,24 @@ return [
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'Menu Conf Admin',
             'submenu' => [
-                // [
-                //     'text' => 'Configuración 22',
-                //     'icon' => 'fas fa-fw fa-cog',
-                //     'route'  => 'admin.sucursal.configuration.edit',
-                //     'can' => 'Menu Conf Admin',
-                // ],
                 [
                     'text' => 'Editar mi Sucursal',
-                    'active' => ['admin-sucursal/mi-sucursal/edit*'],
-                    'url'  => '/admin-sucursal/mi-sucursal/edit',
+                    'active' => ['v1/admin/mi-sucursal/edit*'],
+                    'url'  => '/v1/admin/mi-sucursal/edit',
                 ],
                 [
                     'text' => 'Propietarios',
-                    'active' => ['admin-sucursal/propietarios*'],
+                    'active' => ['v1/admin/propietarios*'],
                     'route'  => 'admin.sucursal.owners.index',
                 ],
                 [
+                    'text' => 'Áreas de Servicio',
+                    'active' => ['v1/admin/areas-de-servicio*'],
+                    'route'  => 'admin.sucursal.service.areas.index',
+                ],
+                [
                     'text' => 'Proyectos',
-                    'active' => ['admin-sucursal/proyectos*'],
+                    'active' => ['v1/admin/proyectos*'],
                     'route'  => 'admin.sucursal.projects.index',
                 ],
                 // [
@@ -447,17 +446,17 @@ return [
             'submenu' => [
                 [
                     'text' => 'Administradores',
-                    'active' => ['admin-sucursal/administradores*'],
+                    'active' => ['v1/admin/administradores*'],
                     'route'  => 'admin.sucursal.usuarios.administradores.index',
                 ],
                 [
                     'text' => 'Supervisores',
-                    'active' => ['admin-sucursal/supervisores*'],
+                    'active' => ['v1/admin/supervisores*'],
                     'route'  => 'admin.sucursal.usuarios.supervisors.index',
                 ],
                 [
                     'text' => 'Operadores',
-                    'active' => ['admin-sucursal/operadores*'],
+                    'active' => ['v1/admin/operadores*'],
                     'route'  => 'admin.sucursal.usuarios.operators.index',
                 ],
             ]

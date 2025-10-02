@@ -1,18 +1,18 @@
-<?php $__env->startSection('title', 'JJ&V'); ?>
+<?php $__env->startSection('title', 'Editar area de servicio'); ?>
 
 <?php $__env->startSection('content_header'); ?>
-    <h1>Editar Proyecto</h1>
-    <small><?php echo e($project->name); ?></small>
+    <h1>Editar area de servicio</h1>
+    <small><?php echo e($serviceArea->name); ?></small>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 
     <div class="card">
         <div class="card-body">
-            <form action="<?php echo e(route('admin.sucursal.projects.update', $project)); ?>" method="POST">
+            <form action="<?php echo e(route('admin.sucursal.service.areas.update', $serviceArea)); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
-                <input type="hidden" name="id" value="<?php echo e($project->id); ?>">
+                <input type="hidden" name="id" value="<?php echo e($serviceArea->id); ?>">
                 <div class="row">
                     <?php if (isset($component)) { $__componentOriginale5d826ae10df3aa87f8449f474c11664 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale5d826ae10df3aa87f8449f474c11664 = $attributes; } ?>
@@ -23,7 +23,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Input::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['placeholder' => 'Nombre','value' => ''.e($project->name).'']); ?>
+<?php $component->withAttributes(['placeholder' => 'Nombre','value' => ''.e($serviceArea->name).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginale5d826ae10df3aa87f8449f474c11664)): ?>
@@ -43,7 +43,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Input::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['placeholder' => 'Descripción','value' => ''.e($project->description).'']); ?>
+<?php $component->withAttributes(['placeholder' => 'Descripción','value' => ''.e($serviceArea->description).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginale5d826ae10df3aa87f8449f474c11664)): ?>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="row mt-5">
-                    <a href="<?php echo e(route('admin.sucursal.projects.index')); ?>" class="btn-sm mr-3 btn-default" type="submit"
+                    <a href="<?php echo e(route('admin.sucursal.service.areas.index')); ?>" class="btn-sm mr-3 btn-default" type="submit"
                         icon="fas fa-lg fa-save">Cancelar</a>
                     <?php if (isset($component)) { $__componentOriginal84b78d66d5203b43b9d8c22236838526 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal84b78d66d5203b43b9d8c22236838526 = $attributes; } ?>
@@ -93,4 +93,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/AdminBranch/Projects/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/V1/AdminBranch/ServiceAreas/edit.blade.php ENDPATH**/ ?>

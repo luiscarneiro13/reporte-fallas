@@ -28,11 +28,6 @@ class Branch extends Model
         return $this->belongsToMany(User::class, 'user_branch');
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'branch_id');
-    }
-
     public function services()
     {
         return $this->hasMany(Service::class, 'branch_id');
@@ -51,6 +46,11 @@ class Branch extends Model
     public function projects()
     {
         return $this->hasMany(Project::class, 'branch_id');
+    }
+
+    public function serviceAreas()
+    {
+        return $this->hasMany(ServiceArea::class, 'branch_id');
     }
 
 }

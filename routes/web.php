@@ -24,16 +24,16 @@ use App\Http\Controllers\AdminBranch\SupplierController as AdminBranchSupplier;
 use App\Http\Controllers\AdminBranch\ConfigurationController as AdminBranchConfiguration;
 use App\Http\Controllers\AdminBranch\DailyRateController as AdminBranchDailyRate;
 use App\Http\Controllers\AdminBranch\ServiceController as AdminBranchService;
-use App\Http\Controllers\AdminBranch\EmployeeController as AdminBranchEmployee;
-use App\Http\Controllers\AdminBranch\CajerosController as AdminBranchCajeros;
 use App\Http\Controllers\AdminBranch\AdministradoresController as AdminBranchAdministradores;
 use App\Http\Controllers\AdminBranch\CustomerController as AdminBranchCustomer;
 use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMethodPayment;
 use App\Http\Controllers\AdminBranch\OperatorController;
-use App\Http\Controllers\AdminBranch\OwnerController;
-use App\Http\Controllers\AdminBranch\ProjectController;
 use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\V1\AdminBranch\OwnerController;
+use App\Http\Controllers\V1\AdminBranch\ProjectController;
+use App\Http\Controllers\V1\AdminBranch\ServiceAreaController;
+
 // *************************************************************************************
 
 /*
@@ -46,7 +46,8 @@ use App\Http\Controllers\PruebaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/clear-cache', function() {
+
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('config:cache');
     Artisan::call('config:clear');
@@ -94,24 +95,27 @@ Route::middleware([
         Route::post('/configuracion', [AdminBranchConfiguration::class, 'update'])->name('admin.sucursal.configuration.update');
         Route::get('/daily-rate', [AdminBranchDailyRate::class, 'create'])->name('admin.sucursal.daily.rate.create');
         Route::post('/daily-rate', [AdminBranchDailyRate::class, 'store'])->name('admin.sucursal.daily.rate.store');
-        Route::get('/mi-sucursal/edit', [AdminBranchMyBranch::class, 'edit'])->name('admin.branch.my-branch');
-        Route::put('/mi-sucursal/update/{id}', [AdminBranchMyBranch::class, 'update'])->name('admin.branch.my-branch.update');
+
 
         Route::resource('/marcas', AdminBranchBrand::class)->names('admin.sucursal.brands');
         Route::resource('/modelosvehiculos', AdminBranchBrandVehicle::class)->names('admin.sucursal.models.vehicles');
         Route::resource('/tipos-articulos', AdminBranchTypeArticle::class)->names('admin.sucursal.type.articles');
         Route::resource('/proveedores', AdminBranchSupplier::class)->names('admin.sucursal.suppliers');
         Route::resource('/servicios', AdminBranchService::class)->names('admin.sucursal.services');
+        Route::resource('/clientes', AdminBranchCustomer::class)->names('admin.sucursal.customers');
+        Route::resource('/metodos-pago', AdminBranchMethodPayment::class)->names('admin.sucursal.method.payment');
+    });
+
+    Route::prefix('v1/admin')->group(function () {
+
+        Route::get('/mi-sucursal/edit', [AdminBranchMyBranch::class, 'edit'])->name('admin.branch.my-branch');
+        Route::put('/mi-sucursal/update/{id}', [AdminBranchMyBranch::class, 'update'])->name('admin.branch.my-branch.update');
         Route::resource('/operadores', OperatorController::class)->names('admin.sucursal.usuarios.operators');
         Route::resource('/supervisores', SupervisorController::class)->names('admin.sucursal.usuarios.supervisors');
         Route::resource('/administradores', AdminBranchAdministradores::class)->names('admin.sucursal.usuarios.administradores');
-        Route::resource('/clientes', AdminBranchCustomer::class)->names('admin.sucursal.customers');
-        Route::resource('/metodos-pago', AdminBranchMethodPayment::class)->names('admin.sucursal.method.payment');
 
-        // Rutas nuevas
         Route::resource('/propietarios', OwnerController::class)->names('admin.sucursal.owners');
         Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
-
+        Route::resource('/areas-de-servicio', ServiceAreaController::class)->names('admin.sucursal.service.areas');
     });
-
 });

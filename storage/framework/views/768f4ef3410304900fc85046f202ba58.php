@@ -1,43 +1,46 @@
-<?php $__env->startSection('title', 'Operadores'); ?>
+<?php $__env->startSection('title', 'Areas de servicio'); ?>
+
+<?php $__env->startSection('content_header'); ?>
+    
+<?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 
     <?php
-        $headers = ['Nombre', 'Email', 'Teléfono', ''];
+        $headers = ['Nombre', 'Descripción', ''];
     ?>
 
     <?php if (isset($component)) { $__componentOriginalc3bb9a15a5f747221a204b851ffb93b4 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.base-data-table-search','data' => ['title' => 'Operadores','items' => $operators,'headers' => $headers,'urlBtnAdd' => ''.e(route('admin.sucursal.usuarios.operators.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.base-data-table-search','data' => ['title' => 'Areas de servicio','items' => $serviceAreas,'headers' => $headers,'urlBtnAdd' => ''.e(route('admin.sucursal.service.areas.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('base-data-table-search'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['title' => 'Operadores','items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($operators),'headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($headers),'urlBtnAdd' => ''.e(route('admin.sucursal.usuarios.operators.create')).'']); ?>
+<?php $component->withAttributes(['title' => 'Areas de servicio','items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($serviceAreas),'headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($headers),'urlBtnAdd' => ''.e(route('admin.sucursal.service.areas.create')).'']); ?>
          <?php $__env->slot('body', null, []); ?> 
-            <?php $__empty_1 = true; $__currentLoopData = $operators; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php $__empty_1 = true; $__currentLoopData = $serviceAreas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><?php echo e($item->name); ?></td>
-                    <td><?php echo e($item->email); ?></td>
-                    <td><?php echo e($item->phone); ?></td>
+                    <td><?php echo e($item->description); ?></td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
-                                    <a class="dropdown-item"
-                                        href="<?php echo e(route('admin.sucursal.usuarios.operators.edit', $item)); ?>">
+                                    <a class="dropdown-item" href="<?php echo e(route('admin.sucursal.service.areas.edit', $item)); ?>">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
 
+                                    
+
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"
-                                        action="<?php echo e(route('admin.sucursal.usuarios.operators.destroy', $item)); ?>"
-                                        method="post">
+                                        action="<?php echo e(route('admin.sucursal.service.areas.destroy', $item)); ?>" method="post">
                                         <?php echo csrf_field(); ?>
                                         <?php echo method_field('delete'); ?>
                                         <button class="dropdown-item" type="submit">
@@ -70,4 +73,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/AdminBranch/Usuarios/Operadores/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/V1/AdminBranch/ServiceAreas/index.blade.php ENDPATH**/ ?>

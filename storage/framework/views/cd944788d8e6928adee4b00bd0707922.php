@@ -73,4 +73,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/AdminBranch/Projects/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/V1/AdminBranch/Projects/index.blade.php ENDPATH**/ ?>

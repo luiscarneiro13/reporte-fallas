@@ -1,17 +1,18 @@
 <?php $__env->startSection('title', 'Propietarios'); ?>
+
 <?php $__env->startSection('content_header'); ?>
-    <h1>Propietarios</h1>
+    <h1>Editar Propietario</h1>
+    <small><?php echo e($owner->last_name); ?> <?php echo e($owner->first_name); ?></small>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 
     <div class="card">
         <div class="card-body">
-            <form action="<?php echo e(route('admin.sucursal.owners.store')); ?>" method="POST">
+            <form action="<?php echo e(route('admin.sucursal.owners.update', $owner)); ?>" method="POST">
                 <?php echo csrf_field(); ?>
-                <?php if($back_url): ?>
-                    <input type="hidden" name="back_url" value="<?php echo e($back_url); ?>">
-                <?php endif; ?>
+                <?php echo method_field('PUT'); ?>
+                <input type="hidden" name="id" value="<?php echo e($owner->id); ?>">
                 <div class="row">
                     <?php if (isset($component)) { $__componentOriginale5d826ae10df3aa87f8449f474c11664 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale5d826ae10df3aa87f8449f474c11664 = $attributes; } ?>
@@ -22,7 +23,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Input::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['placeholder' => 'Apellido','value' => ''.e(old('name')).'']); ?>
+<?php $component->withAttributes(['placeholder' => 'Apellido','value' => ''.e($owner->last_name).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginale5d826ae10df3aa87f8449f474c11664)): ?>
@@ -42,7 +43,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Input::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['placeholder' => 'Nombre','value' => ''.e(old('name')).'']); ?>
+<?php $component->withAttributes(['placeholder' => 'Nombre','value' => ''.e($owner->first_name).'']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginale5d826ae10df3aa87f8449f474c11664)): ?>
@@ -67,7 +68,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Button::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'btn-sm']); ?>
+<?php $component->withAttributes(['class' => 'btn btn-sm']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal84b78d66d5203b43b9d8c22236838526)): ?>
@@ -92,4 +93,4 @@
     </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/AdminBranch/Owners/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\resources\views/V1/AdminBranch/Owners/edit.blade.php ENDPATH**/ ?>

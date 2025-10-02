@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,8 @@ class ServiceAreaSeeder extends Seeder
      */
     public function run(): void
     {
+        $branch = Branch::where('name', 'El Tigre')->first();
+
         $serviceAreas = [
             [
                 'name' => 'Engine Repair',
@@ -35,8 +38,8 @@ class ServiceAreaSeeder extends Seeder
             ],
         ];
 
-        foreach ($serviceAreas as $area) {
-            \App\Models\ServiceArea::create($area);
+        foreach ($serviceAreas as $item) {
+            $branch->serviceAreas()->create($item);
         }
     }
 }

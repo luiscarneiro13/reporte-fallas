@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProjectEditRequest extends FormRequest
+class OwnerEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class ProjectEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3',
-            'description' => 'required|string|min:3',
+            'first_name' => 'required|string|min:3',
+            'last_name' => 'required|string|min:3',
         ];
     }
 }

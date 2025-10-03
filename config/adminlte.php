@@ -389,9 +389,14 @@ return [
             'can' => 'Menu Conf Admin',
             'submenu' => [
                 [
-                    'text' => 'Editar mi Sucursal',
+                    'text' => 'Editar mi Empresa',
                     'active' => ['v1/admin/mi-sucursal/edit*'],
                     'url'  => '/v1/admin/mi-sucursal/edit',
+                ],
+                [
+                    'text' => 'Divisiones de la Empresa',
+                    'active' => ['v1/admin/divisions*'],
+                    'route'  => 'admin.sucursal.divisions.index',
                 ],
                 [
                     'text' => 'Propietarios',

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Helpers\Permisos;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -10,64 +11,54 @@ use Spatie\Permission\Models\Permission;
 
 class RolePermissionSeeder extends Seeder
 {
-
     public function run(): void
     {
-        $this->superAdmin();
-        $this->admin();
-        $this->supervisor();
-        $this->operador();
+        // Solo llamamos al método unificado
+        $this->assignPermissionsToRoles();
     }
 
-    public function superAdmin()
+    /**
+     * Recorre el mapa de permisos, asegura que los permisos existan
+     * y sincroniza los IDs de los permisos con los roles existentes.
+     */
+    protected function assignPermissionsToRoles(): void
     {
-        $permissions = [];
-        $role = Role::where('name', 'Super Admin')->first();
+        $permissionsByRole = [];
 
-        foreach (PermissionsSeeder::PERMISSIONS_SUPER_ADMIN as $permission) {
-            $per = Permission::where('name', $permission)->first();
-            $permissions[] = $per->id;
+        // 1. Iteración sobre el mapa de permisos
+        foreach (Permisos::PERMISSIONS_MAP as $permissionName => $roleIndexes) {
+            $permission = Permission::firstOrCreate(['name' => $permissionName]);
+
+            // 2. Mapeo del índice numérico al nombre del rol
+            foreach ($roleIndexes as $index) {
+                $roleName = $this->getRoleNameByIndex($index);
+
+                if ($roleName) {
+                    if (!isset($permissionsByRole[$roleName])) {
+                        $permissionsByRole[$roleName] = [];
+                    }
+                    // Usa el nombre del rol como clave
+                    $permissionsByRole[$roleName][] = $permission->id;
+                }
+            }
         }
 
-        $role->permissions()->sync($permissions);
+        // 3. Sincronizar los permisos
+        foreach ($permissionsByRole as $roleName => $permissionIds) {
+            $role = Role::where('name', $roleName)->first();
+
+            if ($role) {
+                $role->permissions()->sync($permissionIds);
+            }
+        }
     }
 
-    public function admin()
+    protected function getRoleNameByIndex(int $index): ?string
     {
-        $permissions = [];
-        $role = Role::where('name', 'Admin')->first();
+        // Voltea el array para que los índices (0, 1, 2, 3) sean las claves
+        $indexToNameMap = array_flip(Permisos::ROLES_MAP);
 
-        foreach (PermissionsSeeder::PERMISSIONS_ADMIN as $permission) {
-            $per = Permission::where('name', $permission)->first();
-            $permissions[] = $per->id;
-        }
-
-        $role->permissions()->sync($permissions);
-    }
-
-    public function supervisor()
-    {
-        $permissions = [];
-        $role = Role::where('name', 'Supervisor')->first();
-
-        foreach (PermissionsSeeder::PERMISSIONS_SUPERVISOR as $permission) {
-            $per = Permission::where('name', $permission)->first();
-            $permissions[] = $per->id;
-        }
-
-        $role->permissions()->sync($permissions);
-    }
-
-    public function operador()
-    {
-        $permissions = [];
-        $role = Role::where('name', 'Operador')->first();
-
-        foreach (PermissionsSeeder::PERMISSIONS_OPERADOR as $permission) {
-            $per = Permission::where('name', $permission)->first();
-            $permissions[] = $per->id;
-        }
-
-        $role->permissions()->sync($permissions);
+        // Retorna el nombre del rol si existe el índice, sino retorna null
+        return $indexToNameMap[$index] ?? null;
     }
 }

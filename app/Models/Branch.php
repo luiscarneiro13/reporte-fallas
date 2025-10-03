@@ -53,4 +53,8 @@ class Branch extends Model
         return $this->hasMany(ServiceArea::class, 'branch_id');
     }
 
+    public function divisions()
+    {
+        return $this->hasMany(Division::class, 'branch_id');
+    }
 }

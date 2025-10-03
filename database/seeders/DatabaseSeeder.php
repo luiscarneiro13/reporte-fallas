@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OwnerSeeder::class);
         $this->call(ProjectSeeder::class);
         $this->call(ServiceAreaSeeder::class);
+        $this->call(DivisionSeeder::class);
 
         // $this->call(ServiceSeeder::class);
         // $this->call(CustomersSeeder::class);

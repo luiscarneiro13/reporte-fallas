@@ -1,0 +1,62 @@
+@extends('adminlte::page')
+
+@section('title', 'Divisiones')
+
+@section('content_header')
+    {{-- <h1>Proyectos</h1> --}}
+@stop
+
+@section('content')
+
+    @php
+        $headers = ['Nombre', 'Descripción', ''];
+    @endphp
+
+    <x-base-data-table-search title="Divisiones" :items="$divisions" :headers="$headers"
+        urlBtnAdd="{{ route('admin.sucursal.divisions.create') }}">
+        <x-slot name="body">
+            @forelse ($divisions as $item)
+                <tr>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->description }}</td>
+                    <td>
+                        <div class="input-group" style="cursor:pointer;">
+                            <div>
+                                <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
+                                <div class="dropdown-menu">
+
+                                    <a class="dropdown-item" href="{{ route('admin.sucursal.divisions.edit', $item) }}">
+                                        <i class="fa fa-edit">&nbsp;</i>
+                                        Editar
+                                    </a>
+
+                                    {{-- <a class="dropdown-item" href="{{ route('admin.sucursal.brands.show', $item) }}">
+                                    <i class="fa fa-eye">&nbsp;</i>
+                                    Ver datos
+                                </a> --}}
+
+                                    <div class="dropdown-divider"></div>
+                                    <form class="formEliminar"
+                                        action="{{ route('admin.sucursal.divisions.destroy', $item) }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="fa fa-trash">&nbsp;</i>
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+            @endforelse
+        </x-slot>
+    </x-base-data-table-search>
+
+@stop
+@section('customjs')
+
+@stop

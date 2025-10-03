@@ -60,5 +60,11 @@ class Permisos
         'Areas de Servicio Crear' => [0, 1, 2],
         'Areas de Servicio Editar' => [0, 1, 2],
         'Areas de Servicio Eliminar' => [0, 1, 2],
+
+        //Divisiones ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Divisiones Ver' => [0, 1],
+        'Divisiones Crear' => [0, 1],
+        'Divisiones Editar' => [0, 1],
+        'Divisiones Eliminar' => [0, 1],
     ];
 }

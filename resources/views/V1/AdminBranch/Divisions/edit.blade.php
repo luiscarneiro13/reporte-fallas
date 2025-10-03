@@ -1,29 +1,29 @@
 @extends('adminlte::page')
 
-@section('title', 'Proyectos')
+@section('title', 'Divisiones')
 
 @section('content_header')
-    <h1>Editar Proyecto</h1>
-    <small>{{ $project->name }}</small>
+    <h1>Editar División</h1>
+    <small>{{ $division->name }}</small>
 @stop
 
 @section('content')
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.sucursal.projects.update', $project) }}" method="POST">
+            <form action="{{ route('admin.sucursal.divisions.update', $division) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <input type="hidden" name="id" value="{{ $project->id }}">
+                <input type="hidden" name="id" value="{{ $division->id }}">
                 <div class="row">
                     <x-adminlte-input name="name" label="Nombre" placeholder="Nombre" fgroup-class="col-md-4"
-                        value="{{ $project->name }}" />
+                        value="{{ $division->name }}" />
                     <x-adminlte-input name="description" label="Descripción" placeholder="Descripción" fgroup-class="col-md-8"
-                        value="{{ $project->description }}" />
+                        value="{{ $division->description }}" />
                 </div>
 
                 <div class="row mt-5">
-                    <a href="{{ route('admin.sucursal.projects.index') }}" class="btn-sm mr-3 btn-default" type="submit"
+                    <a href="{{ route('admin.sucursal.divisions.index') }}" class="btn-sm mr-3 btn-default" type="submit"
                         icon="fas fa-lg fa-save">Cancelar</a>
                     <x-adminlte-button class="btn btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />

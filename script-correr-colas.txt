@@ -1,0 +1,45 @@
+#!/bin/bash
+
+echo "🔄 Iniciando instalación y configuración de colas en Laravel..."
+
+# 1️⃣ Reparar paquetes en APT
+echo "📦 Reinstalando python3-apt..."
+sudo apt install --reinstall -y python3-apt
+
+echo "🔧 Corrigiendo paquetes dañados..."
+sudo dpkg --configure -a
+
+echo "🧹 Limpiando caché de APT..."
+sudo apt clean
+
+echo "🔄 Actualizando paquetes y corrigiendo errores..."
+sudo apt update --fix-missing
+
+# 2️⃣ Instalar Supervisor
+echo "⚙ Instalando Supervisor..."
+sudo apt install -y supervisor
+
+# 3️⃣ Configurar el worker de Laravel
+echo "📝 Creando configuración del worker Laravel..."
+sudo bash -c 'cat > /etc/supervisor/conf.d/laravel-worker.conf <<EOF
+[program:laravel-worker]
+command=php /var/www/html/vemitienda/artisan queue:work --tries=3
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/log/laravel-worker.log
+EOF'
+
+# 4️⃣ Recargar Supervisor y activar el worker
+echo "🔄 Recargando Supervisor..."
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start laravel-worker
+
+# 5️⃣ Verificar estado del worker
+echo "✅ Estado del Worker Laravel:"
+sudo supervisorctl status laravel-worker
+
+
+echo "🚀 Instalación completa. ¡Las colas están corriendo!"

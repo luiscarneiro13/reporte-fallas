@@ -1,0 +1,30 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./src/Dockerfile
+    container_name: reportefallasbackend-php
+    volumes:
+      - ./src:/var/www
+    ports:
+      - 9000:80
+    networks:
+      - vemitienda
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: reportefallasbackend-nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./src:/var/www
+      - ./src/nginx/default.prod.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - php
+    networks:
+      - reportefallas
+
+networks:
+  reportefallas:

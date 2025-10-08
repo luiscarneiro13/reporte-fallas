@@ -200,19 +200,10 @@
             // 1. ESCUCHAR EL EVENTO PERSONALIZADO
             // Escuchamos el evento 'customerAdded' que se disparará desde el componente Vue.
             $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
-
-                // 2. CERRAR EL MODAL DE BOOTSTRAP
-                // Usamos la función nativa de Bootstrap/jQuery para ocultar el modal.
                 $(this).modal("hide");
-
-                // 3. ACTUALIZAR EL SELECT2 (Campo Cliente)
                 var customerSelect = $('select[name="customer_id"]');
-
-                // Crear la nueva opción y seleccionarla
                 var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
                 customerSelect.append(newOption);
-
-                // Seleccionar y disparar el evento 'change' para que Select2 se actualice visualmente
                 customerSelect.val(newCustomer.id).trigger('change');
             });
         });

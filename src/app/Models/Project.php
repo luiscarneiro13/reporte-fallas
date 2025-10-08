@@ -11,10 +11,15 @@ class Project extends Model
 
     protected $table = "projects";
 
-    protected $fillable = ['name', 'description', 'branch_id'];
+    protected $fillable = ['branch_id', 'division_id', 'customer_id',  'name', 'description', 'geographic_area'];
 
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 }

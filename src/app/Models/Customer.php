@@ -17,4 +17,9 @@ class Customer extends Model
     {
         return $this->belongsTo(Branch::class, 'branch_id');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'customer_id');
+    }
 }

@@ -32,10 +32,10 @@ class DatabaseSeeder extends Seeder
         $this->call(EquipmentSeeder::class);
         $this->call(FaultSeeder::class);
         $this->call(OwnerSeeder::class);
-        $this->call(ProjectSeeder::class);
         $this->call(ServiceAreaSeeder::class);
-        $this->call(DivisionSeeder::class);
         $this->call(CustomersSeeder::class);
+        $this->call(DivisionSeeder::class);
+        $this->call(ProjectSeeder::class);
 
         // $this->call(ServiceSeeder::class);
 

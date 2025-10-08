@@ -113,9 +113,9 @@ Route::middleware([
         Route::resource('/administradores', AdminBranchAdministradores::class)->names('admin.sucursal.usuarios.administradores');
 
         Route::resource('/propietarios', OwnerController::class)->names('admin.sucursal.owners');
-        Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
         Route::resource('/areas-de-servicio', ServiceAreaController::class)->names('admin.sucursal.service.areas');
         Route::resource('/divisiones', DivisionController::class)->names('admin.sucursal.divisions');
         Route::resource('/clientes', CustomerController::class)->names('admin.sucursal.customers');
+        Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
     });
 });

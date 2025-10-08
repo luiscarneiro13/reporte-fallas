@@ -23,7 +23,10 @@ class ProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
-            'description' => 'required|string|min:3',
+            'description' => 'nullable|string|min:3',
+            'customer_id' => 'required|exists:customers,id',
+            'division_id' => 'required|exists:divisions,id',
+            'geographic_area' => 'required|string|min:3',
         ];
     }
 }

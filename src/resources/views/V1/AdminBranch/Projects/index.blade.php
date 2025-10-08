@@ -7,9 +7,8 @@
 @stop
 
 @section('content')
-
     @php
-        $headers = ['Nombre', 'Descripción', ''];
+        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', ''];
     @endphp
 
     <x-base-data-table-search title="Proyectos" :items="$projects" :headers="$headers"
@@ -17,8 +16,10 @@
         <x-slot name="body">
             @forelse ($projects as $item)
                 <tr>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->customer_name }}</td>
+                    <td>{{ $item->project_name }}</td>
+                    <td>{{ $item->division_name }}</td>
+                    <td>{{ $item->project_geographic_area }}</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
@@ -29,11 +30,6 @@
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
-
-                                    {{-- <a class="dropdown-item" href="{{ route('admin.sucursal.brands.show', $item) }}">
-                                    <i class="fa fa-eye">&nbsp;</i>
-                                    Ver datos
-                                </a> --}}
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"

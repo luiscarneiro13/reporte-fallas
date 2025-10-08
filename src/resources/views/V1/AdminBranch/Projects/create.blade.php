@@ -16,10 +16,26 @@
                     <input type="hidden" name="back_url" value="{{ $back_url }}">
                 @endif
                 <div class="row">
-                    <x-adminlte-input name="name" label="Nombre" placeholder="Nombre" fgroup-class="col-md-4"
-                        value="{{ old('name') }}" />
-                    <x-adminlte-input name="description" label="Descripción" placeholder="Descripción" fgroup-class="col-md-8"
-                        value="{{ old('description') }}" />
+
+                    <div class="col-md-5">
+                        <label for="customer_id">Cliente</label>
+                        {{ Form::select('customer_id', $customers, null, ['class' => 'select2 form-control']) }}
+                    </div>
+
+                    <x-adminlte-input name="name" label="Nombre del proyecto" placeholder=""
+                        fgroup-class="col-md-7" value="{{ old('name') }}" />
+
+                    <div class="col-md-5">
+                        <label for="division_id">Division</label>
+                        {{ Form::select('division_id', $divisions, null, ['class' => 'select2 form-control']) }}
+                    </div>
+
+                    <x-adminlte-input name="geographic_area" label="Area geográfica" placeholder=""
+                        fgroup-class="col-md-7" value="{{ old('geographic_area') }}" />
+
+                    <x-adminlte-textarea name="description" label="Descripción" placeholder=""
+                        fgroup-class="col-md-12" value="{{ old('description') }}" />
+
                 </div>
 
                 <div class="row mt-5">

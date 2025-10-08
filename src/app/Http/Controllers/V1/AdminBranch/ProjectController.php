@@ -5,6 +5,8 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ProjectEditRequest;
 use App\Http\Requests\V1\ProjectRequest;
+use App\Models\Customer;
+use App\Models\Division;
 use App\Models\Project;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
@@ -21,18 +23,33 @@ class ProjectController extends Controller
         $projects = Project::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('name', 'like', "%{$query}%");
+                    $subQuery->where('projects.name', 'like', "%{$query}%")
+                        ->orWhere('customers.name', 'like', "%{$query}%")
+                        ->orWhere('divisions.name', 'like', "%{$query}%")
+                        ->orWhere('projects.geographic_area', 'like', "%{$query}%");
                 });
             })
-            ->orderBy('name', 'asc')
+            ->join('customers', 'customers.id', '=', 'projects.customer_id')
+            ->join('divisions', 'divisions.id', '=', 'projects.division_id')
+            ->select(
+                'projects.id',
+                'customers.name as customer_name',
+                'projects.name as project_name',
+                'divisions.name as division_name',
+                'projects.geographic_area as project_geographic_area',
+            )
+            ->orderBy('projects.updated_at', 'desc')
             ->paginate(10);
+
         return view('V1.AdminBranch.Projects.index', compact('projects'));
     }
 
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        return view('V1.AdminBranch.Projects.create', compact('back_url'));
+        $customers = Customer::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $divisions = Division::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        return view('V1.AdminBranch.Projects.create', compact('back_url', 'customers', 'divisions'));
     }
 
     public function store(ProjectRequest $request)
@@ -41,6 +58,9 @@ class ProjectController extends Controller
             $item = new Project();
             $item->name = $request->input('name');
             $item->description = $request->input('description');
+            $item->customer_id = $request->input('customer_id');
+            $item->division_id = $request->input('division_id');
+            $item->geographic_area = $request->input('geographic_area');
             $item->branch_id = session('branch')->id;
             $item->save();
 
@@ -63,7 +83,9 @@ class ProjectController extends Controller
     {
         $back_url = request()->back_url ?? null;
         $project = Project::find($id);
-        return view('V1.AdminBranch.Projects.edit', compact('project', 'back_url'));
+        $customers = Customer::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $divisions = Division::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        return view('V1.AdminBranch.Projects.edit', compact('project', 'back_url', 'customers', 'divisions'));
     }
 
     public function update(ProjectEditRequest $request, string $id)
@@ -72,6 +94,9 @@ class ProjectController extends Controller
             $item = Project::find($id);
             $item->name = $request->input('name');
             $item->description = $request->input('description');
+            $item->customer_id = $request->input('customer_id');
+            $item->division_id = $request->input('division_id');
+            $item->geographic_area = $request->input('geographic_area');
             $item->save();
 
             if (request()->back_url) {

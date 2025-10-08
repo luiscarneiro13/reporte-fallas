@@ -17,21 +17,17 @@ class DivisionSeeder extends Seeder
 
         $divisions = [
             [
-                'name' => 'Customer Service',
-                'description' => 'Handles customer inquiries, complaints, and service scheduling.',
+                'name' => 'P.Pozos de Producción a Pozos',
+                'description' => 'P.Pozos de Producción a Pozos.',
             ],
             [
-                'name' => 'Technical Support',
-                'description' => 'Provides technical assistance and support for vehicle issues.',
+                'name' => 'Equipos Transversales',
+                'description' => 'Equipos Transversales.',
             ],
             [
-                'name' => 'Sales and Marketing',
-                'description' => 'Responsible for promoting services and managing sales operations.',
+                'name' => 'Mantenimiento y Logística',
+                'description' => 'Mantenimiento y Logística.',
             ],
-            [
-                'name' => 'Parts and Inventory',
-                'description' => 'Manages parts inventory and ensures availability for repairs.',
-            ]
         ];
 
         foreach ($divisions as $item) {

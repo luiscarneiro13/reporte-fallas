@@ -17,24 +17,36 @@ class ServiceAreaSeeder extends Seeder
 
         $serviceAreas = [
             [
-                'name' => 'Engine Repair',
-                'description' => 'Services related to engine diagnostics, repairs, and maintenance.',
+                'name' => 'Mecánica liviana',
+                'description' => 'Mecánica liviana.',
             ],
             [
-                'name' => 'Brake Service',
-                'description' => 'Comprehensive brake system inspections, repairs, and replacements.',
+                'name' => 'Mecánica pesada',
+                'description' => 'Mecánica pesada.',
             ],
             [
-                'name' => 'Electrical Systems',
-                'description' => 'Diagnostics and repairs for vehicle electrical systems, including batteries and wiring.',
+                'name' => 'Electricidad automotriz',
+                'description' => 'Electricidad automotriz.',
             ],
             [
-                'name' => 'Transmission Service',
-                'description' => 'Maintenance and repair services for vehicle transmissions.',
+                'name' => 'Instalaciones eléctricas',
+                'description' => 'Instalaciones eléctricas.',
             ],
             [
-                'name' => 'Suspension and Steering',
-                'description' => 'Services focused on suspension and steering system repairs and alignments.',
+                'name' => 'Soldadura',
+                'description' => 'Soldadura.',
+            ],
+            [
+                'name' => 'Latonería',
+                'description' => 'Latonería.',
+            ],
+            [
+                'name' => 'Refrigeración',
+                'description' => 'Refrigeración.',
+            ],
+            [
+                'name' => 'Instrumentación',
+                'description' => 'Instrumentación.',
             ],
         ];
 

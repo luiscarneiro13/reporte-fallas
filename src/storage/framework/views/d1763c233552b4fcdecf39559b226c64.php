@@ -16,7 +16,26 @@
                 <div class="row">
 
                     <div class="col-md-5">
-                        <label for="customer_id">Cliente</label>
+                        <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald8ba2b4c22a13c55321e34443c386276 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'Cliente','btnAddUrl' => ''.e(route('admin.sucursal.customers.create', ['back_url' => request()->url()])).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['value' => 'Cliente','btnAddUrl' => ''.e(route('admin.sucursal.customers.create', ['back_url' => request()->url()])).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald8ba2b4c22a13c55321e34443c386276)): ?>
+<?php $attributes = $__attributesOriginald8ba2b4c22a13c55321e34443c386276; ?>
+<?php unset($__attributesOriginald8ba2b4c22a13c55321e34443c386276); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald8ba2b4c22a13c55321e34443c386276)): ?>
+<?php $component = $__componentOriginald8ba2b4c22a13c55321e34443c386276; ?>
+<?php unset($__componentOriginald8ba2b4c22a13c55321e34443c386276); ?>
+<?php endif; ?>
                         <?php echo e(Form::select('customer_id', $customers, null, ['class' => 'select2 form-control'])); ?>
 
                     </div>
@@ -43,7 +62,26 @@
 <?php endif; ?>
 
                     <div class="col-md-5">
-                        <label for="division_id">Division</label>
+                        <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald8ba2b4c22a13c55321e34443c386276 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'División','btnAddUrl' => ''.e(route('admin.sucursal.divisions.create', ['back_url' => request()->url()])).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('label'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['value' => 'División','btnAddUrl' => ''.e(route('admin.sucursal.divisions.create', ['back_url' => request()->url()])).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald8ba2b4c22a13c55321e34443c386276)): ?>
+<?php $attributes = $__attributesOriginald8ba2b4c22a13c55321e34443c386276; ?>
+<?php unset($__attributesOriginald8ba2b4c22a13c55321e34443c386276); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald8ba2b4c22a13c55321e34443c386276)): ?>
+<?php $component = $__componentOriginald8ba2b4c22a13c55321e34443c386276; ?>
+<?php unset($__componentOriginald8ba2b4c22a13c55321e34443c386276); ?>
+<?php endif; ?>
                         <?php echo e(Form::select('division_id', $divisions, null, ['class' => 'select2 form-control'])); ?>
 
                     </div>
@@ -92,7 +130,7 @@
 
                     <?php if (isset($component)) { $__componentOriginala47f947a90f7125ced2d0aa2e9c7c7d7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginala47f947a90f7125ced2d0aa2e9c7c7d7 = $attributes; } ?>
-<?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Textarea::resolve(['name' => 'description','label' => 'Descripción','fgroupClass' => 'col-md-12'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Textarea::resolve(['name' => 'description','label' => 'Descripción (opcional)','fgroupClass' => 'col-md-12'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('adminlte-textarea'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -114,8 +152,8 @@
                 </div>
 
                 <div class="row mt-5">
-                    <a href="<?php echo e(route('admin.sucursal.projects.index')); ?>" class="btn-sm mr-3 btn-default" type="submit"
-                        icon="fas fa-lg fa-save">Cancelar</a>
+                    <a href="<?php echo e(request()->back_url ?? route('admin.sucursal.projects.index')); ?>"
+                        class="btn-sm mr-3 btn-default" type="submit" icon="fas fa-lg fa-save">Cancelar</a>
                     <?php if (isset($component)) { $__componentOriginal84b78d66d5203b43b9d8c22236838526 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal84b78d66d5203b43b9d8c22236838526 = $attributes; } ?>
 <?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Button::resolve(['type' => 'submit','label' => 'Guardar','theme' => 'primary','icon' => 'fas fa-lg fa-save'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>

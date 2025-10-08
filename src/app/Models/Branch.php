@@ -57,4 +57,9 @@ class Branch extends Model
     {
         return $this->hasMany(Division::class, 'branch_id');
     }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class, 'branch_id');
+    }
 }

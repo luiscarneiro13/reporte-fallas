@@ -6,7 +6,6 @@ use App\Http\Controllers\SuperAdmin\RoleController;
 use App\Http\Controllers\SuperAdmin\UserController;
 use App\Http\Controllers\SuperAdmin\BranchController;
 
-use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -25,11 +24,11 @@ use App\Http\Controllers\AdminBranch\ConfigurationController as AdminBranchConfi
 use App\Http\Controllers\AdminBranch\DailyRateController as AdminBranchDailyRate;
 use App\Http\Controllers\AdminBranch\ServiceController as AdminBranchService;
 use App\Http\Controllers\AdminBranch\AdministradoresController as AdminBranchAdministradores;
-use App\Http\Controllers\AdminBranch\CustomerController as AdminBranchCustomer;
 use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMethodPayment;
 use App\Http\Controllers\AdminBranch\OperatorController;
 use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\OwnerController;
 use App\Http\Controllers\V1\AdminBranch\ProjectController;
@@ -80,7 +79,6 @@ Route::middleware([
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/customer', CustomerController::class)->names('customer');
     Route::resource('/roles', RoleController::class)->names('roles');
     Route::resource('/permissions', PermissionController::class)->names('permissions');
     Route::resource('/assign_role', AssignRoleController::class)->names('assign_role');
@@ -103,7 +101,6 @@ Route::middleware([
         Route::resource('/tipos-articulos', AdminBranchTypeArticle::class)->names('admin.sucursal.type.articles');
         Route::resource('/proveedores', AdminBranchSupplier::class)->names('admin.sucursal.suppliers');
         Route::resource('/servicios', AdminBranchService::class)->names('admin.sucursal.services');
-        Route::resource('/clientes', AdminBranchCustomer::class)->names('admin.sucursal.customers');
         Route::resource('/metodos-pago', AdminBranchMethodPayment::class)->names('admin.sucursal.method.payment');
     });
 
@@ -119,5 +116,6 @@ Route::middleware([
         Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
         Route::resource('/areas-de-servicio', ServiceAreaController::class)->names('admin.sucursal.service.areas');
         Route::resource('/divisiones', DivisionController::class)->names('admin.sucursal.divisions');
+        Route::resource('/clientes', CustomerController::class)->names('admin.sucursal.customers');
     });
 });

@@ -66,5 +66,11 @@ class Permisos
         'Divisiones Crear' => [0, 1],
         'Divisiones Editar' => [0, 1],
         'Divisiones Eliminar' => [0, 1],
+
+        //Clientes ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Clientes Ver' => [0, 1],
+        'Clientes Crear' => [0, 1],
+        'Clientes Editar' => [0, 1],
+        'Clientes Eliminar' => [0, 1],
     ];
 }

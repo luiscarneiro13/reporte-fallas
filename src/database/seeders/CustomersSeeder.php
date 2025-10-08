@@ -12,24 +12,39 @@ use Spatie\Permission\Models\Role;
 
 class CustomersSeeder extends Seeder
 {
-
-    private $rol, $branch;
-
-    public function __construct()
-    {
-        $this->rol = Role::where('name', "Cliente")->first();
-        $this->branch = Branch::where('name', 'El Tigre')->first();
-    }
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        User::factory(50)->create()->each(function ($user) {
-            $user->roles()->sync([$this->rol->id]);
-            $userBranch = new UserBranch();
-            $userBranch->branch_id = $this->branch->id;
-            $user->userBranches()->save($userBranch);
-        });
+        $branch = Branch::where('name', 'El Tigre')->first();
+
+        $customers = [
+            [
+                'name' => 'Empresas polar',
+                'address' => 'Av. Jesús Subero',
+                'phone' => '0283-1234567',
+                'email' => 'cualquieremail1@gmail.com'
+            ],
+            [
+                'name' => 'Pepsi',
+                'address' => 'Av. Jesús Subero',
+                'phone' => '0283-1234567',
+                'email' => 'cualquieremail2@gmail.com'
+            ],
+            [
+                'name' => 'Coca Cola',
+                'address' => 'Av. Jesús Subero',
+                'phone' => '0283-1234567',
+                'email' => 'cualquieremail3@gmail.com'
+            ],
+            [
+                'name' => 'Banesco',
+                'address' => 'Av. Jesús Subero',
+                'phone' => '0283-1234567',
+                'email' => 'cualquieremail4@gmail.com'
+            ],
+        ];
+
+        foreach ($customers as $item) {
+            $branch->customers()->create($item);
+        }
     }
 }

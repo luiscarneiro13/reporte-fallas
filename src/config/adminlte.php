@@ -374,16 +374,6 @@ return [
             ]
         ],
         [
-            'text' => 'Conf. Admin',
-            'icon' => 'fas fa-fw fa-cog',
-        ],
-        [
-            'text' => 'Proyectos',
-            'active' => ['v1/admin/proyectos*'],
-            'route'  => 'admin.sucursal.projects.index',
-            'can' => 'Proyectos Ver',
-        ],
-        [
             'text' => 'Administración',
             'icon' => 'fas fa-fw fa-cog',
             'can' => 'Menu Conf Admin',
@@ -407,6 +397,22 @@ return [
                     'text' => 'Áreas de Servicio',
                     'active' => ['v1/admin/areas-de-servicio*'],
                     'route'  => 'admin.sucursal.service.areas.index',
+                ],
+                [
+                    'text' => 'Conf. Admin',
+                    'icon' => 'fas fa-fw fa-cog',
+                ],
+                [
+                    'text' => 'Clientes',
+                    'active' => ['v1/admin/clientes*'],
+                    'route'  => 'admin.sucursal.customers.index',
+                    'can' => 'Clientes Ver',
+                ],
+                [
+                    'text' => 'Proyectos',
+                    'active' => ['v1/admin/proyectos*'],
+                    'route'  => 'admin.sucursal.projects.index',
+                    'can' => 'Proyectos Ver',
                 ],
 
                 // [
@@ -468,24 +474,6 @@ return [
                 ],
             ]
         ],
-        [
-            'can' => 'Menu Clientes',
-            'text' => 'customers',
-            'icon' => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'customer_list',
-                    'route'  => 'customer.index',
-                    'icon' => 'fas fa-list',
-                ],
-                [
-                    'text' => 'new_customer',
-                    'route'  => 'customer.create',
-                    'icon' => 'fas fa-plus-circle',
-                ],
-            ]
-        ],
-
         [
             'can' => 'Menu Ajustes de Cuenta',
             'text' => 'account_settings',

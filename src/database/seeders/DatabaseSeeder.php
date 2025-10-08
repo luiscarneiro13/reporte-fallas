@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ProjectSeeder::class);
         $this->call(ServiceAreaSeeder::class);
         $this->call(DivisionSeeder::class);
+        $this->call(CustomersSeeder::class);
 
         // $this->call(ServiceSeeder::class);
-        // $this->call(CustomersSeeder::class);
 
 
         // \App\Models\User::factory(10)->create();

@@ -11,16 +11,9 @@ export async function index(event) {
         });
 }
 
-export async function store(insert) {
+export async function store(url, inserts) {
     return axios
-        .post("/api/admin-sucursal/cliente/store", {
-            branch_id: insert.branch_id,
-            email: insert.email ?? null,
-            phone: insert.phone ?? null,
-            cedula: insert.cedula,
-            address: insert.address ?? null,
-            name: insert.name,
-        })
+        .post(url, inserts)
         .then(async (response) => {
             return response.data;
         })

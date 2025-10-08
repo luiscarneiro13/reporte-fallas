@@ -1,9 +1,9 @@
 <?php $attributes ??= new \Illuminate\View\ComponentAttributeBag; ?>
-<?php foreach($attributes->onlyProps(['value', 'btnAddUrl' => null,]) as $__key => $__value) {
+<?php foreach($attributes->onlyProps(['value', 'btnAddModalTarget' => null]) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 } ?>
-<?php $attributes = $attributes->exceptProps(['value', 'btnAddUrl' => null,]); ?>
-<?php foreach (array_filter((['value', 'btnAddUrl' => null,]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+<?php $attributes = $attributes->exceptProps(['value', 'btnAddModalTarget' => null]); ?>
+<?php foreach (array_filter((['value', 'btnAddModalTarget' => null]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 } ?>
 <?php $__defined_vars = get_defined_vars(); ?>
@@ -15,8 +15,8 @@
 <label <?php echo e($attributes->merge(['class' => ''])); ?>>
     <?php echo e($value ?? $slot); ?>
 
-    <?php if($btnAddUrl): ?>
-        <a href="<?php echo e($btnAddUrl); ?>" style="margin-top:-6px">
+    <?php if($btnAddModalTarget): ?>
+        <a href="#" data-toggle="modal" data-target="<?php echo e($btnAddModalTarget); ?>" class="small-box-footer">
             <i class="fas fa-plus-circle"></i>
         </a>
     <?php endif; ?>

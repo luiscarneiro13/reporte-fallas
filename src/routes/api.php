@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ModelVehicleController as ApiModelVehicle;
 use App\Http\Controllers\Api\TypeArticleController as ApiTypeArticle;
 use App\Http\Controllers\Api\CustomerController as ApiCustomer;
 use App\Http\Controllers\Api\ServiceController as ApiService;
+use App\Http\Controllers\Api\V1\CustomerApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +30,9 @@ Route::prefix('admin-sucursal')->group(function () {
     Route::post('marcas/store', [ApiBrand::class, 'store']);
     Route::post('modelovehiculos/store', [ApiModelVehicle::class, 'store']);
     Route::post('tipos-articulos/store', [ApiTypeArticle::class, 'store']);
-    Route::get('cliente/index', [ApiCustomer::class, 'index']);
-    Route::post('cliente/store', [ApiCustomer::class, 'store']);
     Route::get('servicios/index', [ApiService::class, 'index']);
+});
+
+Route::prefix('v1/admin')->group(function () {
+    Route::post('clientes/store', [CustomerApiController::class, 'store']);
 });

@@ -1,7 +1,10 @@
 <?php $__env->startSection('title', 'Proyectos'); ?>
 
 <?php $__env->startSection('content_header'); ?>
+
     <h1>Crear proyecto</h1>
+
+    <?php echo app('Illuminate\Foundation\Vite')('resources/js/addCustomer.js'); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -18,14 +21,14 @@
                     <div class="col-md-5">
                         <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald8ba2b4c22a13c55321e34443c386276 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'Cliente','btnAddUrl' => ''.e(route('admin.sucursal.customers.create', ['back_url' => request()->url()])).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'Cliente','btnAddModalTarget' => '#modalAddCustomer']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('label'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['value' => 'Cliente','btnAddUrl' => ''.e(route('admin.sucursal.customers.create', ['back_url' => request()->url()])).'']); ?>
+<?php $component->withAttributes(['value' => 'Cliente','btnAddModalTarget' => '#modalAddCustomer']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginald8ba2b4c22a13c55321e34443c386276)): ?>
@@ -179,12 +182,40 @@
         </div>
     </div>
 
+    
+    <div id="addCustomer"></div>
+
 <?php $__env->stopSection(); ?>
 
 
 <?php $__env->startSection('js'); ?>
     <script>
-        console.log('Hi!');
+        $(document).ready(function() {
+
+            window.branchId = <?php echo e(session('branch')->id); ?>;
+
+            // Asegurar que Select2 esté inicializado
+            $('.select2').select2();
+
+            // 1. ESCUCHAR EL EVENTO PERSONALIZADO
+            // Escuchamos el evento 'customerAdded' que se disparará desde el componente Vue.
+            $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
+
+                // 2. CERRAR EL MODAL DE BOOTSTRAP
+                // Usamos la función nativa de Bootstrap/jQuery para ocultar el modal.
+                $(this).modal("hide");
+
+                // 3. ACTUALIZAR EL SELECT2 (Campo Cliente)
+                var customerSelect = $('select[name="customer_id"]');
+
+                // Crear la nueva opción y seleccionarla
+                var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
+                customerSelect.append(newOption);
+
+                // Seleccionar y disparar el evento 'change' para que Select2 se actualice visualmente
+                customerSelect.val(newCustomer.id).trigger('change');
+            });
+        });
     </script>
 <?php $__env->stopSection(); ?>
 

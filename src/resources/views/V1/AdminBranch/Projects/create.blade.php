@@ -3,7 +3,10 @@
 @section('title', 'Proyectos')
 
 @section('content_header')
+
     <h1>Crear proyecto</h1>
+
+    @vite('resources/js/addCustomer.js')
 @stop
 
 @section('content')
@@ -18,8 +21,7 @@
                 <div class="row">
 
                     <div class="col-md-5">
-                        <x-label value="Cliente"
-                            btnAddUrl="{{ route('admin.sucursal.customers.create', ['back_url' => request()->url()]) }}" />
+                        <x-label value="Cliente" btnAddModalTarget="#modalAddCustomer" />
                         {{ Form::select('customer_id', $customers, null, ['class' => 'select2 form-control']) }}
                     </div>
 
@@ -53,11 +55,39 @@
         </div>
     </div>
 
+    {{-- El componente Vue renderizará el modal aquí --}}
+    <div id="addCustomer"></div>
+
 @stop
 
 
 @section('js')
     <script>
-        console.log('Hi!');
+        $(document).ready(function() {
+
+            window.branchId = {{ session('branch')->id }};
+
+            // Asegurar que Select2 esté inicializado
+            $('.select2').select2();
+
+            // 1. ESCUCHAR EL EVENTO PERSONALIZADO
+            // Escuchamos el evento 'customerAdded' que se disparará desde el componente Vue.
+            $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
+
+                // 2. CERRAR EL MODAL DE BOOTSTRAP
+                // Usamos la función nativa de Bootstrap/jQuery para ocultar el modal.
+                $(this).modal("hide");
+
+                // 3. ACTUALIZAR EL SELECT2 (Campo Cliente)
+                var customerSelect = $('select[name="customer_id"]');
+
+                // Crear la nueva opción y seleccionarla
+                var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
+                customerSelect.append(newOption);
+
+                // Seleccionar y disparar el evento 'change' para que Select2 se actualice visualmente
+                customerSelect.val(newCustomer.id).trigger('change');
+            });
+        });
     </script>
 @stop

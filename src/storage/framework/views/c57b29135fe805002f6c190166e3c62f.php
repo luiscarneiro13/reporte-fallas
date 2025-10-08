@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Divisiones'); ?>
+<?php $__env->startSection('title', 'Clientes'); ?>
 
 <?php $__env->startSection('content_header'); ?>
     
@@ -7,31 +7,33 @@
 <?php $__env->startSection('content'); ?>
 
     <?php
-        $headers = ['Nombre', 'Descripción', ''];
+        $headers = ['Nombre', 'Email', 'Teléfono', 'Dirección', ''];
     ?>
 
     <?php if (isset($component)) { $__componentOriginalc3bb9a15a5f747221a204b851ffb93b4 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.base-data-table-search','data' => ['title' => 'Divisiones','items' => $divisions,'headers' => $headers,'urlBtnAdd' => ''.e(route('admin.sucursal.divisions.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.base-data-table-search','data' => ['title' => 'Clientes','items' => $customers,'headers' => $headers,'urlBtnAdd' => ''.e(route('admin.sucursal.customers.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('base-data-table-search'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['title' => 'Divisiones','items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($divisions),'headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($headers),'urlBtnAdd' => ''.e(route('admin.sucursal.divisions.create')).'']); ?>
+<?php $component->withAttributes(['title' => 'Clientes','items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($customers),'headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($headers),'urlBtnAdd' => ''.e(route('admin.sucursal.customers.create')).'']); ?>
          <?php $__env->slot('body', null, []); ?> 
-            <?php $__empty_1 = true; $__currentLoopData = $divisions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
                     <td><?php echo e($item->name); ?></td>
-                    <td><?php echo e($item->description); ?></td>
+                    <td><?php echo e($item->email); ?></td>
+                    <td><?php echo e($item->phone); ?></td>
+                    <td><?php echo e($item->address); ?></td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="<?php echo e(route('admin.sucursal.divisions.edit', $item)); ?>">
+                                    <a class="dropdown-item" href="<?php echo e(route('admin.sucursal.customers.edit', $item)); ?>">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
@@ -40,7 +42,7 @@
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"
-                                        action="<?php echo e(route('admin.sucursal.divisions.destroy', $item)); ?>" method="post">
+                                        action="<?php echo e(route('admin.sucursal.customers.destroy', $item)); ?>" method="post">
                                         <?php echo csrf_field(); ?>
                                         <?php echo method_field('delete'); ?>
                                         <button class="dropdown-item" type="submit">
@@ -73,4 +75,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\src\resources\views/V1/AdminBranch/Divisions/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\laragon\www\reportefallas\src\resources\views/V1/AdminBranch/Customers/index.blade.php ENDPATH**/ ?>

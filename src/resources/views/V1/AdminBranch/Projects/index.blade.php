@@ -54,6 +54,9 @@
     </x-base-data-table-search>
 
 @stop
-@section('customjs')
 
+@section('js')
+    <script>
+        window.branchId = {{ session('branch')->id }};
+    </script>
 @stop

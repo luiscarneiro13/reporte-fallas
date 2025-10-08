@@ -9,6 +9,8 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/addBrand.js',
+                'resources/js/addCustomer.js',
             ],
             refresh: true,
 

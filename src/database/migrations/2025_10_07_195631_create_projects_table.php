@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('division_id')->nullable();
             $table->string('name', 90)->index();
+            $table->string('contract_number', 90)->index();
             $table->text('description')->nullable();
             $table->text('geographic_area')->nullable();
             $table->timestamps();

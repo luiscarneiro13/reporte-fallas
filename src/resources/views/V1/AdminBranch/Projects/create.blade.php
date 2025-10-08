@@ -30,10 +30,13 @@
                         {{ Form::select('division_id', $divisions, null, ['class' => 'select2 form-control']) }}
                     </div>
 
-                    <x-adminlte-input name="geographic_area" label="Area geográfica" placeholder=""
-                        fgroup-class="col-md-7" value="{{ old('geographic_area') }}" />
+                    <x-adminlte-input name="contract_number" label="Nro. de Contrato (opcional)" placeholder=""
+                        fgroup-class="col-md-7" value="{{ old('contract_number') }}" />
 
-                    <x-adminlte-textarea name="description" label="Descripción" placeholder=""
+                    <x-adminlte-input name="geographic_area" label="Area geográfica" placeholder=""
+                        fgroup-class="col-md-12" value="{{ old('geographic_area') }}" />
+
+                    <x-adminlte-textarea name="description" label="Descripción (opcional)" placeholder=""
                         fgroup-class="col-md-12" value="{{ old('description') }}" />
 
                 </div>

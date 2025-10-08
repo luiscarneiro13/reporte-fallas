@@ -30,6 +30,7 @@ class ProjectSeeder extends Seeder
                 'name' => 'Project Alpha',
                 'description' => 'Description for Project Alpha',
                 'geographic_area' => 'Area geográfica 1',
+                'contract_number' => 'CN-001'
             ],
             [
                 'customer_id' => $customerIds[array_rand($customerIds)],
@@ -37,6 +38,7 @@ class ProjectSeeder extends Seeder
                 'name' => 'Project Beta',
                 'description' => 'Description for Project Beta',
                 'geographic_area' => 'Area geográfica 2',
+                'contract_number' => 'CN-002'
             ],
         ];
 

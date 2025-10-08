@@ -6,7 +6,7 @@
 
 <?php $__env->startSection('content'); ?>
     <?php
-        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', ''];
+        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', 'Nro. Contrato', ''];
     ?>
 
     <?php if (isset($component)) { $__componentOriginalc3bb9a15a5f747221a204b851ffb93b4 = $component; } ?>
@@ -26,6 +26,7 @@
                     <td><?php echo e($item->project_name); ?></td>
                     <td><?php echo e($item->division_name); ?></td>
                     <td><?php echo e($item->project_geographic_area); ?></td>
+                    <td><?php echo e($item->project_contract_number); ?></td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>

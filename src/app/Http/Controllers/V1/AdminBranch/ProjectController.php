@@ -26,7 +26,8 @@ class ProjectController extends Controller
                     $subQuery->where('projects.name', 'like', "%{$query}%")
                         ->orWhere('customers.name', 'like', "%{$query}%")
                         ->orWhere('divisions.name', 'like', "%{$query}%")
-                        ->orWhere('projects.geographic_area', 'like', "%{$query}%");
+                        ->orWhere('projects.geographic_area', 'like', "%{$query}%")
+                        ->orWhere('projects.contract_number', 'like', "%{$query}%");
                 });
             })
             ->join('customers', 'customers.id', '=', 'projects.customer_id')
@@ -37,6 +38,7 @@ class ProjectController extends Controller
                 'projects.name as project_name',
                 'divisions.name as division_name',
                 'projects.geographic_area as project_geographic_area',
+                'projects.contract_number as project_contract_number',
             )
             ->orderBy('projects.updated_at', 'desc')
             ->paginate(10);
@@ -61,6 +63,7 @@ class ProjectController extends Controller
             $item->customer_id = $request->input('customer_id');
             $item->division_id = $request->input('division_id');
             $item->geographic_area = $request->input('geographic_area');
+            $item->contract_number = $request->input('contract_number');
             $item->branch_id = session('branch')->id;
             $item->save();
 
@@ -97,6 +100,7 @@ class ProjectController extends Controller
             $item->customer_id = $request->input('customer_id');
             $item->division_id = $request->input('division_id');
             $item->geographic_area = $request->input('geographic_area');
+            $item->contract_number = $request->input('contract_number');
             $item->save();
 
             if (request()->back_url) {

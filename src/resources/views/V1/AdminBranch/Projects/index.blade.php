@@ -8,7 +8,7 @@
 
 @section('content')
     @php
-        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', ''];
+        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', 'Nro. Contrato', ''];
     @endphp
 
     <x-base-data-table-search title="Proyectos" :items="$projects" :headers="$headers"
@@ -20,6 +20,7 @@
                     <td>{{ $item->project_name }}</td>
                     <td>{{ $item->division_name }}</td>
                     <td>{{ $item->project_geographic_area }}</td>
+                    <td>{{ $item->project_contract_number }}</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>

@@ -50,7 +50,28 @@
 
                     <?php if (isset($component)) { $__componentOriginale5d826ae10df3aa87f8449f474c11664 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginale5d826ae10df3aa87f8449f474c11664 = $attributes; } ?>
-<?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Input::resolve(['name' => 'geographic_area','label' => 'Area geográfica','fgroupClass' => 'col-md-7'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Input::resolve(['name' => 'contract_number','label' => 'Nro. de Contrato (opcional)','fgroupClass' => 'col-md-7'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('adminlte-input'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(JeroenNoten\LaravelAdminLte\View\Components\Form\Input::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['placeholder' => '','value' => ''.e(old('contract_number')).'']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale5d826ae10df3aa87f8449f474c11664)): ?>
+<?php $attributes = $__attributesOriginale5d826ae10df3aa87f8449f474c11664; ?>
+<?php unset($__attributesOriginale5d826ae10df3aa87f8449f474c11664); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale5d826ae10df3aa87f8449f474c11664)): ?>
+<?php $component = $__componentOriginale5d826ae10df3aa87f8449f474c11664; ?>
+<?php unset($__componentOriginale5d826ae10df3aa87f8449f474c11664); ?>
+<?php endif; ?>
+
+                    <?php if (isset($component)) { $__componentOriginale5d826ae10df3aa87f8449f474c11664 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale5d826ae10df3aa87f8449f474c11664 = $attributes; } ?>
+<?php $component = JeroenNoten\LaravelAdminLte\View\Components\Form\Input::resolve(['name' => 'geographic_area','label' => 'Area geográfica','fgroupClass' => 'col-md-12'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('adminlte-input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>

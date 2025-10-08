@@ -1,13 +1,58 @@
 {
+  "_GlobalApi-PsWlnXlw.js": {
+    "file": "assets/GlobalApi-PsWlnXlw.js",
+    "imports": [
+      "__plugin-vue_export-helper-udYPQiNy.js",
+      "_bootstrap-OiABZ7MP.js"
+    ]
+  },
+  "__plugin-vue_export-helper-udYPQiNy.js": {
+    "file": "assets/_plugin-vue_export-helper-udYPQiNy.js"
+  },
+  "_bootstrap-OiABZ7MP.js": {
+    "file": "assets/bootstrap-OiABZ7MP.js"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-VWP_uhLI.css",
+    "file": "assets/app-Fi7C2V1t.css",
     "src": "resources/js/app.js"
+  },
+  "resources/js/addBrand.js": {
+    "file": "assets/addBrand-VXATGsXo.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-udYPQiNy.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addBrand.js"
+  },
+  "resources/js/addCustomer.js": {
+    "file": "assets/addCustomer-XnqNkLAB.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-udYPQiNy.js",
+      "_GlobalApi-PsWlnXlw.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addCustomer.js"
+  },
+  "resources/js/addDivision.js": {
+    "file": "assets/addDivision-3VCwrlhF.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js",
+      "__plugin-vue_export-helper-udYPQiNy.js",
+      "_GlobalApi-PsWlnXlw.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/addDivision.js"
   },
   "resources/js/app.js": {
     "css": [
-      "assets/app-VWP_uhLI.css"
+      "assets/app-Fi7C2V1t.css"
     ],
-    "file": "assets/app-4YIe4Nn0.js",
+    "file": "assets/app-wQfI-FoW.js",
+    "imports": [
+      "_bootstrap-OiABZ7MP.js"
+    ],
     "isEntry": true,
     "src": "resources/js/app.js"
   }

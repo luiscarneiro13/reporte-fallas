@@ -7,6 +7,7 @@
     <h1>Crear proyecto</h1>
 
     @vite('resources/js/addCustomer.js')
+    @vite('resources/js/addDivision.js')
 @stop
 
 @section('content')
@@ -29,8 +30,7 @@
                         value="{{ old('name') }}" />
 
                     <div class="col-md-5">
-                        <x-label value="División"
-                            btnAddUrl="{{ route('admin.sucursal.divisions.create', ['back_url' => request()->url()]) }}" />
+                        <x-label value="División" btnAddModalTarget="#modalAddDivision" />
                         {{ Form::select('division_id', $divisions, null, ['class' => 'select2 form-control']) }}
                     </div>
 
@@ -55,29 +55,35 @@
         </div>
     </div>
 
-    {{-- El componente Vue renderizará el modal aquí --}}
     <div id="addCustomer"></div>
+    <div id="addDivision"></div>
 
 @stop
 
+---
 
 @section('js')
     <script>
         $(document).ready(function() {
 
-            window.branchId = {{ session('branch')->id }};
+            window.branchId = {{ session('branch')->id ?? 'null' }};
 
-            // Asegurar que Select2 esté inicializado
             $('.select2').select2();
 
-            // 1. ESCUCHAR EL EVENTO PERSONALIZADO
-            // Escuchamos el evento 'customerAdded' que se disparará desde el componente Vue.
             $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
                 $(this).modal("hide");
                 var customerSelect = $('select[name="customer_id"]');
                 var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
                 customerSelect.append(newOption);
                 customerSelect.val(newCustomer.id).trigger('change');
+            });
+
+            $("#modalAddDivision").on('divisionAdded', function(event, newDivision) {
+                $(this).modal("hide");
+                var divisionSelect = $('select[name="division_id"]');
+                var newOption = new Option(newDivision.name, newDivision.id, true, true);
+                divisionSelect.append(newOption);
+                divisionSelect.val(newDivision.id).trigger('change');
             });
         });
     </script>

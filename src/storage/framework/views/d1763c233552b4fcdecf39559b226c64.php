@@ -5,6 +5,7 @@
     <h1>Crear proyecto</h1>
 
     <?php echo app('Illuminate\Foundation\Vite')('resources/js/addCustomer.js'); ?>
+    <?php echo app('Illuminate\Foundation\Vite')('resources/js/addDivision.js'); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -67,14 +68,14 @@
                     <div class="col-md-5">
                         <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald8ba2b4c22a13c55321e34443c386276 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'División','btnAddUrl' => ''.e(route('admin.sucursal.divisions.create', ['back_url' => request()->url()])).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.label','data' => ['value' => 'División','btnAddModalTarget' => '#modalAddDivision']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('label'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['value' => 'División','btnAddUrl' => ''.e(route('admin.sucursal.divisions.create', ['back_url' => request()->url()])).'']); ?>
+<?php $component->withAttributes(['value' => 'División','btnAddModalTarget' => '#modalAddDivision']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginald8ba2b4c22a13c55321e34443c386276)): ?>
@@ -184,27 +185,50 @@
 
     
     <div id="addCustomer"></div>
+    <div id="addDivision"></div>
 
 <?php $__env->stopSection(); ?>
 
+---
 
 <?php $__env->startSection('js'); ?>
     <script>
         $(document).ready(function() {
 
-            window.branchId = <?php echo e(session('branch')->id); ?>;
+            // Asumiendo que `session('branch')->id` es accesible y válido aquí
+            window.branchId = <?php echo e(session('branch')->id ?? 'null'); ?>;
 
             // Asegurar que Select2 esté inicializado
             $('.select2').select2();
 
-            // 1. ESCUCHAR EL EVENTO PERSONALIZADO
-            // Escuchamos el evento 'customerAdded' que se disparará desde el componente Vue.
+            // 1. Manejador para agregar Cliente
             $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
                 $(this).modal("hide");
                 var customerSelect = $('select[name="customer_id"]');
+
+                // Crea la opción para el nuevo cliente
                 var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
                 customerSelect.append(newOption);
+
+                // Selecciona la nueva opción y dispara el evento de Select2
                 customerSelect.val(newCustomer.id).trigger('change');
+            });
+
+            // 2. Manejador para agregar División (CORREGIDO)
+            $("#modalAddDivision").on('divisionAdded', function(event, newDivision) {
+                // El modal se cierra
+                $(this).modal("hide");
+
+                // Define el Select2 a manipular
+                var divisionSelect = $('select[name="division_id"]');
+
+                // Crea la opción para la nueva división
+                // Se usa 'newDivision' que debe venir del componente Vue
+                var newOption = new Option(newDivision.name, newDivision.id, true, true);
+                divisionSelect.append(newOption);
+
+                // Selecciona la nueva opción y dispara el evento de Select2
+                divisionSelect.val(newDivision.id).trigger('change');
             });
         });
     </script>

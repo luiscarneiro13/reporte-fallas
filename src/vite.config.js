@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/addBrand.js',
                 'resources/js/addCustomer.js',
+                'resources/js/addDivision.js',
             ],
             refresh: true,
 

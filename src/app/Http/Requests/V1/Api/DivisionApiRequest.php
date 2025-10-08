@@ -29,9 +29,16 @@ class DivisionApiRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'name.required' => 'El nombre es requerido',
+        ];
+    }
+
     protected function failedValidation(Validator $validator)
     {
-        $data['data'] = $validator->errors()->first();
+        $data['data'] = $validator->errors();
         $data['success'] = false;
         throw new HttpResponseException(response()->json($data, 200));
     }

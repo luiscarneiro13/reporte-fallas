@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\TypeArticleController as ApiTypeArticle;
 use App\Http\Controllers\Api\CustomerController as ApiCustomer;
 use App\Http\Controllers\Api\ServiceController as ApiService;
 use App\Http\Controllers\Api\V1\CustomerApiController;
+use App\Http\Controllers\Api\V1\DivisionApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,5 @@ Route::prefix('admin-sucursal')->group(function () {
 
 Route::prefix('v1/admin')->group(function () {
     Route::post('clientes/store', [CustomerApiController::class, 'store']);
+    Route::post('divisiones/store', [DivisionApiController::class, 'store']);
 });

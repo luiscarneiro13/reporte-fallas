@@ -5,6 +5,9 @@
 @section('content_header')
     <h1>Editar Proyecto</h1>
     <small>{{ $project->name }}</small>
+
+    @vite('resources/js/addCustomer.js')
+    @vite('resources/js/addDivision.js')
 @stop
 
 @section('content')
@@ -19,7 +22,7 @@
                 <div class="row">
 
                     <div class="col-md-5">
-                        <label for="customer_id">Cliente</label>
+                        <x-label value="Cliente" btnAddModalTarget="#modalAddCustomer" />
                         {{ Form::select('customer_id', $customers, $project->customer_id, ['class' => 'select2 form-control']) }}
                     </div>
 
@@ -27,7 +30,7 @@
                         value="{{ $project->name }}" />
 
                     <div class="col-md-5">
-                        <label for="division_id">Division</label>
+                        <x-label value="División" btnAddModalTarget="#modalAddDivision" />
                         {{ Form::select('division_id', $divisions, $project->division_id, ['class' => 'select2 form-control']) }}
                     </div>
 
@@ -54,11 +57,35 @@
         </div>
     </div>
 
+    <div id="addCustomer"></div>
+    <div id="addDivision"></div>
+
 @stop
 
 
 @section('js')
     <script>
-        console.log('Hi!');
+        $(document).ready(function() {
+
+            window.branchId = {{ session('branch')->id ?? 'null' }};
+
+            $('.select2').select2();
+
+            $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
+                $(this).modal("hide");
+                var customerSelect = $('select[name="customer_id"]');
+                var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
+                customerSelect.append(newOption);
+                customerSelect.val(newCustomer.id).trigger('change');
+            });
+
+            $("#modalAddDivision").on('divisionAdded', function(event, newDivision) {
+                $(this).modal("hide");
+                var divisionSelect = $('select[name="division_id"]');
+                var newOption = new Option(newDivision.name, newDivision.id, true, true);
+                divisionSelect.append(newOption);
+                divisionSelect.val(newDivision.id).trigger('change');
+            });
+        });
     </script>
 @stop

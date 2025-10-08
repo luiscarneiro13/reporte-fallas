@@ -1,9 +1,9 @@
 <template>
-  <div id="modalAddCustomer" class="modal" tabindex="-1" role="dialog">
+  <div id="modalAddDivision" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Agregar cliente</h5>
+          <h5 class="modal-title">Agregar división</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -12,32 +12,20 @@
         <div class="modal-body">
           <div class="row mb-3">
             <div class="col-md-12 mb-2">
-              <label for="name">Nombre</label>
+              <label for="name">Nombre de la división</label>
               <input ref="inputName" type="text" class="form-control" name="name" id="name" v-model="name" @keyup.enter="focusNextField('inputName')" />
               <ErrorValidation v-if="err" :err="err" item="name" />
             </div>
 
             <div class="col-md-12 mb-2">
-              <label for="email">Email</label>
-              <input ref="inputEmail" type="text" class="form-control" name="email" id="email" v-model="email" @keyup.enter="focusNextField('inputEmail')" />
-              <ErrorValidation v-if="err" :err="err" item="email" />
-            </div>
-
-            <div class="col-md-12 mb-2">
-              <label for="phone">Teléfono</label>
-              <input ref="inputPhone" type="text" class="form-control" name="phone" id="phone" v-model="phone" @keyup.enter="focusNextField('inputPhone')" />
-              <ErrorValidation v-if="err" :err="err" item="phone" />
-            </div>
-
-            <div class="col-md-12 mb-2">
-              <label for="address">Dirección</label>
-              <input ref="inputAddress" type="text" class="form-control" name="address" id="address" v-model="address" @keyup.enter="focusNextField('inputAddress')" />
-              <ErrorValidation v-if="err" :err="err" item="address" />
+              <label for="description">Descripción</label>
+              <input ref="inputDescription" type="text" class="form-control" name="description" id="description" v-model="description" @keyup.enter="focusNextField('inputDescription')" />
+              <ErrorValidation v-if="err" :err="err" item="description" />
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" :disabled="isSubmitting" class="btn btn-primary" @click="buttonSubmitAddCustomer">
+          <button type="button" :disabled="isSubmitting" class="btn btn-primary" @click="buttonSubmitAddDivision">
             {{ isSubmitting ? "Agregando..." : "Agregar" }}
           </button>
         </div>
@@ -51,7 +39,7 @@ import ErrorValidation from "./errorValidation.vue";
 import * as api from "./Api/GlobalApi";
 
 export default {
-  name: "AddCustomer",
+  name: "AddDivision",
   components: { ErrorValidation },
   props: ["branch_id"],
   data() {
@@ -66,7 +54,7 @@ export default {
   },
 
   methods: {
-    hideAddCustomer() {
+    hideAddDivision() {
       this.$emit("closeModal");
     },
 
@@ -76,29 +64,25 @@ export default {
       }
     },
 
-    async buttonSubmitAddCustomer() {
+    async buttonSubmitAddDivision() {
       this.isSubmitting = true;
 
       const insert = {
         name: this.name,
-        email: this.email,
-        phone: this.phone,
-        address: this.address,
+        description: this.description,
         branch_id: window.branchId,
       };
 
-      const url = "/api/v1/admin/clientes/store";
+      const url = "/api/v1/admin/divisiones/store";
 
       const { data, success } = await api.store(url, insert);
 
       if (success) {
         this.err = null;
         this.name = "";
-        this.email = "";
-        this.phone = "";
-        this.address = "";
+        this.description = "";
 
-        $("#modalAddCustomer").trigger("customerAdded", [data]);
+        $("#modalAddDivision").trigger("divisionAdded", [data]);
       } else {
         this.err = data;
       }

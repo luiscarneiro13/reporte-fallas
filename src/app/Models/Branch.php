@@ -40,26 +40,27 @@ class Branch extends Model
 
     public function equipment()
     {
-        return $this->hasMany(Equipment::class, 'branch_id');
+        return $this->hasMany(Equipment::class);
     }
 
     public function projects()
     {
-        return $this->hasMany(Project::class, 'branch_id');
+        return $this->hasMany(Project::class);
     }
 
     public function serviceAreas()
     {
-        return $this->hasMany(ServiceArea::class, 'branch_id');
+        return $this->hasMany(ServiceArea::class);
     }
 
     public function divisions()
     {
-        return $this->hasMany(Division::class, 'branch_id');
+        return $this->hasMany(Division::class);
     }
 
     public function customers()
     {
-        return $this->hasMany(Customer::class, 'branch_id');
+        return $this->hasMany(Customer::class);
     }
+
 }

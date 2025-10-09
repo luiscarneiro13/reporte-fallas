@@ -30,6 +30,7 @@ use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
+use App\Http\Controllers\V1\AdminBranch\EquipmentController;
 use App\Http\Controllers\V1\AdminBranch\OwnerController;
 use App\Http\Controllers\V1\AdminBranch\ProjectController;
 use App\Http\Controllers\V1\AdminBranch\ServiceAreaController;
@@ -117,5 +118,6 @@ Route::middleware([
         Route::resource('/divisiones', DivisionController::class)->names('admin.sucursal.divisions');
         Route::resource('/clientes', CustomerController::class)->names('admin.sucursal.customers');
         Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
+        Route::resource('/equipos', EquipmentController::class)->names('admin.sucursal.equipment');
     });
 });

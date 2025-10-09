@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Branch;
+use App\Models\Division;
+use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,28 +17,60 @@ class EquipmentSeeder extends Seeder
     {
 
         $branch = Branch::where('name', 'El Tigre')->first();
+        $projectIds = Project::pluck('id')->toArray();
 
         $equipment = [
             [
-                'placa' => 'ABC123',
-                'serial' => 'SN123456789',
-                'year' => '2020',
-                'color' => 'Red',
-                'origin' => 'USA',
-                'racda' => 'RACDA001',
+                // Identificadores y seriales técnicos
+                'branch_id'               => $branch->id,
+                'internal_code'           => '00-AJHG', // Placa de Venezuela
+                'owner'                   => 'Dueño 1', // Placa de Venezuela
+                'placa'                   => 'ABC123V', // Placa de Venezuela
+                'serial_niv'              => 'WVWZZZ3CZK1234567', // VIN (NIV)
+                'body_serial_number'      => 'BOD9876543210',    // Serial de Carrocería
+                'chassis_serial_number'   => 'CHA0123456789',    // Serial de Chasis
+                'engine_serial_number'    => 'ENG555444333222',  // Serial del Motor
+
+                // Atributos del vehículo
+                'vehicle_model'           => 'Fortuner',
+                'brand_name'              => 'Toyota',
+                'model_year'              => 2022,
+                'color'                   => 'Blanco Perla',
+                'origin'                  => 'Japón',
+
+                // Identificador legal/administrativo
+                'racda'                   => 'No',
             ],
             [
-                'placa' => 'DEF456',
-                'serial' => 'SN987654321',
-                'year' => '2021',
-                'color' => 'Blue',
-                'origin' => 'Canada',
-                'racda' => 'RACDA002',
+                // Identificadores y seriales técnicos
+                'branch_id'               => $branch->id,
+                'internal_code'           => '01-AJHG',
+                'owner'                   => 'Dueño 2',
+                'placa'                   => 'DEF456G',
+                'serial_niv'              => '1GCRF4B0P85790432',
+                'body_serial_number'      => 'BOD222111000999',
+                'chassis_serial_number'   => 'CHA998877665544',
+                'engine_serial_number'    => 'ENG123456789012',
+
+                // Atributos del vehículo
+                'vehicle_model'           => 'Explorer',
+                'brand_name'              => 'Ford',
+                'model_year'              => 2018,
+                'color'                   => 'Gris Oscuro',
+                'origin'                  => 'Estados Unidos',
+
+                // Identificador legal/administrativo
+                'racda'                   => 'Si',
             ],
         ];
 
         foreach ($equipment as $item) {
-            $branch->equipment()->create($item);
+
+            $equipment = $branch->equipment()->create($item);
+
+            if (!empty($projectIds)) {
+                $equipment->projects()->attach($projectIds[0]);
+            }
         }
     }
 }

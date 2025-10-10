@@ -31,9 +31,11 @@ use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
+use App\Http\Controllers\V1\AdminBranch\FaultStatusController;
 use App\Http\Controllers\V1\AdminBranch\OwnerController;
 use App\Http\Controllers\V1\AdminBranch\ProjectController;
 use App\Http\Controllers\V1\AdminBranch\ServiceAreaController;
+use App\Http\Controllers\V1\AdminBranch\SparePartStatusController;
 
 // *************************************************************************************
 
@@ -119,5 +121,7 @@ Route::middleware([
         Route::resource('/clientes', CustomerController::class)->names('admin.sucursal.customers');
         Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
         Route::resource('/equipos', EquipmentController::class)->names('admin.sucursal.equipment');
+        Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
+        Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
     });
 });

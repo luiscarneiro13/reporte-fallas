@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Fault;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -36,7 +37,7 @@ class FaultSeeder extends Seeder
         ];
 
         foreach ($faults as $fault) {
-            \App\Models\Fault::create($fault);
+            Fault::create($fault);
         }
     }
 }

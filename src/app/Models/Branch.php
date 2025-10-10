@@ -63,4 +63,13 @@ class Branch extends Model
         return $this->hasMany(Customer::class);
     }
 
+    public function faultStatus()
+    {
+        return $this->hasMany(FaultStatus::class);
+    }
+
+    public function sparePartStatus()
+    {
+        return $this->hasMany(SparePartStatus::class);
+    }
 }

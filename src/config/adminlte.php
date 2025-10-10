@@ -325,49 +325,55 @@ return [
         // --- Administración General ---
         [
             'text' => 'Administración',
-            'icon' => 'fas fa-cogs', // ⚙️ Administración / Configuración
+            'icon' => 'fas fa-cogs',
             'can' => 'Menu Conf Admin',
             'submenu' => [
                 [
                     'text' => 'Editar mi Empresa',
-                    'icon' => 'fas fa-building', // 🏢 Empresa / Sucursal
+                    'icon' => 'fas fa-building',
                     'active' => ['v1/admin/mi-sucursal/edit*'],
-                    'url'  => '/v1/admin/mi-sucursal/edit',
+                    'url' => '/v1/admin/mi-sucursal/edit',
                 ],
                 [
                     'text' => 'Divisiones de la Empresa',
-                    'icon' => 'fas fa-code-branch', // 🌳 Divisiones / Estructura
+                    'icon' => 'fas fa-code-branch',
                     'active' => ['v1/admin/divisions*'],
-                    'route'  => 'admin.sucursal.divisions.index',
+                    'route' => 'admin.sucursal.divisions.index',
                 ],
                 [
-                    'text' => 'Propietarios',
-                    'icon' => 'fas fa-user-tie', // 👤 Propietarios (Dueños)
-                    'active' => ['v1/admin/propietarios*'],
-                    'route'  => 'admin.sucursal.owners.index',
+                    'text' => 'Status de fallas',
+                    'icon' => 'fas fa-clipboard-list',
+                    'active' => ['v1/admin/status-fallas*'],
+                    'route' => 'admin.sucursal.fault.statuses.index',
+                ],
+                [
+                    'text' => 'Status de repuestos',
+                    'icon' => 'fas fa-boxes',
+                    'active' => ['v1/admin/status-repuestos*'],
+                    'route' => 'admin.sucursal.spare.part.statuses.index',
                 ],
                 [
                     'text' => 'Áreas de Servicio',
-                    'icon' => 'fas fa-map-marked-alt', // 🗺️ Áreas / Zonas
+                    'icon' => 'fas fa-map-marked-alt',
                     'active' => ['v1/admin/areas-de-servicio*'],
-                    'route'  => 'admin.sucursal.service.areas.index',
+                    'route' => 'admin.sucursal.service.areas.index',
                 ],
                 [
                     'text' => 'Conf. Admin',
-                    'icon' => 'fas fa-sliders-h', // 🎚️ Configuración Admin
+                    'icon' => 'fas fa-sliders-h',
                 ],
                 [
                     'text' => 'Clientes',
-                    'icon' => 'fas fa-users', // 👥 Clientes
+                    'icon' => 'fas fa-users',
                     'active' => ['v1/admin/clientes*'],
-                    'route'  => 'admin.sucursal.customers.index',
+                    'route' => 'admin.sucursal.customers.index',
                     'can' => 'Clientes Ver',
                 ],
                 [
                     'text' => 'Proyectos',
-                    'icon' => 'fas fa-project-diagram', // 🏗️ Proyectos
+                    'icon' => 'fas fa-project-diagram',
                     'active' => ['v1/admin/proyectos*'],
-                    'route'  => 'admin.sucursal.projects.index',
+                    'route' => 'admin.sucursal.projects.index',
                     'can' => 'Proyectos Ver',
                 ],
             ]

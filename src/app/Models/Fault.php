@@ -11,5 +11,25 @@ class Fault extends Model
 
     protected $table = "faults";
 
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['branch_id', 'description', 'service_area_id', 'fault_status_id', 'equipment_id'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function serviceArea()
+    {
+        return $this->belongsTo(ServiceArea::class);
+    }
+
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
+
+    public function faultStatus()
+    {
+        return $this->belongsTo(FaultStatus::class);
+    }
 }

@@ -14,7 +14,7 @@
         <div class="card-body">
             <h5>Lista de Permisos</h5>
             {!! Form::model($role, ['route' => ['roles.update', $role], 'method' => 'put']) !!}
-            <div class="row">
+            <div class="row mb-5">
                 @foreach ($permissions as $item)
                     <div class="col-2">
                         <label>
@@ -24,6 +24,8 @@
                     </div>
                 @endforeach
             </div>
+            <a href="{{ route('roles.index') }}" class="btn-sm mr-3 btn-default" type="submit"
+                icon="fas fa-lg fa-save">Cancelar</a>
             {!! form::submit('Asignar permisos', ['class' => 'btn btn-primary mt-2 float-right']) !!}
             {!! Form::close() !!}
         </div>

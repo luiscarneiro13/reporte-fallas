@@ -35,11 +35,6 @@
                                     <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                     <div class="dropdown-menu">
 
-                                        <a class="dropdown-item" href="{{ route('permissions.edit', $item) }}">
-                                            <i class="fa fa-edit">&nbsp;</i>
-                                            Editar
-                                        </a>
-
                                         <div class="dropdown-divider"></div>
 
                                         <form class="formEliminar" action="{{ route('permissions.destroy', $item) }}"

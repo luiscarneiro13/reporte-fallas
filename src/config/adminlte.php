@@ -304,23 +304,28 @@ return [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
-            'icon' => 'fas fa-newspaper', // 📰 Blog
+            'icon' => 'fas fa-newspaper',
         ],
         // --- Menús Principales ---
         [
             'text' => 'Inicio',
-            'icon' => 'fas fa-tachometer-alt', // 🏠 Dashboard / Inicio
+            'icon' => 'fas fa-tachometer-alt',
             'url'  => '#',
         ],
         [
             'text' => 'Reportar falla',
-            'icon' => 'fas fa-bug', // 🐛 Reportar fallas / Problemas
+            'icon' => 'fas fa-bug',
             'url'  => '#',
         ],
         [
             'text' => 'Equipos',
-            'icon' => 'fas fa-truck', // 🛠️ Equipos
+            'icon' => 'fas fa-truck',
             'route'  => 'admin.sucursal.equipment.index',
+        ],
+        [
+            'text' => 'Empleados',
+            'icon' => 'fas fa-users',
+            'route'  => 'admin.sucursal.employees.index',
         ],
         // --- Administración General ---
         [
@@ -380,7 +385,7 @@ return [
         ],
         // --- Gestión de Usuarios ---
         [
-            'text' => 'Usuarios',
+            'text' => 'Usuarios de sistema',
             'icon' => 'fas fa-user-friends', // 🧑‍🤝‍🧑 Gestión de Usuarios
             'can' => 'Menu Conf Admin',
             'submenu' => [

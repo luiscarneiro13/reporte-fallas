@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('branch_id');
+            $table->string('identification_number', 20)->unique();
+            $table->string('first_name', 100);
+            $table->string('last_name', 100);
+            $table->string('email', 150)->nullable();
+            $table->string('phone_number', 20)->nullable();
+            $table->text('address')->nullable();
             $table->timestamps();
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

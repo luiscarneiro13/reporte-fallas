@@ -1,35 +1,41 @@
 @extends('adminlte::page')
 
-@section('icon', 'fas fa-code-branch')
-@section('title', 'Divisiones')
+@section('title', 'Empleados')
+
+@section('content_header')
+    {{-- <h1>Proyectos</h1> --}}
+@stop
 
 @section('content')
-
     @php
-        $headers = ['Nombre', 'Descripción', ''];
+        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Usuario', 'Rol de sistema', 'Dirección', ''];
     @endphp
 
-    <x-base-data-table-search title="Divisiones" :items="$divisions" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.divisions.create') }}">
+    <x-base-data-table-search title="Empleados" :items="$employees" :headers="$headers"
+        urlBtnAdd="{{ route('admin.sucursal.employees.create') }}">
         <x-slot name="body">
-            @forelse ($divisions as $item)
+            @forelse ($employees as $item)
                 <tr>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->identification_number }}</td>
+                    <td>{{ $item->lastname . ' ' . $item->first_name }}</td>
+                    <td>{{ $item->phone_number }}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ $item->address }}</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="{{ route('admin.sucursal.divisions.edit', $item) }}">
+                                    <a class="dropdown-item" href="{{ route('admin.sucursal.employees.edit', $item) }}">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"
-                                        action="{{ route('admin.sucursal.divisions.destroy', $item) }}" method="post">
+                                        action="{{ route('admin.sucursal.employees.destroy', $item) }}" method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="dropdown-item" type="submit">
@@ -49,6 +55,9 @@
     </x-base-data-table-search>
 
 @stop
-@section('customjs')
 
+@section('js')
+    <script>
+        window.branchId = {{ session('branch')->id }};
+    </script>
 @stop

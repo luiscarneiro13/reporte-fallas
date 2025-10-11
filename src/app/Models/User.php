@@ -64,7 +64,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url', 'full_name'
+        'profile_photo_url',
+        'full_name'
     ];
 
     public function getFullNameAttribute()
@@ -104,5 +105,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function userBranches()
     {
         return $this->hasMany(UserBranch::class, 'user_id');
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'employee_user')->withTimestamps();
     }
 }

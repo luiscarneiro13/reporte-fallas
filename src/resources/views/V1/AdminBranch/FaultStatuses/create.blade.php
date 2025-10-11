@@ -3,7 +3,7 @@
 @section('title', 'Status de fallas')
 
 @section('content_header')
-    <h1>Crear división</h1>
+    <h1>Status de fallas</h1>
 @stop
 
 @section('content')

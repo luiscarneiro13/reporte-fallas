@@ -9,17 +9,17 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $table = "users";
+    protected $table = "employees";
 
-    protected $fillable = ['name', 'email', 'password', 'phone', 'email_verified_at'];
+    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address'];
 
     public function branch()
     {
-        return $this->belongsToMany(Branch::class, 'user_branch');
+        return $this->belongsTo(Branch::class);
     }
 
-    public function userBranches()
+    public function users()
     {
-        return $this->hasMany(UserBranch::class, 'user_id');
+        return $this->belongsToMany(User::class, 'employee_user')->withTimestamps();
     }
 }

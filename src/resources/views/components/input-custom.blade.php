@@ -5,13 +5,23 @@
     'label' => '',
     'required' => false,
     'class' => '',
+    'help' => '',
+    'type' => '',
+    'id' => '',
 ])
 
-<x-adminlte-input name="{{ $name }}" placeholder="" fgroup-class="{{ $class }}" value="{{ $value }}">
-    {{-- ✅ Pasa la etiqueta usando el slot, permitiendo HTML --}}
-    <x-slot name="label">
-        {{ $label }} @if ($required)
+<div class="{{ $class }}">
+    <label for="{{ $name }}">{{ $label }} @if ($required)
             <span class="text-danger">*</span>
         @endif
-    </x-slot>
-</x-adminlte-input>
+    </label>
+    <input type="{{ $type ?? 'text' }}" name="{{ $name }}" id="{{ $id }}" class="form-control"
+        placeholder="{{ $placeholder }}" value="{{ $value }}">
+
+    {{-- Texto de ayuda (small) --}}
+    @if ($help)
+        <small class="form-text text-muted">
+            {{ $help }}
+        </small>
+    @endif
+</div>

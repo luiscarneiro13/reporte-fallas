@@ -11,13 +11,23 @@
         {{-- Configured left links --}}
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-left'), 'item')
         <div class="row w-100">
-            <div class="col-md-2">
-                @yield('tasa_del_dia')
-            </div>
-            <div class="col-md-2">
-                @yield('tasa_promedio')
-            </div>
-            <div class="col-md-8"></div>
+
+            {{-- <div class="col-md-12">
+
+                @if (trim(View::getSection('icon')))
+                    <span style="font-size:22px">
+                        <i class="@yield('icon') mr-2"></i>
+                    </span>
+                @endif
+
+                @if (trim(View::getSection('title')))
+                    <span style="font-size:22px">
+                        @yield('title')
+                    </span>
+                @endif
+
+            </div> --}}
+
         </div>
         @yield('content_top_nav_left')
     </ul>

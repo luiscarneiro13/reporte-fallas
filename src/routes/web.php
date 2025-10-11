@@ -30,6 +30,7 @@ use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
+use App\Http\Controllers\V1\AdminBranch\EmployeeController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
 use App\Http\Controllers\V1\AdminBranch\FaultStatusController;
 use App\Http\Controllers\V1\AdminBranch\OwnerController;
@@ -123,5 +124,6 @@ Route::middleware([
         Route::resource('/equipos', EquipmentController::class)->names('admin.sucursal.equipment');
         Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
+        Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
     });
 });

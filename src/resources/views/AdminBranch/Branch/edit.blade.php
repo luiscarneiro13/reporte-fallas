@@ -1,16 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
-
-@section('content_header')
-    <h1>Editar Sucursal {{ $branch->name }}</h1>
-@stop
+@section('icon', 'fas fa-building')
+@section('title', 'Editar datos de la Empresa')
 
 @section('content')
 
     <div class="card">
-
         <div class="card-body">
+            <h4 class="mr-3">@yield('title')</h4>
             <form action="{{ route('admin.branch.my-branch.update', $branch) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\AdminBranch;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OperatorEditRequest;
-use App\Http\Requests\OperatorRequest;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\UserBranch;

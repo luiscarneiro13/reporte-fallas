@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('email', 150)->nullable();
             $table->string('phone_number', 20)->nullable();
             $table->text('address')->nullable();
+            $table->boolean('executor')->default(0);
+            $table->boolean('external')->default(0);
             $table->timestamps();
             $table->foreign('branch_id')->references('id')->on('branches');
         });

@@ -11,7 +11,7 @@ class SparePartStatus extends Model
 
     protected $table = "spare_part_statuses";
 
-    protected $fillable = ['name'];
+    protected $fillable = ['branch_id', 'name'];
 
     public function branch()
     {

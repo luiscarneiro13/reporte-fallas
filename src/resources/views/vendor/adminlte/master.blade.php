@@ -36,10 +36,11 @@
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
 
-    {{-- <link rel="stylesheet" href="{{ asset('/vendor/adminlte/dist/css/custom.css') }}"> --}}
-
     {{-- Extra Configured Plugins Stylesheets --}}
     @include('adminlte::plugins', ['type' => 'css'])
+
+    {{-- Datepicker Styles --}}
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.css') }}">
 
     {{-- Livewire Styles --}}
     @if (config('adminlte.livewire'))
@@ -84,7 +85,6 @@
     {{-- Body Content --}}
     @yield('body')
 
-
     {{-- Base Scripts --}}
     @if (!config('adminlte.enabled_laravel_mix'))
         <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -95,10 +95,58 @@
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
 
-
-
     {{-- Extra Configured Plugins Scripts --}}
     @include('adminlte::plugins', ['type' => 'js'])
+
+    {{-- Datepicker Script --}}
+    <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script>
+        $(function () {
+            // Datepicker con fecha de hoy por defecto
+            $('.datepicker').not('.datepicker-optional').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: true,
+                startDate: moment(),
+                locale: {
+                    format: 'DD-MM-YYYY',
+                    applyLabel: 'Aplicar',
+                    cancelLabel: 'Cancelar',
+                    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    firstDay: 1
+                }
+            });
+
+            // Datepicker opcional sin fecha inicial
+            $('.datepicker-optional').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                locale: {
+                    format: 'DD-MM-YYYY',
+                    applyLabel: 'Aplicar',
+                    cancelLabel: 'Cancelar',
+                    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    firstDay: 1
+                }
+            });
+
+            // Eventos para todos los datepicker
+            $('.datepicker, .datepicker-optional').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY'));
+            });
+
+            $('.datepicker, .datepicker-optional').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
+
+            $('.select2').select2();
+        });
+    </script>
 
     {{-- Livewire Script --}}
     @if (config('adminlte.livewire'))
@@ -111,12 +159,6 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        });
-    </script>
 
     @yield('customjs')
 

@@ -11,16 +11,16 @@ use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
-class EmployeeController extends Controller
+class ExecutorController extends Controller
 {
     use AlertResponser;
 
-    const INDEX = "admin.sucursal.employees.index";
+    const INDEX = "admin.sucursal.executors.index";
 
     public function index()
     {
         $query = request('query');
-        $employees = Employee::query()
+        $executors = Employee::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -33,29 +33,23 @@ class EmployeeController extends Controller
                 });
             })
             ->where('branch_id', session('branch')->id)
-            ->where('external', 0)
-            ->orderBy('last_name', 'asc')
+            ->where('executor', 1)
+            ->orderBy('first_name', 'asc')
             ->paginate(10);
-        return view('V1.AdminBranch.Employees.index', compact('employees'));
+        return view('V1.AdminBranch.Executors.index', compact('executors'));
     }
 
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        $initValue = collect(["0" => "Sin usuario de sistema"]);
-        $rolesCollection =  Role::get()->pluck('name', 'id');
-        $roles = $initValue->merge($rolesCollection);
-        return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles'));
+        return view('V1.AdminBranch.Executors.create', compact('back_url'));
     }
 
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $employee = Employee::find($id);
-        $initValue = collect(["0" => "Sin usuario de sistema"]);
-        $rolesCollection =  Role::get()->pluck('name', 'id');
-        $roles = $initValue->merge($rolesCollection);
-        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles'));
+        $executor = Employee::find($id);
+        return view('V1.AdminBranch.Executors.edit', compact('back_url', 'executor'));
     }
 
     public function store(Request $request)
@@ -64,7 +58,7 @@ class EmployeeController extends Controller
     }
 
     // public function update(EmployeeRequest $request, string $id)
-    public function update(EmployeeRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         return $this->saveOrUpdate($request, $id);
     }
@@ -74,48 +68,17 @@ class EmployeeController extends Controller
         try {
             // Crear o actualizar empleado
             $item = $id ? Employee::find($id) : new Employee();
+
             $item->identification_number = $request->input('identification_number');
             $item->first_name = $request->input('first_name');
             $item->last_name = $request->input('last_name');
             $item->email = $request->input('email');
             $item->phone_number = $request->input('phone_number');
             $item->address = $request->input('address');
-            $item->executor = $request->input('executor');
+            $item->external = $request->input('external');
+            $item->executor = 1;
             $item->branch_id = session('branch')->id;
             $item->save();
-
-            // Datos de usuario
-            $roleId = $request->input('role_id');
-            $password = $request->input('password');
-
-            if ($item->email && $roleId) {
-                // Buscar usuario por email
-                $user = User::where('email', $item->email)->first();
-
-                $userData = [
-                    'name' => $item->last_name . ' ' . $item->first_name,
-                    'email' => $item->email,
-                    'phone' => $item->phone_number,
-                    'branchId' => $item->branch_id,
-                    'roleId' => $roleId,
-                ];
-
-                // Solo asignar contraseña si viene
-                if ($password) {
-                    $userData['password'] = $password;
-                }
-
-                if ($user) {
-                    // Actualizar usuario existente
-                    UserService::updateUser($user, $userData);
-                } else {
-                    // Crear usuario nuevo
-                    if (!isset($userData['password'])) {
-                        throw new \Exception("Debe proporcionar un password para crear un nuevo usuario.");
-                    }
-                    UserService::insertUserRole($userData);
-                }
-            }
 
             // Respuesta AJAX
             if ($request->ajax()) {
@@ -128,12 +91,12 @@ class EmployeeController extends Controller
             }
 
             $action_msg = $id ? 'actualizado' : 'creado';
-            $message = "Empleado {$action_msg}: " . $item->first_name;
+            $message = "Ejecutor {$action_msg}: " . $item->first_name;
             return $this->alertSuccess(self::INDEX, $message);
         } catch (\Throwable $th) {
             $action = $id ? 'actualizar' : 'crear';
             info($th->getMessage());
-            return $this->alertError(self::INDEX, "Error al {$action} el empleado: " . $th->getMessage());
+            return $this->alertError(self::INDEX, "Error al {$action} el ejecutor: " . $th->getMessage());
         }
     }
 
@@ -142,7 +105,7 @@ class EmployeeController extends Controller
         try {
             $item = Employee::find($id);
             $item->delete();
-            return $this->alertSuccess(self::INDEX, 'Empleado eliminado: ' . $item->first_name . ' ' . $item->last_name);
+            return $this->alertSuccess(self::INDEX, 'Ejecutor eliminado: ' . $item->first_name . ' ' . $item->last_name);
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }

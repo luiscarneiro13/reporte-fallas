@@ -308,14 +308,14 @@ return [
         ],
         // --- Menús Principales ---
         [
-            'text' => 'Inicio',
+            'text' => 'Resumen de fallas',
             'icon' => 'fas fa-tachometer-alt',
             'url'  => '#',
         ],
         [
             'text' => 'Reportar falla',
             'icon' => 'fas fa-bug',
-            'url'  => '#',
+            'route'  => 'admin.sucursal.faults.create',
         ],
         [
             'text' => 'Equipos',
@@ -323,9 +323,9 @@ return [
             'route'  => 'admin.sucursal.equipment.index',
         ],
         [
-            'text' => 'Empleados',
+            'text' => 'Ejecutores',
             'icon' => 'fas fa-users',
-            'route'  => 'admin.sucursal.employees.index',
+            'route'  => 'admin.sucursal.executors.index',
         ],
         // --- Administración General ---
         [
@@ -380,6 +380,11 @@ return [
                     'active' => ['v1/admin/proyectos*'],
                     'route' => 'admin.sucursal.projects.index',
                     'can' => 'Proyectos Ver',
+                ],
+                [
+                    'text' => 'Empleados',
+                    'icon' => 'fas fa-users',
+                    'route'  => 'admin.sucursal.employees.index',
                 ],
             ]
         ],

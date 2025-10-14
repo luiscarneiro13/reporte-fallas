@@ -32,6 +32,8 @@ use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\EmployeeController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
+use App\Http\Controllers\V1\AdminBranch\ExecutorController;
+use App\Http\Controllers\V1\AdminBranch\FaultController;
 use App\Http\Controllers\V1\AdminBranch\FaultStatusController;
 use App\Http\Controllers\V1\AdminBranch\OwnerController;
 use App\Http\Controllers\V1\AdminBranch\ProjectController;
@@ -125,5 +127,7 @@ Route::middleware([
         Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
+        Route::resource('/ejecutores', ExecutorController::class)->names('admin.sucursal.executors');
+        Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
     });
 });

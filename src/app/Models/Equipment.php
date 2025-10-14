@@ -80,4 +80,9 @@ class Equipment extends Model
             'project_id' // Local key en el modelo intermedio que apunta a Project
         )->latest('equipment_project.created_at'); // Ordenamos para asegurar el último
     }
+
+    public function faults()
+    {
+        return $this->belongsTo(Fault::class);
+    }
 }

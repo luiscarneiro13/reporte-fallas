@@ -12,4 +12,14 @@ class ServiceArea extends Model
     protected $table = "service_areas";
 
     protected $fillable = ['name', 'description'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function faults()
+    {
+        return $this->hasMany(Fault::class);
+    }
 }

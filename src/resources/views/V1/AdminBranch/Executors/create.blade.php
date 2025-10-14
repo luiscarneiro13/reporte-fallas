@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Empleados')
+@section('title', 'Ejecutores')
 
 @section('content_header')
-    <h1>Crear empleado</h1>
+    <h1>Crear ejecutor</h1>
 @stop
 
 @section('content')
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.sucursal.employees.store') }}" method="POST">
+            <form action="{{ route('admin.sucursal.executors.store') }}" method="POST">
                 @csrf
                 @if ($back_url)
                     <input type="hidden" name="back_url" value="{{ $back_url }}">
@@ -31,39 +31,20 @@
                         value="{{ old('last_name') }}" />
 
                     {{-- Teléfono y Dirección: NO REQUERIDOS --}}
-                    <x-adminlte-input name="phone_number" label="Teléfono" placeholder="" fgroup-class="col-md-2"
+                    <x-adminlte-input name="phone_number" label="Teléfono" placeholder="" fgroup-class="col-md-4"
                         value="{{ old('phone_number') }}" />
 
                     <div class="col-md-2">
-                        <x-label value="Ejecutor de servicio" />
-                        {{ Form::select('executor', [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control']) }}
+                        <x-label value="Tipo" />
+                        {{ Form::select('external', [0 => 'Interno', 1 => 'Externo'], null, ['class' => 'form-control']) }}
                     </div>
 
                     <x-adminlte-input name="address" label="Dirección (opcional)" placeholder="" fgroup-class="col-md-6"
                         value="{{ old('address') }}" />
                 </div>
 
-                <hr>
-
-                <h5 class="mb-3">Usuario de sistema (opcional)</h5>
-
-                <div class="row">
-
-                    <x-input-custom name="email" type="email" id="employee_email" label="Email" placeholder=""
-                        class="col-md-4" value="{{ old('email') }}"
-                        help="Si agrega un email, también debe agregar una contraseña y seleccionar un rol." />
-
-                    <div class="col-md-4">
-                        <x-label value="Rol de sistema" />
-                        {{ Form::select('role_id', $roles, null, ['class' => 'form-control', 'id' => 'role_id_select']) }}
-                    </div>
-
-                    <x-adminlte-input type="password" name="password" id="password_input" label="Contraseña temporal"
-                        placeholder="" fgroup-class="col-md-4" autocomplete="new-password" />
-                </div>
-
                 <div class="row mt-5">
-                    <a href="{{ request()->back_url ?? route('admin.sucursal.employees.index') }}"
+                    <a href="{{ request()->back_url ?? route('admin.sucursal.executors.index') }}"
                         class="btn-sm mr-3 btn-default" type="submit" icon="fas fa-lg fa-save">Cancelar</a>
                     <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />

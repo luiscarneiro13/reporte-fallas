@@ -55,6 +55,8 @@
         </x-slot>
     </x-base-data-table-search>
 
+
+
 @stop
 
 @section('js')

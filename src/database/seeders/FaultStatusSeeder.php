@@ -16,20 +16,14 @@ class FaultStatusSeeder extends Seeder
     {
         $faultStatus = [
             [
-                'name' => 'Fallo de Motor',
+                'name' => 'En espera de repuesto',
             ],
             [
-                'name' => 'Problemas de Frenos',
+                'name' => 'En ejecución',
             ],
             [
-                'name' => 'Problemas Eléctricos',
-            ],
-            [
-                'name' => 'Fallo de Transmisión',
-            ],
-            [
-                'name' => 'Problemas de Suspensión',
-            ],
+                'name' => ' En espera por coordinación con el cliente',
+            ]
         ];
 
         $branch = Branch::where('name', 'El Tigre')->first();

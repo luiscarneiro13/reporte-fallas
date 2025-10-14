@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('faults', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id');
-            $table->string('internal_id');
-            $table->unsignedBigInteger('employee_reported_id');
-            $table->unsignedBigInteger('equipment_id');
-            $table->unsignedBigInteger('fault_status_id');
-            $table->unsignedBigInteger('spare_part_status_id');
+            $table->string('internal_id')->nullable()->index();
+            $table->unsignedBigInteger('employee_reported_id')->nullable();
+            $table->unsignedBigInteger('equipment_id')->nullable();
+            $table->unsignedBigInteger('service_area_id')->nullable();
+            $table->text('description')->nullable();
+
+            $table->unsignedBigInteger('fault_status_id')->nullable();
+            $table->unsignedBigInteger('spare_part_status_id')->nullable();
             $table->date('report_date')->nullable()->index();
             $table->date('scheduled_execution')->nullable()->index();
             $table->date('completed_execution')->nullable()->index();
-            $table->unsignedBigInteger('service_area_id');
-            $table->unsignedBigInteger('executor_id');
-            $table->text('description')->nullable();
+            $table->unsignedBigInteger('executor_id')->nullable();
             $table->text('equipment_maintenance_log')->nullable();
 
             $table->timestamps();

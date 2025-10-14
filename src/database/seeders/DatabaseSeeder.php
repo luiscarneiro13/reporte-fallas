@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MethodPaymentSeeder::class);
 
         // Nuevo
-        $this->call(FaultSeeder::class);
+        $this->call(EmployeeSeeder::class);
         $this->call(OwnerSeeder::class);
         $this->call(ServiceAreaSeeder::class);
         $this->call(CustomersSeeder::class);
@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FaultStatusSeeder::class);
         $this->call(SparePartStatusSeeder::class);
 
+        $this->call(FaultSeeder::class);
         // $this->call(ServiceSeeder::class);
 
 

@@ -11,51 +11,92 @@
 @stop
 
 @section('content')
+    <form action="{{ route('admin.sucursal.projects.update', $project) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="id" value="{{ $project->id }}">
 
-    <div class="card">
-        <div class="card-body">
-            <form action="{{ route('admin.sucursal.projects.update', $project) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="id" value="{{ $project->id }}">
+        <div class="card card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Falla detectada</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <x-adminlte-input name="internal_id" label="ID interno (opcional)" placeholder=""
+                        fgroup-class="col-md-2" value="{{ old('internal_id') }}" />
+                </div>
 
                 <div class="row">
 
-                    <div class="col-md-5">
-                        <x-label value="Cliente" btnAddModalTarget="#modalAddCustomer" />
-                        {{ Form::select('customer_id', $customers, $project->customer_id, ['class' => 'select2 form-control']) }}
-                    </div>
+                    <x-select label="Reportado por" name="employee_reported_id" :items="$employeeReported" class="col-md-4" />
 
-                    <x-adminlte-input name="name" label="Nombre del proyecto" placeholder="" fgroup-class="col-md-7"
-                        value="{{ $project->name }}" />
+                    <x-select label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
+                        classControl="select2 form-control" />
 
-                    <div class="col-md-5">
-                        <x-label value="División" btnAddModalTarget="#modalAddDivision" />
-                        {{ Form::select('division_id', $divisions, $project->division_id, ['class' => 'select2 form-control']) }}
-                    </div>
+                    <x-select label="Area de servicio" name="service_area_id" :items="$serviceArea" class="col-md-4"
+                        classControl="select2 form-control" />
 
-                    <x-adminlte-input name="contract_number" label="Nro. de Contrato (opcional)" placeholder=""
-                        fgroup-class="col-md-7" value="{{ $project->contract_number }}" />
-
-                    <x-adminlte-input name="geographic_area" label="Area geográfica" placeholder="" fgroup-class="col-md-12"
-                        value="{{ $project->geographic_area }}" />
-
-                    <x-adminlte-textarea name="description" label="Descripción (opcional)" placeholder=""
-                        fgroup-class="col-md-12">
-                        {{ $project->description }}
-                    </x-adminlte-textarea>
+                    <x-adminlte-textarea name="description" label="Descripción de la falla" placeholder=""
+                        fgroup-class="col-md-12 mt-3" value="{{ old('description') }}" />
 
                 </div>
 
-                <div class="row mt-5">
-                    <a href="{{ route('admin.sucursal.projects.index') }}" class="btn-sm mr-3 btn-default" type="submit"
-                        icon="fas fa-lg fa-save">Cancelar</a>
-                    <x-adminlte-button class="btn btn-sm" type="submit" label="Guardar" theme="primary"
-                        icon="fas fa-lg fa-save" />
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="card card-dark">
+            <div class="card-header">
+                <h3 class="card-title">Diagnóstico y Solución</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <x-select label="Status de la falla" name="fault_status_id" :items="$faultStatus" class="col-md-3" />
+
+                    <x-select label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses" class="col-md-3"
+                        classControl="select2 form-control" />
+
+
+                    <div class="col-md-3">
+                        {!! Form::label('report_date', 'Fecha del reporte') !!}
+                        {!! Form::text('report_date', null, ['class' => 'form-control datepicker', 'id' => 'report_date']) !!}
+                    </div>
+
+                    <div class="col-md-3">
+                        {!! Form::label('scheduled_execution', 'Ejecución planificada') !!}
+                        {!! Form::text('scheduled_execution', null, ['class' => 'form-control datepicker', 'id' => 'report_date']) !!}
+                    </div>
+
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        {!! Form::label('completed_execution', 'Ejecución completada') !!}
+                        {!! Form::text('completed_execution', null, [
+                            'class' => 'form-control datepicker datepicker-optional',
+                            'id' => 'report_date',
+                        ]) !!}
+                    </div>
+
+                    <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
+                        classControl="select2 form-control" />
+
+                    <x-adminlte-textarea name="equipment_maintenance_log" label="Actividades realizadas al equipo"
+                        placeholder="" fgroup-class="col-md-12 mt-3" value="{{ old('equipment_maintenance_log') }}" />
+                </div>
+            </div>
+        </div>
+    </form>
 
     <div id="addCustomer"></div>
     <div id="addDivision"></div>

@@ -26,7 +26,7 @@
                         {{ Form::select('customer_id', $customers, $project->customer_id, ['class' => 'select2 form-control']) }}
                     </div>
 
-                    <x-adminlte-input name="name" label="Nombre del proyecto" placeholder="" fgroup-class="col-md-7"
+                    <x-input-custom name="name" label="Nombre del proyecto" placeholder="" class="col-md-7"
                         value="{{ $project->name }}" />
 
                     <div class="col-md-5">
@@ -34,14 +34,14 @@
                         {{ Form::select('division_id', $divisions, $project->division_id, ['class' => 'select2 form-control']) }}
                     </div>
 
-                    <x-adminlte-input name="contract_number" label="Nro. de Contrato (opcional)" placeholder=""
-                        fgroup-class="col-md-7" value="{{ $project->contract_number }}" />
+                    <x-input-custom name="contract_number" label="Nro. de Contrato (opcional)" placeholder=""
+                        class="col-md-7" value="{{ $project->contract_number }}" />
 
-                    <x-adminlte-input name="geographic_area" label="Area geográfica" placeholder="" fgroup-class="col-md-12"
+                    <x-input-custom name="geographic_area" label="Area geográfica" placeholder="" class="col-md-12"
                         value="{{ $project->geographic_area }}" />
 
                     <x-adminlte-textarea name="description" label="Descripción (opcional)" placeholder=""
-                        fgroup-class="col-md-12">
+                        fgroup-class="col-md-12 mt-3">
                         {{ $project->description }}
                     </x-adminlte-textarea>
 

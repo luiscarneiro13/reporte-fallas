@@ -17,26 +17,14 @@ class SparePartStatusSeeder extends Seeder
 
         $sparePartStatus = [
             [
-                'name' => 'En Stock',
+                'name' => 'Por solicitar',
             ],
             [
-                'name' => 'Stock Mínimo',
+                'name' => 'Solicitado',
             ],
             [
-                'name' => 'Agotado',
-            ],
-            [
-                'name' => 'En Pedido',
-            ],
-            [
-                'name' => 'En Tránsito',
-            ],
-            [
-                'name' => 'Reservado',
-            ],
-            [
-                'name' => 'Obsoleto',
-            ],
+                'name' => 'En almacén',
+            ]
         ];
 
         $branch = Branch::where('name', 'El Tigre')->first();

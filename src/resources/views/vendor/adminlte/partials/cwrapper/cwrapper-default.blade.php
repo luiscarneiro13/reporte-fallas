@@ -27,4 +27,28 @@
         </div>
     </div>
 
+    <div class="separacion-movil-600"></div>
 </div>
+
+<style>
+    /*
+    Esta Media Query aplica los estilos a pantallas con un ancho MÁXIMO de 991px.
+    Esto cubre típicamente móviles y tablets (Bootstrap usa 992px como punto de quiebre para 'md').
+    */
+    @media (max-width: 991px) {
+        .separacion-movil-600 {
+            height: 600px !important;
+            /* ¡Importante! Asegura que se aplique */
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+    }
+
+    /* Para pantallas grandes, esta clase no tendrá efecto (height: 0 o simplemente se omite) */
+    @media (min-width: 992px) {
+        .separacion-movil-600 {
+            height: 0 !important;
+        }
+    }
+</style>

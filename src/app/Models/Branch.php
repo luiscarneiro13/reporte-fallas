@@ -33,9 +33,14 @@ class Branch extends Model
         return $this->hasMany(Service::class, 'branch_id');
     }
 
+    // public function employees()
+    // {
+    //     return $this->belongsToMany(User::class, 'user_branch');
+    // }
+
     public function employees()
     {
-        return $this->belongsToMany(User::class, 'user_branch');
+        return $this->hasMany(Employee::class);
     }
 
     public function equipment()

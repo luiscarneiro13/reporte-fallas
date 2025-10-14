@@ -21,20 +21,20 @@
                 <div class="row">
 
                     {{-- Cédula, Nombre, Apellido: AHORA REQUERIDOS --}}
-                    <x-adminlte-input name="identification_number" label="Cédula" placeholder="" fgroup-class="col-md-4"
+                    <x-input-custom name="identification_number" label="Cédula" placeholder="" class="col-md-4"
                         value="{{ $employee->identification_number }}" />
 
-                    <x-adminlte-input name="first_name" label="Nombre" placeholder="" fgroup-class="col-md-4"
+                    <x-input-custom name="first_name" label="Nombre" placeholder="" class="col-md-4"
                         value="{{ $employee->first_name }}" />
 
-                    <x-adminlte-input name="last_name" label="Apellido" placeholder="" fgroup-class="col-md-4"
+                    <x-input-custom name="last_name" label="Apellido" placeholder="" class="col-md-4"
                         value="{{ $employee->last_name }}" />
 
                     {{-- Teléfono y Dirección: NO REQUERIDOS --}}
-                    <x-adminlte-input name="phone_number" label="Teléfono" placeholder="" fgroup-class="col-md-4"
+                    <x-input-custom name="phone_number" label="Teléfono" placeholder="" class="col-md-4"
                         value="{{ $employee->phone_number }}" />
 
-                    <x-adminlte-input name="address" label="Dirección (opcional)" placeholder="" fgroup-class="col-md-8"
+                    <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-8"
                         value="{{ $employee->address }}" />
                 </div>
 
@@ -51,7 +51,7 @@
                     <x-select label="Rol de sistema" name="role_id" :items="$roles" class="col-md-4" />
 
                     <x-adminlte-input name="text" id="password_input" label="Contraseña temporal"
-                        placeholder="" fgroup-class="col-md-4" autocomplete="new-password" value="{{ old('password') }}" />
+                        placeholder="" fgroup-class="col-md-4 mt-3" autocomplete="new-password" value="{{ old('password') }}" />
                 </div>
 
                 <div class="row mt-5">

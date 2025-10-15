@@ -1,53 +1,15 @@
-# ----------------------------------------------------------------------
-# GITIGNORE DE LA RAÍZ (PARA PROYECTO LARAVEL EN 'SRC/')
-# Ubicar al mismo nivel que la carpeta 'src/'.
-# ----------------------------------------------------------------------
-
-### 1. ARCHIVOS SENSIBLES Y GLOBALES ###
-
-# Archivos de Entorno (Contienen secretos y credenciales)
-.env
-*.env
+/.phpunit.cache
+/storage/*.key
 .env.backup
-.env.testing
-.env.production # Incluimos tu regla específica
-
-# Logs y Archivos Temporales
-*.log
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
 auth.json
 npm-debug.log
 yarn-error.log
-
-# Configuraciones de Desarrollo (IDEs y Herramientas)
-.idea/
-.vscode/
-.fleet
-Homestead.json
-Homestead.yaml
-docker-compose.override.yml
-docker-compose.local.yml
-
-### 2. CONTENIDO DE LARAVEL (DENTRO DE 'SRC/') ###
-
-# Dependencias (Composer y NPM/Yarn)
-/src/vendor
-/src/node_modules
-
-# CACHÉ Y FILESYSTEM (CRUCIALES PARA NO SUBIR CACHE)
-/src/storage/*.key
-/src/public/hot
-/src/public/storage
-/src/public/build # Salida de assets de Vite
-
-# Archivos de cache generados por 'php artisan optimize:clear'
-/src/bootstrap/cache/*.php
-
-# Cache de Vistas, Sesiones y Framework
-/src/storage/framework/cache/*
-/src/storage/framework/sessions/*
-/src/storage/framework/views/*
-/src/storage/logs/*
-
-# Cache y resultados de PHPUnit
-/src/.phpunit.cache
-.phpunit.result.cache
+/.fleet
+/.idea
+/.vscode
+/vendor
+/node_modules

@@ -2,10 +2,11 @@ services:
   php:
     build:
       context: . # ruta de referencia ./
-      dockerfile: ./src/Dockerfile # nombre del archivo de configuracion de la imagen
+      dockerfile: ./Dockerfile # nombre del archivo de configuracion de la imagen
     container_name: reportefallasbackend-php #
     volumes:
-      - ./src:/var/www
+      - .:/var/www
+    user: "${UID}:${GID}"
     ports:
       - 9000:80
     networks:
@@ -17,8 +18,8 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./src:/var/www # carpeta local/ vincula a carpeta de nginx
-      - ./src/nginx/default.conf:/etc/nginx/conf.d/default.conf # archivo local / reflejado en archivo de la imagen
+      - .:/var/www # carpeta local/ vincula a carpeta de nginx
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # archivo local / reflejado en archivo de la imagen
     depends_on:
       - php
     networks:

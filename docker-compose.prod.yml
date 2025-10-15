@@ -9,7 +9,7 @@ services:
     ports:
       - 9000:80
     networks:
-      - vemitienda
+      - reportefallas
 
   nginx:
     image: nginx:stable-alpine

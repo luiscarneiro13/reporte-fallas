@@ -11,9 +11,15 @@ echo ""
 APP_CONTAINER="reportefallasbackend-php"
 NGINX_CONTAINER="reportefallasbackend-nginx"
 
+# =========================
+# Blindaje de permisos: exportar UID y GID
+# =========================
+export UID=$(id -u)
+export GID=$(id -g)
+
 echo ""
 echo ">> Reconstruyendo contenedores y levantando servicios (docker compose up -d)..."
-docker compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.yml up -d --build
 
 # =========================
 # Esperar a que los contenedores estén listos
@@ -33,7 +39,7 @@ wait_for_container "$NGINX_CONTAINER"
 echo ""
 echo ">> Instalando dependencias Composer y NPM..."
 docker exec "$APP_CONTAINER" chown -R www-data:www-data /var/www
-docker exec "$APP_CONTAINER" chmod -R 775 /var/www/public/images /var/www/public/thumbnails /var/www/storage/logs /var/www/storage /var/www/bootstrap/cache
+docker exec "$APP_CONTAINER" chmod -R 775 /var/www/public/images /var/www/storage/logs /var/www/storage /var/www/bootstrap/cache
 docker exec "$APP_CONTAINER" php artisan optimize:clear
 docker exec "$APP_CONTAINER" composer install --ignore-platform-req=ext-gd
 docker exec "$APP_CONTAINER" npm install

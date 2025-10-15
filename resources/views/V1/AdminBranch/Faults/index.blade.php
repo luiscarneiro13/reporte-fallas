@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Proyectos')
+@section('title', 'Resumen de fallas')
 
 @section('content_header')
     {{-- <h1>Proyectos</h1> --}}
@@ -8,40 +8,36 @@
 
 @section('content')
     @php
-        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', 'Nro. Contrato', ''];
+        $headers = ['ID', 'Descripción', ''];
     @endphp
 
-    <x-base-data-table-search title="Proyectos" :items="$projects" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.projects.create') }}">
+    <x-base-data-table-search title="Resumen de fallas" :items="$faults" :headers="$headers" >
         <x-slot name="body">
-            @forelse ($projects as $item)
+            @forelse ($faults as $item)
                 <tr>
-                    <td>{{ $item->customer_name }}</td>
-                    <td>{{ $item->project_name }}</td>
-                    <td>{{ $item->division_name }}</td>
-                    <td>{{ $item->project_geographic_area }}</td>
-                    <td>{{ $item->project_contract_number }}</td>
+                    <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }} </td>
+                    <td>{{ $item->description }}</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="{{ route('admin.sucursal.projects.edit', $item) }}">
+                                    {{-- <a class="dropdown-item" href="{{ route('admin.sucursal.faults.edit', $item) }}">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
 
                                     <div class="dropdown-divider"></div>
-                                    <form class="formEliminar"
-                                        action="{{ route('admin.sucursal.projects.destroy', $item) }}" method="post">
+                                    <form class="formEliminar" action="{{ route('admin.sucursal.faults.destroy', $item) }}"
+                                        method="post">
                                         @csrf
                                         @method('delete')
                                         <button class="dropdown-item" type="submit">
                                             <i class="fa fa-trash">&nbsp;</i>
                                             Eliminar
                                         </button>
-                                    </form>
+                                    </form> --}}
 
                                 </div>
                             </div>

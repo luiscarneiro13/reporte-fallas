@@ -10,9 +10,6 @@
     <div class="d-flex justify-content-between align-items-center">
         <h1>Reportar falla</h1>
     </div>
-
-    @vite('resources/js/addCustomer.js')
-    @vite('resources/js/addDivision.js')
 @stop
 
 @section('content')
@@ -67,8 +64,6 @@
 
 
 
-    <div id="addCustomer"></div>
-    <div id="addDivision"></div>
 
 @stop
 
@@ -76,26 +71,8 @@
     <script>
         $(document).ready(function() {
 
-            window.branchId = {{ session('branch')->id ?? 'null' }};
-
             $('.select2').select2({
                 width: '100%'
-            });
-
-            $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
-                $(this).modal("hide");
-                var customerSelect = $('select[name="customer_id"]');
-                var newOption = new Option(newCustomer.name, newCustomer.id, true, true);
-                customerSelect.append(newOption);
-                customerSelect.val(newCustomer.id).trigger('change');
-            });
-
-            $("#modalAddDivision").on('divisionAdded', function(event, newDivision) {
-                $(this).modal("hide");
-                var divisionSelect = $('select[name="division_id"]');
-                var newOption = new Option(newDivision.name, newDivision.id, true, true);
-                divisionSelect.append(newOption);
-                divisionSelect.val(newDivision.id).trigger('change');
             });
 
         });

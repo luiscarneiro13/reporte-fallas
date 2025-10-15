@@ -16,14 +16,16 @@ class Fault extends Model
         'internal_id', // Id interno de la falla
         'employee_reported_id', // Id del empleado que reportó la falla
         'equipment_id', // Equipo asociado
+        'service_area_id', // Area de servicio
         'description',
+
         'fault_status_id', // Estatus de la falla
         'spare_part_status_id', // Estatus del repuesto
         'report_date', // Fecha del reporte
         'scheduled_execution', // Ejecución planificada
         'completed_execution', // Ejecución completada
-        'service_area_id', // Area de servicio
         'executor_id', // Actividad realizada por
+
         'equipment_maintenance_log' // Actividades realizadas al equipo
 
     ];

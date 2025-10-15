@@ -41,7 +41,7 @@ wait_for_container "$NGINX_CONTAINER"
 
 echo ""
 echo ">> Instalando dependencias Composer y NPM..."
-# docker exec "$APP_CONTAINER" chown -R www-data:www-data /var/www
+docker exec "$APP_CONTAINER" chown -R www-data:www-data /var/www
 docker exec "$APP_CONTAINER" chmod -R 775 /var/www/public/images /var/www/storage/logs /var/www/storage /var/www/bootstrap/cache
 docker exec "$APP_CONTAINER" php artisan optimize:clear
 docker exec "$APP_CONTAINER" composer install --ignore-platform-req=ext-gd

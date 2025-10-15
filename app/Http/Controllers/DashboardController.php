@@ -23,7 +23,7 @@ class DashboardController extends Controller
             //Es un administrador general. Puede ver todas las sucursales
         }
         // return session('branch');
-        // return redirect()->route('sell.index');
-        return view('dashboard');
+        return redirect()->route('admin.sucursal.faults.index');
+        // return view('dashboard');
     }
 }

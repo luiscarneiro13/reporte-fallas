@@ -310,7 +310,7 @@ return [
         [
             'text' => 'Resumen de fallas',
             'icon' => 'fas fa-tachometer-alt',
-            'url'  => '#',
+            'route'  => 'admin.sucursal.faults.index',
         ],
         [
             'text' => 'Reportar falla',

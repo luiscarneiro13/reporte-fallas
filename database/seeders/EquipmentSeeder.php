@@ -64,12 +64,15 @@ class EquipmentSeeder extends Seeder
             ],
         ];
 
-        foreach ($equipment as $item) {
+        foreach ($equipment as $data) {
 
-            $equipment = $branch->equipment()->create($item);
+            $equipment = $branch->equipment()->firstOrCreate(
+                ['internal_code' => $data['internal_code']],
+                $data
+            );
 
             if (!empty($projectIds)) {
-                $equipment->projects()->attach($projectIds[0]);
+                $equipment->projects()->syncWithoutDetaching([$projectIds[0]]);
             }
         }
     }

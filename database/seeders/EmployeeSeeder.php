@@ -52,7 +52,10 @@ class EmployeeSeeder extends Seeder
         ];
 
         foreach ($employees as $data) {
-            $branch->employees()->create($data);
+            $branch->employees()->firstOrCreate(
+                ['identification_number' => $data['identification_number']],
+                $data
+            );
         }
     }
 }

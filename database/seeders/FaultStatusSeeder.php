@@ -29,7 +29,10 @@ class FaultStatusSeeder extends Seeder
         $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($faultStatus as $item) {
-            $branch->faultStatus()->create($item);
+            $branch->faultStatus()->firstOrCreate(
+                ['name' => trim($item['name'])],
+                $item
+            );
         }
     }
 }

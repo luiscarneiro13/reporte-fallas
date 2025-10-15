@@ -51,7 +51,10 @@ class ServiceAreaSeeder extends Seeder
         ];
 
         foreach ($serviceAreas as $item) {
-            $branch->serviceAreas()->create($item);
+            $branch->serviceAreas()->firstOrCreate(
+                ['name' => $item['name']],
+                $item
+            );
         }
     }
 }

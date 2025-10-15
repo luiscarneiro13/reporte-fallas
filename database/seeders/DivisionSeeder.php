@@ -31,7 +31,7 @@ class DivisionSeeder extends Seeder
         ];
 
         foreach ($divisions as $item) {
-            $branch->divisions()->create($item);
+            $branch->divisions()->firstOrCreate(['name' => $item['name']], $item);
         }
     }
 }

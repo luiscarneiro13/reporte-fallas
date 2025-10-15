@@ -30,7 +30,10 @@ class SparePartStatusSeeder extends Seeder
         $branch = Branch::where('name', 'El Tigre')->first();
 
         foreach ($sparePartStatus as $item) {
-            $branch->sparePartStatus()->create($item);
+            $branch->sparePartStatus()->firstOrCreate(
+                ['name' => $item['name']],
+                $item
+            );
         }
     }
 }

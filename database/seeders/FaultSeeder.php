@@ -61,7 +61,10 @@ class FaultSeeder extends Seeder
         ];
 
         foreach ($faults as $fault) {
-            Fault::create($fault);
+            Fault::firstOrCreate(
+                ['description' => $fault['description']],
+                $fault
+            );
         }
     }
 }

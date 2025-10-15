@@ -43,7 +43,10 @@ class ProjectSeeder extends Seeder
         ];
 
         foreach ($projects as $item) {
-            $branch->projects()->create($item);
+            $branch->projects()->firstOrCreate(
+                ['contract_number' => $item['contract_number']],
+                $item
+            );
         }
     }
 }

@@ -55,7 +55,7 @@ class EquipmentController extends Controller
             });
         }
 
-        $equipmentQuery->orderBy('Equipment.id', 'desc');
+        $equipmentQuery->orderBy('equipment.id', 'desc');
         // 5. Ejecutar la consulta con paginación
         $equipment = $equipmentQuery->paginate(10);
 

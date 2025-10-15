@@ -1,0 +1,80 @@
+<?php $__env->startSection('title', 'Ejecutores'); ?>
+
+<?php $__env->startSection('content_header'); ?>
+    
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+    <?php
+        $headers = ['Tipo', 'Cédula', 'Nombre', 'Teléfono', 'Dirección', ''];
+    ?>
+
+    <?php if (isset($component)) { $__componentOriginalc3bb9a15a5f747221a204b851ffb93b4 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.base-data-table-search','data' => ['title' => 'Ejecutores','items' => $executors,'headers' => $headers,'urlBtnAdd' => ''.e(route('admin.sucursal.executors.create')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component->withName('base-data-table-search'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
+<?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['title' => 'Ejecutores','items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($executors),'headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($headers),'urlBtnAdd' => ''.e(route('admin.sucursal.executors.create')).'']); ?>
+         <?php $__env->slot('body', null, []); ?> 
+            <?php $__empty_1 = true; $__currentLoopData = $executors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <tr>
+                    <td><?php echo e($item->external ? 'Externo' : 'Interno'); ?></td>
+                    <td><?php echo e($item->identification_number); ?></td>
+                    <td><?php echo e($item->lastname . ' ' . $item->first_name); ?></td>
+                    <td><?php echo e($item->phone_number); ?></td>
+                    <td><?php echo e($item->address); ?></td>
+                    <td>
+                        <div class="input-group" style="cursor:pointer;">
+                            <div>
+                                <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
+                                <div class="dropdown-menu">
+
+                                    <a class="dropdown-item" href="<?php echo e(route('admin.sucursal.executors.edit', $item)); ?>">
+                                        <i class="fa fa-edit">&nbsp;</i>
+                                        Editar
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <form class="formEliminar"
+                                        action="<?php echo e(route('admin.sucursal.executors.destroy', $item)); ?>" method="post">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('delete'); ?>
+                                        <button class="dropdown-item" type="submit">
+                                            <i class="fa fa-trash">&nbsp;</i>
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <?php endif; ?>
+         <?php $__env->endSlot(); ?>
+     <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4)): ?>
+<?php $attributes = $__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4; ?>
+<?php unset($__attributesOriginalc3bb9a15a5f747221a204b851ffb93b4); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc3bb9a15a5f747221a204b851ffb93b4)): ?>
+<?php $component = $__componentOriginalc3bb9a15a5f747221a204b851ffb93b4; ?>
+<?php unset($__componentOriginalc3bb9a15a5f747221a204b851ffb93b4); ?>
+<?php endif; ?>
+
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('js'); ?>
+    <script>
+        window.branchId = <?php echo e(session('branch')->id); ?>;
+    </script>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/V1/AdminBranch/Executors/index.blade.php ENDPATH**/ ?>

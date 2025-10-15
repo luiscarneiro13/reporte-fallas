@@ -5,6 +5,9 @@ echo "Iniciando Proyecto Laravel con Docker 🚀"
 echo "================================="
 echo ""
 
+export UID=$(id -u)
+export GID=$(id -g)
+
 # =========================
 # Variables
 # =========================
@@ -38,15 +41,18 @@ wait_for_container "$NGINX_CONTAINER"
 
 echo ""
 echo ">> Instalando dependencias Composer y NPM..."
-docker exec "$APP_CONTAINER" chown -R www-data:www-data /var/www
+# docker exec "$APP_CONTAINER" chown -R www-data:www-data /var/www
 docker exec "$APP_CONTAINER" chmod -R 775 /var/www/public/images /var/www/storage/logs /var/www/storage /var/www/bootstrap/cache
 docker exec "$APP_CONTAINER" php artisan optimize:clear
 docker exec "$APP_CONTAINER" composer install --ignore-platform-req=ext-gd
 docker exec "$APP_CONTAINER" npm install
 
+# echo ">> Deshabilitando ssl en local, esto no debe estar en produccion..."
+# docker exec -it reportefallasbackend-php mysql --ssl-mode=DISABLED -h 192.168.1.77 -u root -p
+
 echo ""
 echo ">> Ejecutando migraciones..."
-docker exec "$APP_CONTAINER" php artisan migrate
+docker exec "$APP_CONTAINER" php artisan migrate --seed
 
 echo ""
 echo ">> Instalando passport..."

@@ -48,7 +48,7 @@ docker exec "$APP_CONTAINER" composer install --ignore-platform-req=ext-gd
 docker exec "$APP_CONTAINER" npm install
 
 # echo ">> Deshabilitando ssl en local, esto no debe estar en produccion..."
-# docker exec -it reportefallasbackend-php mysql --ssl-mode=DISABLED -h 192.168.1.77 -u root -p
+docker exec -it reportefallasbackend-php mysql --ssl-mode=DISABLED -h 192.168.1.77 -u root -p
 
 echo ""
 echo ">> Ejecutando migraciones..."

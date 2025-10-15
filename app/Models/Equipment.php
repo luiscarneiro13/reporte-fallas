@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -32,6 +33,13 @@ class Equipment extends Model
         'origin',
         'racda'
     ];
+
+    protected function fullEquipmentName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->brand_name . ' ' . $this->vehicle_model . ' ' . $this->model_year . ' ' . $this->placa,
+        );
+    }
 
     public function branch()
     {

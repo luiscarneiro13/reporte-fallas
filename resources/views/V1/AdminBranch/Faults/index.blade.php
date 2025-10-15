@@ -8,15 +8,19 @@
 
 @section('content')
     @php
-        $headers = ['ID', 'Descripción', ''];
+        $headers = ['ID', 'Código interno', 'Equipo', 'Descripción', 'Area de servicio', 'Tiempo en espera', ''];
     @endphp
 
-    <x-base-data-table-search title="Resumen de fallas" :items="$faults" :headers="$headers" >
+    <x-base-data-table-search title="Resumen de fallas" :items="$faults" :headers="$headers">
         <x-slot name="body">
             @forelse ($faults as $item)
                 <tr>
                     <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }} </td>
-                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->equipment->internal_code }}</td>
+                    <td>{{ $item->equipment->fullEquipmentName }}</td>
+                    <td>{{ Str::limit($item->description, 20, '...') }}</td>
+                    <td>{{ $item->serviceArea->name }}</td>
+                    <td>...</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>

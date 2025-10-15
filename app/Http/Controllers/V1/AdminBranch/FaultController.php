@@ -17,35 +17,94 @@ class FaultController extends Controller
 
     public function index(Request $request)
     {
-        // 1. Capturar el ID de la sucursal de la sesión
+        // 1. Capturar el ID de la sucursal de la sesión y los parámetros de búsqueda
         $branchId = session('branch')->id;
+        $searchName = $request->query('name');                 // Filtro por nombre de empleado
+        $query = $request->query('query');                     // Filtro genérico (ID, descripción, ID Interno)
+        $searchEquipmentName = $request->query('equipment_name'); // Filtro por nombre de equipo
+        $searchServiceAreaName = $request->query('service_area_name'); // Filtro por nombre de área de servicio
 
-        // 2. Capturar el parámetro de búsqueda
-        $query = $request->query('query');
+        // NUEVOS FILTROS POR ID de estado/ejecutor
+        $searchFaultStatusId = $request->query('status_id'); // Filtro por ID de estado de falla
+        $searchSparePartStatusId = $request->query('spare_status_id'); // Filtro por ID de estado de repuesto
+        $searchExecutorId = $request->query('executor_id'); // Filtro por ID de ejecutor
 
-        // 3. Iniciar la consulta con Carga Ansiosa (Eager Loading)
-        $equipmentQuery = Fault::query()
-            // FILTRAR POR LA SUCURSAL DEL USUARIO EN SESIÓN
+
+        // 2. Iniciar la consulta con Carga Ansiosa (Eager Loading)
+        $faultsQuery = Fault::with(['reportedBy', 'equipment', 'serviceArea', 'faultStatus', 'sparePartStatus', 'executor'])
+            // FILTRAR POR LA SUCURSAL DEL USUARIO EN SESIÓN (Requerimiento)
             ->where('branch_id', $branchId);
 
-        // 4. Aplicar filtro de búsqueda si existe un query
-        if ($query) {
-            $equipmentQuery->where(function ($q) use ($query) {
+        // 3. Aplicar filtro de búsqueda por Nombre de Empleado (Funcionalidad preservada)
+        if ($searchName) {
+            $faultsQuery->whereHas('reportedBy', function ($q) use ($searchName) {
+                $searchTerm = '%' . $searchName . '%';
 
-                // Criterios directos (placa, código interno)
-                $q->where('id', ltrim($query, '0'))
-                    ->orWhere('description', 'like', "%{$query}%")
-                ;
-
+                // Buscar coincidencia en first_name o last_name del empleado
+                $q->where('first_name', 'like', $searchTerm)
+                    ->orWhere('last_name', 'like', $searchTerm);
             });
         }
 
-        $equipmentQuery->orderBy('faults.id', 'desc');
-        // 5. Ejecutar la consulta con paginación
-        $faults = $equipmentQuery->paginate(10);
+        // 4. Aplicar filtro de búsqueda por Nombre de Equipo (NUEVA FUNCIONALIDAD)
+        if ($searchEquipmentName) {
+            $faultsQuery->whereHas('equipment', function ($q) use ($searchEquipmentName) {
+                $q->where('name', 'like', "%{$searchEquipmentName}%");
+            });
+        }
 
-        // 6. Devolver la vista con los resultados
-        return view('V1.AdminBranch.Faults.index', compact('faults'));
+        // 5. Aplicar filtro de búsqueda por Nombre de Área de Servicio (NUEVA FUNCIONALIDAD)
+        if ($searchServiceAreaName) {
+            $faultsQuery->whereHas('serviceArea', function ($q) use ($searchServiceAreaName) {
+                $q->where('name', 'like', "%{$searchServiceAreaName}%");
+            });
+        }
+
+        // 6. Aplicar filtro por Estado de Falla (fault_status_id)
+        if ($searchFaultStatusId) {
+            $faultsQuery->where('fault_status_id', $searchFaultStatusId);
+        }
+
+        // 7. Aplicar filtro por Estado de Repuesto (spare_part_status_id)
+        if ($searchSparePartStatusId) {
+            $faultsQuery->where('spare_part_status_id', $searchSparePartStatusId);
+        }
+
+        // 8. Aplicar filtro por Ejecutor (executor_id)
+        if ($searchExecutorId) {
+            $faultsQuery->where('executor_id', $searchExecutorId);
+        }
+
+        // 9. Aplicar filtro de búsqueda genérico (ID/Descripción) (Funcionalidad preservada)
+        if ($query) {
+            $faultsQuery->where(function ($q) use ($query) {
+                // Criterios directos (ID - quitando ceros a la izquierda)
+                $q->where('id', ltrim($query, '0'))
+                    // Criterio por descripción
+                    ->orWhere('description', 'like', "%{$query}%")
+                    // Criterio por ID interno
+                    ->orWhere('internal_id', 'like', "%{$query}%");
+            });
+        }
+
+        // 10. Aplicar ordenamiento (Requerimiento: descendente por ID)
+        $faultsQuery->orderBy('faults.id', 'desc');
+
+        // 11. Ejecutar la consulta con paginación (Requerimiento: 10 elementos)
+        $faults = $faultsQuery->paginate(10);
+
+        // 12. Devolver la vista con los resultados
+        // Utilizamos la cadena literal de la vista según tu indicación, pasando todos los filtros.
+        return view('V1.AdminBranch.Faults.index', compact(
+            'faults',
+            'searchName',
+            'query',
+            'searchEquipmentName',
+            'searchServiceAreaName',
+            'searchFaultStatusId',
+            'searchSparePartStatusId',
+            'searchExecutorId'
+        ));
     }
 
     public function create()

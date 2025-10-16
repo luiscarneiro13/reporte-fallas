@@ -24,6 +24,7 @@ class CustomerController extends Controller
                     $subQuery->Orhere('address', 'like', "%{$query}%");
                     $subQuery->Orhere('email', 'like', "%{$query}%");
                     $subQuery->Orhere('phone', 'like', "%{$query}%");
+                    $subQuery->Orhere('rif', 'like', "%{$query}%");
                 });
             })
             ->orderBy('id', 'desc')
@@ -45,6 +46,7 @@ class CustomerController extends Controller
             $item->address = $request->input('address');
             $item->email = $request->input('email');
             $item->phone = $request->input('phone');
+            $item->rif = $request->input('rif');
             $item->branch_id = session('branch')->id;
             $item->save();
 
@@ -78,6 +80,7 @@ class CustomerController extends Controller
             $item->address = $request->input('address');
             $item->email = $request->input('email');
             $item->phone = $request->input('phone');
+            $item->rif = $request->input('rif');
             $item->save();
 
             if (request()->back_url) {

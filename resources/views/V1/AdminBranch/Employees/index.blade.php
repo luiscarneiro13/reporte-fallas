@@ -8,7 +8,7 @@
 
 @section('content')
     @php
-        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Usuario', 'Rol de sistema', 'Dirección', ''];
+        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Cargo', 'Dirección', 'Usuario', 'Rol de sistema', ''];
     @endphp
 
     <x-base-data-table-search title="Empleados" :items="$employees" :headers="$headers"
@@ -19,9 +19,11 @@
                     <td>{{ $item->identification_number }}</td>
                     <td>{{ $item->lastname . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ $item->position }}</td>
                     <td>{{ $item->address }}</td>
+                    <td>{{ $item->users->first()?->email ?? '' }}</td>
+                    <td>{{ $item->users->first()?->roles->first()?->name ?? '' }}</td>
+
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>

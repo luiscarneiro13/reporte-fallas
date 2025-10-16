@@ -11,7 +11,7 @@ class Customer extends Model
 
     protected $table = "customers";
 
-    protected $fillable = ['name', 'address', 'phone', 'email', 'branch_id'];
+    protected $fillable = ['name', 'address', 'phone', 'email', 'branch_id', 'rif'];
 
     public function branch()
     {

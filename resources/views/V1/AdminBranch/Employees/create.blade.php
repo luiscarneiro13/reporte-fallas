@@ -39,7 +39,10 @@
                         {{ Form::select('executor', [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control']) }}
                     </div>
 
-                    <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-6"
+                    <x-input-custom name="position" label="Cargo" placeholder="" class="col-md-4"
+                        value="{{ old('position') }}" />
+
+                    <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-12"
                         value="{{ old('address') }}" />
                 </div>
 

@@ -11,7 +11,7 @@ class Employee extends Model
 
     protected $table = "employees";
 
-    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external'];
+    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external', 'position'];
 
     public function branch()
     {
@@ -20,7 +20,7 @@ class Employee extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'employee_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'employee_users')->withTimestamps();
     }
 
     public function reportedFaults()

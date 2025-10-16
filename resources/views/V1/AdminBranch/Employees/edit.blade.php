@@ -31,10 +31,16 @@
                         value="{{ $employee->last_name }}" />
 
                     {{-- Teléfono y Dirección: NO REQUERIDOS --}}
-                    <x-input-custom name="phone_number" label="Teléfono" placeholder="" class="col-md-4"
+                    <x-input-custom name="phone_number" label="Teléfono" placeholder="" class="col-md-2"
                         value="{{ $employee->phone_number }}" />
 
-                    <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-8"
+                    <x-select label="Ejecutor de servicio" name="executor" :items="[0 => 'No', 1 => 'Si']" :selected="$employee->executor"
+                        class="col-md-2" />
+
+                    <x-input-custom name="position" label="Cargo" placeholder="" class="col-md-4"
+                        value="{{ $employee->position }}" />
+
+                    <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-12"
                         value="{{ $employee->address }}" />
                 </div>
 
@@ -50,8 +56,8 @@
 
                     <x-select label="Rol de sistema" name="role_id" :items="$roles" class="col-md-4" />
 
-                    <x-adminlte-input name="text" id="password_input" label="Contraseña temporal"
-                        placeholder="" fgroup-class="col-md-4 mt-3" autocomplete="new-password" value="{{ old('password') }}" />
+                    <x-adminlte-input name="text" id="password_input" label="Contraseña temporal" placeholder=""
+                        fgroup-class="col-md-4 mt-3" autocomplete="new-password" value="{{ old('password') }}" />
                 </div>
 
                 <div class="row mt-5">

@@ -21,25 +21,29 @@ class CustomersSeeder extends Seeder
                 'name' => 'Empresas polar',
                 'address' => 'Av. Jesús Subero',
                 'phone' => '0283-1234567',
-                'email' => 'cualquieremail1@gmail.com'
+                'email' => 'cualquieremail1@gmail.com',
+                'rif' => 'J-12345678-9',
             ],
             [
                 'name' => 'Pepsi',
                 'address' => 'Av. Jesús Subero',
                 'phone' => '0283-1234567',
-                'email' => 'cualquieremail2@gmail.com'
+                'email' => 'cualquieremail2@gmail.com',
+                'rif' => 'J-12345678-9',
             ],
             [
                 'name' => 'Coca Cola',
                 'address' => 'Av. Jesús Subero',
                 'phone' => '0283-1234567',
-                'email' => 'cualquieremail3@gmail.com'
+                'email' => 'cualquieremail3@gmail.com',
+                'rif' => 'J-12345678-9',
             ],
             [
                 'name' => 'Banesco',
                 'address' => 'Av. Jesús Subero',
                 'phone' => '0283-1234567',
-                'email' => 'cualquieremail4@gmail.com'
+                'email' => 'cualquieremail4@gmail.com',
+                'rif' => 'J-12345678-9',
             ],
         ];
 

@@ -7,11 +7,12 @@
 @stop
 
 @section('content')
+
     @php
         $headers = ['ID', 'Código interno', 'Equipo', 'Descripción', 'Area de servicio', 'Tiempo en espera', ''];
     @endphp
 
-    <x-base-data-table-search title="Resumen de fallas" :items="$faults" :headers="$headers">
+    <x-faults-resume title="Resumen de fallas" :items="$faults" :headers="$headers">
         <x-slot name="body">
             @forelse ($faults as $item)
                 <tr>
@@ -51,7 +52,7 @@
             @empty
             @endforelse
         </x-slot>
-    </x-base-data-table-search>
+    </x-faults-resume>
 
 @stop
 

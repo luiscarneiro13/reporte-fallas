@@ -20,7 +20,7 @@ class EmployeeController extends Controller
     public function index()
     {
         $query = request('query');
-        $employees = Employee::query()
+        $employees = Employee::with(['users.roles'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -29,6 +29,7 @@ class EmployeeController extends Controller
                         ->orWhere('email', 'like', "%{$query}%")
                         ->orWhere('phone_number', 'like', "%{$query}%")
                         ->orWhere('address', 'like', "%{$query}%")
+                        ->orWhere('position', 'like', "%{$query}%")
                     ;
                 });
             })
@@ -36,6 +37,7 @@ class EmployeeController extends Controller
             ->where('external', 0)
             ->orderBy('last_name', 'asc')
             ->paginate(10);
+
         return view('V1.AdminBranch.Employees.index', compact('employees'));
     }
 
@@ -81,6 +83,7 @@ class EmployeeController extends Controller
             $item->phone_number = $request->input('phone_number');
             $item->address = $request->input('address');
             $item->executor = $request->input('executor');
+            $item->position = $request->input('position');
             $item->branch_id = session('branch')->id;
             $item->save();
 

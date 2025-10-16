@@ -6,10 +6,11 @@
     'class' => 'col-md-12',
     'classControl' => '',
     'id' => '',
+    'required' => false,
 ])
 
 <div class="{{ $class }}">
-    <x-label value="{{ $label }}" />
+    <x-label required="{{ $required ? true : false }}" value="{{ $label }}" />
     {{ Form::select($name, $items, $selected, ['class' => 'form-control ' . $classControl . ' ' . ($errors->has($name) ? ' is-invalid' : ''), 'id' => $id]) }}
     @error($name)
         <div class="invalid-feedback font-weight-bold">

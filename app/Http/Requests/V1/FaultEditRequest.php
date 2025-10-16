@@ -5,7 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class FaultRequest extends FormRequest
+class FaultEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,57 +20,43 @@ class FaultRequest extends FormRequest
     }
 
     /**
-     * Preprocesa los datos antes de aplicar las reglas de validación.
-     * Convierte "0" en entero para evitar errores con el validador.
-     */
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('executor_id') && $this->input('executor_id') === '0') {
-            $this->merge([
-                'executor_id' => 0,
-            ]);
-        }
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $faultId = (int) $this->id;
+        // Obtener el ID de la falla de la ruta si estamos actualizando.
+        // Asume que el parámetro de la ruta resource es 'fault'.
+        $faultId = $this->route('fault');
 
         return [
+            // Los campos de ID relacionales (branch_id) se excluyen de la validación
+            // ya que se asignan en el controlador (session('branch')->id) y no vienen del request.
+
             'internal_id' => [
-                'nullable',
+                'nullable', // Es nullable en la migración
                 'string',
                 'max:255',
+                // Asegura la unicidad, pero ignora el registro actual si se está actualizando
                 Rule::unique('faults', 'internal_id')->ignore($faultId),
             ],
 
             'employee_reported_id' => ['nullable', 'integer', 'exists:employees,id'],
             'equipment_id' => ['nullable', 'integer', 'exists:equipment,id'],
             'service_area_id' => ['nullable', 'integer', 'exists:service_areas,id'],
-            'description' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
 
+            // Estatus y Ejecución (Todos nullable en la migración)
             'fault_status_id' => ['nullable', 'integer', 'exists:fault_statuses,id'],
             'spare_part_status_id' => ['nullable', 'integer', 'exists:spare_part_statuses,id'],
 
+            // Las fechas son nullable y deben ser un formato de fecha válido
             'report_date' => ['nullable', 'date'],
             'scheduled_execution' => ['nullable', 'date'],
             'completed_execution' => ['nullable', 'date'],
 
-            'executor_id' => [
-                'nullable',
-                'integer',
-                function ($attribute, $value, $fail) {
-                    if ($value !== 0 && !\DB::table('employees')->where('id', $value)->exists()) {
-                        $fail('El ejecutor seleccionado no es válido.');
-                    }
-                },
-            ],
-
+            'executor_id' => ['nullable', 'integer', 'exists:employees,id'],
             'equipment_maintenance_log' => ['nullable', 'string'],
         ];
     }
@@ -105,7 +91,7 @@ class FaultRequest extends FormRequest
             'spare_part_status_id.exists' => 'El estatus del repuesto seleccionado no es válido.',
 
             'executor_id.integer' => 'El ID del ejecutor debe ser un número entero.',
-            // El mensaje personalizado para el validador manual ya está incluido en la función
+            'executor_id.exists' => 'El ejecutor seleccionado no es válido.',
 
             // Fechas
             'report_date.date' => 'La fecha de reporte debe ser una fecha válida.',

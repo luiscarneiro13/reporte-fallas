@@ -1,29 +1,23 @@
 @extends('adminlte::page')
 
-@section('title', 'Proyectos')
+@section('title', 'Editar Falla')
 
 @section('content_header')
-    <h1>Editar Proyecto</h1>
-    <small>{{ $project->name }}</small>
+    {{-- <h1>Editar Falla</h1> --}}
 
     @vite('resources/js/addCustomer.js')
     @vite('resources/js/addDivision.js')
 @stop
 
 @section('content')
-    <form action="{{ route('admin.sucursal.projects.update', $project) }}" method="POST">
+    <form action="{{ route('admin.sucursal.faults.update', $fault) }}" method="POST">
         @csrf
         @method('PUT')
-        <input type="hidden" name="id" value="{{ $project->id }}">
+        <input type="hidden" name="id" value="{{ $fault->id }}">
 
         <div class="card card-dark">
             <div class="card-header">
-                <h3 class="card-title">Falla detectada</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
+                <h3 class="card-title">Editar Falla</h3>
             </div>
             <div class="card-body">
 
@@ -42,30 +36,17 @@
                     <x-select label="Area de servicio" name="service_area_id" :items="$serviceArea" class="col-md-4"
                         classControl="select2 form-control" />
 
-                    <x-adminlte-textarea name="description" label="Descripción de la falla" placeholder=""
-                        fgroup-class="col-md-12 mt-3" value="{{ old('description') }}" />
-
-                </div>
-
-            </div>
-        </div>
-        <div class="card card-dark">
-            <div class="card-header">
-                <h3 class="card-title">Diagnóstico y Solución</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-
-                    <x-select label="Status de la falla" name="fault_status_id" :items="$faultStatus" class="col-md-3" />
+                    <x-select label="Status de la falla" name="fault_status_id" :items="$faultStatus" class="col-md-5" />
 
                     <x-select label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses" class="col-md-3"
                         classControl="select2 form-control" />
 
+                    <x-adminlte-textarea name="description" label="Descripción de la falla" placeholder=""
+                        fgroup-class="col-md-12 mt-3" value="{{ old('description') }}" />
+
+
+                </div>
+                <div class="row">
 
                     <div class="col-md-3">
                         {!! Form::label('report_date', 'Fecha del reporte') !!}
@@ -77,9 +58,6 @@
                         {!! Form::text('scheduled_execution', null, ['class' => 'form-control datepicker', 'id' => 'report_date']) !!}
                     </div>
 
-                </div>
-
-                <div class="row mt-3">
                     <div class="col-md-3">
                         {!! Form::label('completed_execution', 'Ejecución completada') !!}
                         {!! Form::text('completed_execution', null, [
@@ -87,6 +65,9 @@
                             'id' => 'report_date',
                         ]) !!}
                     </div>
+                </div>
+
+                <div class="row mt-3">
 
                     <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
                         classControl="select2 form-control" />
@@ -94,8 +75,10 @@
                     <x-adminlte-textarea name="equipment_maintenance_log" label="Actividades realizadas al equipo"
                         placeholder="" fgroup-class="col-md-12 mt-3" value="{{ old('equipment_maintenance_log') }}" />
                 </div>
+
             </div>
         </div>
+
     </form>
 
     <div id="addCustomer"></div>

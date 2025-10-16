@@ -67,6 +67,8 @@ class FaultService
 
     static function executors()
     {
+        $initValue = collect(["0" => "N/A"]);
+
         $employees = Employee::where('branch_id', session('branch')->id)
             ->where('executor', 1)
             ->select(
@@ -75,6 +77,9 @@ class FaultService
             )
             ->orderBy('last_name', 'asc')
             ->pluck('full_name', 'id');
-        return $employees;
+
+        $result = $initValue->merge($employees);
+
+        return $result;
     }
 }

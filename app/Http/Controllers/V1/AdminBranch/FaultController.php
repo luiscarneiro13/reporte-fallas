@@ -92,7 +92,7 @@ class FaultController extends Controller
 
         // 11. Ejecutar la consulta con paginación (Requerimiento: 10 elementos)
         $faults = $faultsQuery->paginate(10);
-// return $faults;
+
         // 12. Devolver la vista con los resultados
         // Utilizamos la cadena literal de la vista según tu indicación, pasando todos los filtros.
         return view('V1.AdminBranch.Faults.index', compact(
@@ -127,7 +127,33 @@ class FaultController extends Controller
                 + compact('executors')
         );
     }
-    public function edit(string $id) {}
+    public function edit(string $id) {
+
+        $fault = Fault::find($id);
+
+        if (!$fault) {
+            return $this->alertError(self::INDEX, 'Falla no encontrada.');
+        }
+
+        $back_url = request()->back_url ?? null;
+        $employeeReported = FaultService::employeeReported();
+        $equipment = FaultService::equipment();
+        $serviceArea = FaultService::serviceArea();
+        $faultStatus = FaultService::faultStatus();
+        $sparePartStatuses = FaultService::sparePartStatuses();
+        $executors = FaultService::executors();
+
+        return view(
+            'V1.AdminBranch.Faults.edit',
+            compact('fault', 'back_url')
+                + compact('employeeReported')
+                + compact('equipment')
+                + compact('serviceArea')
+                + compact('faultStatus')
+                + compact('sparePartStatuses')
+                + compact('executors')
+        );
+    }
 
     public function store(FaultRequest $request)
     {

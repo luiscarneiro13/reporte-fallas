@@ -44,6 +44,10 @@
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-check">&nbsp;</i>
+                                        Cerrar falla
+                                    </a>
                                     {{--
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar" action="{{ route('admin.sucursal.faults.destroy', $item) }}"

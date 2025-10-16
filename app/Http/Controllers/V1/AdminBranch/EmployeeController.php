@@ -35,7 +35,7 @@ class EmployeeController extends Controller
             })
             ->where('branch_id', session('branch')->id)
             ->where('external', 0)
-            ->orderBy('last_name', 'asc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('V1.AdminBranch.Employees.index', compact('employees'));

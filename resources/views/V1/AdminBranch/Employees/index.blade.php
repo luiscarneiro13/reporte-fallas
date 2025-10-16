@@ -8,7 +8,7 @@
 
 @section('content')
     @php
-        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Cargo', 'Dirección', 'Usuario', 'Rol de sistema', ''];
+        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Cargo', 'Dirección', 'Usuario de sistema', 'Rol de sistema', ''];
     @endphp
 
     <x-base-data-table-search title="Empleados" :items="$employees" :headers="$headers"

@@ -9,7 +9,17 @@
 @section('content')
 
     @php
-        $headers = ['ID', 'Código interno', 'Equipo', 'Descripción', 'Area de servicio', 'Tiempo en espera', ''];
+        $headers = [
+            'ID',
+            'Código interno',
+            'Equipo',
+            'Descripción',
+            'Status de falla',
+            'Status de repuesto',
+            'Area de servicio',
+            'Tiempo en espera',
+            '',
+        ];
     @endphp
 
     <x-faults-resume title="Resumen de fallas" :items="$faults" :headers="$headers">
@@ -20,6 +30,8 @@
                     <td>{{ $item->equipment->internal_code }}</td>
                     <td>{{ $item->equipment->fullEquipmentName }}</td>
                     <td>{{ Str::limit($item->description, 20, '...') }}</td>
+                    <td>{{ $item->faultStatus->name }}</td>
+                    <td>{{ $item->sparePartStatus->name }}</td>
                     <td>{{ $item->serviceArea->name }}</td>
                     <td>...</td>
                     <td>

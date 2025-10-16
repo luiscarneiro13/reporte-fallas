@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-<x-fault-filters />
+{{-- <x-fault-filters /> --}}
             {{-- C A M B I O C L A V E: table-responsive ahora envuelve a la tabla --}}
             <div class="row">
                 <div class="col-sm-12">

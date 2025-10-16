@@ -16,12 +16,18 @@
                 @method('PUT')
                 <input type="hidden" name="id" value="{{ $customer->id }}">
                 <div class="row">
-                    <x-adminlte-input name="name" label="Nombre" placeholder="Nombre" fgroup-class="col-md-4"
+                    <x-adminlte-input name="rif" label="Rif" placeholder="" fgroup-class="col-md-2"
+                        value="{{ $customer->rif }}" />
+
+                    <x-adminlte-input name="name" label="Nombre" placeholder="" fgroup-class="col-md-5"
                         value="{{ $customer->name }}" />
-                    <x-adminlte-input name="email" label="Email" placeholder="Email" fgroup-class="col-md-4"
+
+                    <x-adminlte-input name="email" label="Email" placeholder="" fgroup-class="col-md-3"
                         value="{{ $customer->email }}" />
-                    <x-adminlte-input name="phone" label="Teléfono" placeholder="Teléfono" fgroup-class="col-md-4"
+
+                    <x-adminlte-input name="phone" label="Teléfono" placeholder="" fgroup-class="col-md-2"
                         value="{{ $customer->phone }}" />
+
                     <x-adminlte-input name="address" label="Dirección" placeholder="Dirección" fgroup-class="col-md-12"
                         value="{{ $customer->address }}" />
                 </div>

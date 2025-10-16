@@ -9,7 +9,7 @@
 @section('content')
 
     @php
-        $headers = ['Nombre', 'Email', 'Teléfono', 'Dirección', ''];
+        $headers = ['RIF', 'Nombre', 'Email', 'Teléfono', 'Dirección', ''];
     @endphp
 
     <x-base-data-table-search title="Clientes" :items="$customers" :headers="$headers"
@@ -17,6 +17,7 @@
         <x-slot name="body">
             @forelse ($customers as $item)
                 <tr>
+                    <td>{{ $item->rif }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->phone }}</td>

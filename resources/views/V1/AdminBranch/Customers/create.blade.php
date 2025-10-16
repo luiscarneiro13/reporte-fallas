@@ -16,13 +16,16 @@
                     <input type="hidden" name="back_url" value="{{ $back_url }}">
                 @endif
                 <div class="row">
-                    <x-adminlte-input name="name" label="Nombre" placeholder="Nombre" fgroup-class="col-md-4"
+                    <x-adminlte-input name="rif" label="RIF" placeholder="" fgroup-class="col-md-2"
+                        value="{{ old('rif') }}" />
+
+                    <x-adminlte-input name="name" label="Nombre" placeholder="" fgroup-class="col-md-5"
                         value="{{ old('name') }}" />
-                    <x-adminlte-input name="email" label="Email" placeholder="Email" fgroup-class="col-md-4"
+                    <x-adminlte-input name="email" label="Email" placeholder="" fgroup-class="col-md-3"
                         value="{{ old('email') }}" />
-                    <x-adminlte-input name="phone" label="Teléfono" placeholder="Teléfono" fgroup-class="col-md-4"
+                    <x-adminlte-input name="phone" label="Teléfono" placeholder="" fgroup-class="col-md-2"
                         value="{{ old('phone') }}" />
-                    <x-adminlte-input name="address" label="Dirección" placeholder="Dirección" fgroup-class="col-md-12"
+                    <x-adminlte-input name="address" label="Dirección" placeholder="" fgroup-class="col-md-12"
                         value="{{ old('address') }}" />
                 </div>
 

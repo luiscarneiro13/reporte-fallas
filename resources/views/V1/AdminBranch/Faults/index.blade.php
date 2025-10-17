@@ -33,7 +33,7 @@
                     <td>{{ $item->faultStatus->name }}</td>
                     <td>{{ $item->sparePartStatus->name }}</td>
                     <td>{{ $item->serviceArea->name }}</td>
-                    <td>...</td>
+                    <td>{{ $item->days_since_report }}</td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>

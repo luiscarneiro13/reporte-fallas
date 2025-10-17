@@ -21,10 +21,10 @@
             </div>
             <div class="card-body">
 
-                <div class="row">
+                {{-- <div class="row">
                     <x-adminlte-input name="internal_id" label="ID interno (opcional)" placeholder=""
                         fgroup-class="col-md-2" value="{{ old('internal_id') }}" />
-                </div>
+                </div> --}}
 
                 <div class="row">
 

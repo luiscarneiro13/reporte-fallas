@@ -23,10 +23,10 @@
                     </div>
                     <div class="card-body">
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <x-input-custom name="internal_id" label="ID interno" placeholder="" class="col-md-2"
                                 value="{{ old('internal_id') }}" />
-                        </div>
+                        </div> --}}
 
                         <div class="row">
 

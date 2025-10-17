@@ -29,6 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('executor_id')->nullable();
             $table->text('equipment_maintenance_log')->nullable();
 
+            $table->date('closed')->nullable()->index();
+
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');

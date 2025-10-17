@@ -29,8 +29,8 @@ class Fault extends Model
         'completed_execution', // Ejecución completada
         'executor_id', // Actividad realizada por
 
-        'equipment_maintenance_log' // Actividades realizadas al equipo
-
+        'equipment_maintenance_log', // Actividades realizadas al equipo
+        'closed'
     ];
 
     protected $casts = [

@@ -28,54 +28,56 @@
 
                 <div class="row">
 
-                    <x-select label="Reportado por" name="employee_reported_id" :items="$employeeReported" class="col-md-4" />
+                    <x-select :selected="$fault->employee_reported_id" label="Reportado por" name="employee_reported_id" :items="$employeeReported"
+                        class="col-md-4" />
 
-                    <x-select label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
+                    <x-select :selected="$fault->equipment_id" label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
                         classControl="select2 form-control" />
 
-                    <x-select label="Area de servicio" name="service_area_id" :items="$serviceArea" class="col-md-4"
-                        classControl="select2 form-control" />
+                    <x-select :selected="$fault->service_area_id" label="Area de servicio" name="service_area_id" :items="$serviceArea"
+                        class="col-md-4" classControl="select2 form-control" />
 
-                    <x-select label="Status de la falla" name="fault_status_id" :items="$faultStatus" class="col-md-5" />
+                    <x-select :selected="$fault->fault_status_id" label="Status de la falla" name="fault_status_id" :items="$faultStatus"
+                        class="col-md-5" />
 
-                    <x-select label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses" class="col-md-3"
-                        classControl="select2 form-control" />
+                    <x-select :selected="$fault->spare_part_status_id" label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
+                        class="col-md-3" classControl="select2 form-control" />
 
-                    <x-adminlte-textarea name="description" label="Descripción de la falla" placeholder=""
-                        fgroup-class="col-md-12 mt-3" value="{{ old('description') }}" />
+                    <x-textarea-custom name="description" label="Descripción de la falla" placeholder=""
+                        class="col-md-12 mt-3" value="{{ $fault->description }}" />
 
 
                 </div>
+
                 <div class="row">
 
-                    <div class="col-md-3">
-                        {!! Form::label('report_date', 'Fecha del reporte') !!}
-                        {!! Form::text('report_date', null, ['class' => 'form-control datepicker', 'id' => 'report_date']) !!}
-                    </div>
+                    <x-input-date-custom required name="report_date" label="Fecha del reporte" placeholder=""
+                        class="col-md-3" />
 
-                    <div class="col-md-3">
-                        {!! Form::label('scheduled_execution', 'Ejecución planificada') !!}
-                        {!! Form::text('scheduled_execution', null, ['class' => 'form-control datepicker', 'id' => 'report_date']) !!}
-                    </div>
+                    <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""
+                        class="col-md-3" :value="$fault->scheduled_execution" />
 
-                    <div class="col-md-3">
-                        {!! Form::label('completed_execution', 'Ejecución completada') !!}
-                        {!! Form::text('completed_execution', null, [
-                            'class' => 'form-control datepicker datepicker-optional',
-                            'id' => 'report_date',
-                        ]) !!}
-                    </div>
+                    <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
+                        class="col-md-3" :value="$fault->completed_execution" />
+
                 </div>
 
                 <div class="row mt-3">
 
                     <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
-                        classControl="select2 form-control" />
+                        classControl="select2 form-control" :selected="$fault->executor_id" />
 
-                    <x-adminlte-textarea name="equipment_maintenance_log" label="Actividades realizadas al equipo"
-                        placeholder="" fgroup-class="col-md-12 mt-3" value="{{ old('equipment_maintenance_log') }}" />
+                    <x-textarea-custom name="equipment_maintenance_log" label="Actividades realizadas al equipo"
+                        placeholder="" class="col-md-12 mt-3" value="{{ $fault->equipment_maintenance_log }}" />
                 </div>
 
+
+                <div class="row mt-5">
+                    <a href="{{ request()->back_url ?? route('admin.sucursal.faults.index') }}"
+                        class="btn-sm mr-3 btn-default" type="submit" icon="fas fa-lg fa-save">Cancelar</a>
+                    <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
+                        icon="fas fa-lg fa-save" />
+                </div>
             </div>
         </div>
 

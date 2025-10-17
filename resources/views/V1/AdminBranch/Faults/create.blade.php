@@ -52,35 +52,26 @@
                         </div>
                         <div class="row">
 
-                            <x-input-date-custom required optional name="report_date" label="Fecha del reporte" placeholder=""
-                                class="col-md-2" />
+                            <x-input-date-custom required name="report_date" label="Fecha del reporte" placeholder=""
+                                class="col-md-3" />
 
 
-                            <div class="col-md-3">
-                                {!! Form::label('scheduled_execution', 'Ejecución planificada') !!}
-                                {!! Form::text('scheduled_execution', null, [
-                                    'class' => 'form-control datepicker datepicker-optional',
-                                    'id' => 'report_date',
-                                ]) !!}
-                            </div>
+                            <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""
+                                class="col-md-3" />
 
-                            <div class="col-md-3">
-                                {!! Form::label('completed_execution', 'Ejecución completada') !!}
-                                {!! Form::text('completed_execution', null, [
-                                    'class' => 'form-control datepicker datepicker-optional',
-                                    'id' => 'report_date',
-                                ]) !!}
-                            </div>
+                            <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
+                                class="col-md-3" />
+
                         </div>
 
                         <div class="row mt-3">
 
-                            <x-select label="Actividad realizada por" name="executor_id" :items="$executors"
-                                class="col-md-4" classControl="select2 form-control" />
+                            <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
+                                classControl="select2 form-control" />
 
-                            <x-adminlte-textarea name="equipment_maintenance_log"
-                                label="Actividades realizadas al equipo" placeholder=""
-                                fgroup-class="col-md-12 mt-3" value="{{ old('equipment_maintenance_log') }}" />
+                            <x-adminlte-textarea name="equipment_maintenance_log" label="Actividades realizadas al equipo"
+                                placeholder="" fgroup-class="col-md-12 mt-3"
+                                value="{{ old('equipment_maintenance_log') }}" />
                         </div>
 
                     </div>

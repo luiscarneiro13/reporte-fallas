@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('report_date')->nullable()->index();
             $table->date('scheduled_execution')->nullable()->index();
             $table->date('completed_execution')->nullable()->index();
+
             $table->unsignedBigInteger('executor_id')->nullable();
             $table->text('equipment_maintenance_log')->nullable();
 

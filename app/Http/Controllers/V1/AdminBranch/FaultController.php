@@ -7,6 +7,7 @@ use App\Http\Requests\V1\FaultRequest;
 use App\Models\Fault;
 use App\Services\FaultService;
 use App\Traits\AlertResponser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FaultController extends Controller
@@ -127,7 +128,8 @@ class FaultController extends Controller
                 + compact('executors')
         );
     }
-    public function edit(string $id) {
+    public function edit(string $id)
+    {
 
         $fault = Fault::find($id);
 
@@ -157,6 +159,7 @@ class FaultController extends Controller
 
     public function store(FaultRequest $request)
     {
+        // return $request->validated();
         return $this->saveOrUpdate($request);
     }
 
@@ -175,22 +178,39 @@ class FaultController extends Controller
     private function saveOrUpdate(FaultRequest $request, string $id = null) // ⬅️ CAMBIO 1: El tipo de Request es FaultRequest
     {
         try {
+
+            $validatedData = $request->validated();
             // 1. Obtener o crear el modelo
             $item = $id ? Fault::find($id) : new Fault();
             if (!$item) {
                 return $this->alertError(self::INDEX, 'Falla no encontrada para actualizar.');
             }
 
+            $dateFields = ['report_date', 'scheduled_execution', 'completed_execution'];
+            $inputFormat = 'Y-m-d';
+
+            foreach ($dateFields as $field) {
+                // Verificar si el campo existe en los datos y no está vacío
+                if (!empty($validatedData[$field])) {
+                    // Transformar la fecha del formato de entrada (d-m-Y) al formato de MySQL (Y-m-d)
+                    $validatedData[$field] = Carbon::createFromFormat($inputFormat, $validatedData[$field])
+                        ->toDateString();
+                } else {
+                    // Si no se envía o está vacía, forzar NULL para la base de datos (campo opcional)
+                    $validatedData[$field] = null;
+                }
+            }
+
             // 2. Asignación Masiva Segura (Mass Assignment)
             // Esto reemplaza todas las asignaciones campo por campo.
-            $item->fill($request->validated()); // ⬅️ CAMBIO 2: Uso de fill con datos validados
+            $item->fill($validatedData); // ⬅️ CAMBIO 2: Uso de fill con datos validados
 
             // 3. Atributo de sucursal (se mantiene la asignación manual)
             // Se asigna al final porque no es parte del input del usuario.
             $item->branch_id = session('branch')->id;
 
             $item->save();
-
+dd($item);
             if ($request->ajax()) {
                 return response()->json(['success' => true, 'data' => $item]);
             }

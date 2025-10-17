@@ -43,14 +43,22 @@
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="{{ route('admin.sucursal.faults.edit', $item) }}">
-                                        <i class="fa fa-edit">&nbsp;</i>
-                                        Editar
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-check">&nbsp;</i>
-                                        Cerrar falla
-                                    </a>
+                                    @if (!$item->closed)
+                                        <a class="dropdown-item" href="{{ route('admin.sucursal.faults.edit', $item) }}">
+                                            <i class="fa fa-edit">&nbsp;</i>
+                                            Editar
+                                        </a>
+
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-check">&nbsp;</i>
+                                            Cerrar falla
+                                        </a>
+                                    @else
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-check">&nbsp;</i>
+                                            Ver datos
+                                        </a>
+                                    @endif
                                     {{--
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar" action="{{ route('admin.sucursal.faults.destroy', $item) }}"

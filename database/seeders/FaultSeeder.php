@@ -36,8 +36,9 @@ class FaultSeeder extends Seeder
                 'description'          => 'The engine is not starting or has stopped working.',
                 'fault_status_id'      => $faultStatus->id,
                 'spare_part_status_id' => $sparePartStatus->id,
-                // Usamos toDateTimeString() para obtener 'YYYY-MM-DD HH:MM:SS'
-                'report_date'          => Carbon::now()->toDateTimeString(),
+                  // Usamos toDateTimeString() para obtener 'YYYY-MM-DD HH:MM:SS'
+                'report_date' => Carbon::now()->toDateTimeString(),
+                'closed'      => Carbon::now()->toDateTimeString(),
             ],
             [
                 'branch_id'            => $branch->id,
@@ -68,6 +69,7 @@ class FaultSeeder extends Seeder
                 'fault_status_id'      => $faultStatus->id,
                 'spare_part_status_id' => $sparePartStatus->id,
                 'report_date'          => Carbon::now()->toDateTimeString(),
+                'closed'               => Carbon::now()->toDateTimeString(),
             ],
             [
                 'branch_id'            => $branch->id,

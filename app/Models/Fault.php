@@ -69,7 +69,7 @@ class Fault extends Model
                     // Usar diffForHumans para obtener el tiempo transcurrido en formato legible (ej: "hace 5 días")
                     return $carbonDate->diffForHumans(['syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW]);
                 }
-                return 'N/A';
+                return '';
             },
         );
     }

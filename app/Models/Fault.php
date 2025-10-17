@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Fault extends Model
 {
@@ -29,6 +30,26 @@ class Fault extends Model
         'equipment_maintenance_log' // Actividades realizadas al equipo
 
     ];
+
+    protected $casts = [
+        'employee_reported_id' => 'integer',
+        'equipment_id' => 'integer',
+        'service_area_id' => 'integer',
+        'fault_status_id' => 'integer',
+        'spare_part_status_id' => 'integer',
+        'executor_id' => 'integer',
+    ];
+
+    /**
+     * Mutator: Convierte 0 o "0" a NULL para la base de datos en el campo executor_id.
+     * Esto limpia el controlador.
+     */
+    protected function executorId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(?string $value) => ($value == 0 || $value === '0') ? null : $value,
+        );
+    }
 
     public function branch()
     {

@@ -7,12 +7,14 @@ use App\Http\Requests\V1\FaultRequest;
 use App\Models\Fault;
 use App\Services\FaultService;
 use App\Traits\AlertResponser;
+use App\Traits\DateTransformerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FaultController extends Controller
 {
     use AlertResponser;
+    use DateTransformerTrait;
 
     const INDEX = "admin.sucursal.faults.index";
 
@@ -171,46 +173,34 @@ class FaultController extends Controller
 
     /**
      * Guarda o actualiza una falla usando los datos validados del FaultRequest.
+     * La lógica de negocio más compleja se ha movido a métodos privados y al Modelo.
      *
      * @param FaultRequest $request Los datos ya validados.
      * @param string|null $id El ID de la falla a actualizar.
      */
-    private function saveOrUpdate(FaultRequest $request, string $id = null) // ⬅️ CAMBIO 1: El tipo de Request es FaultRequest
+    private function saveOrUpdate(FaultRequest $request, string $id = null)
     {
         try {
-
             $validatedData = $request->validated();
+
             // 1. Obtener o crear el modelo
             $item = $id ? Fault::find($id) : new Fault();
             if (!$item) {
                 return $this->alertError(self::INDEX, 'Falla no encontrada para actualizar.');
             }
 
+            // 2. Transforma fechas usando el Trait helper.
             $dateFields = ['report_date', 'scheduled_execution', 'completed_execution'];
-            $inputFormat = 'Y-m-d';
 
-            foreach ($dateFields as $field) {
-                // Verificar si el campo existe en los datos y no está vacío
-                if (!empty($validatedData[$field])) {
-                    // Transformar la fecha del formato de entrada (d-m-Y) al formato de MySQL (Y-m-d)
-                    $validatedData[$field] = Carbon::createFromFormat($inputFormat, $validatedData[$field])
-                        ->toDateString();
-                } else {
-                    // Si no se envía o está vacía, forzar NULL para la base de datos (campo opcional)
-                    $validatedData[$field] = null;
-                }
-            }
+            // 👈 LLAMADA AL TRAIT: Se invoca como un método de la clase
+            $validatedData = $this->transformDateFields($validatedData, $dateFields);
 
-            // 2. Asignación Masiva Segura (Mass Assignment)
-            // Esto reemplaza todas las asignaciones campo por campo.
-            $item->fill($validatedData); // ⬅️ CAMBIO 2: Uso de fill con datos validados
-
-            // 3. Atributo de sucursal (se mantiene la asignación manual)
-            // Se asigna al final porque no es parte del input del usuario.
+            // 3. Asignación Masiva Segura (Mass Assignment)
+            $item->fill($validatedData);
             $item->branch_id = session('branch')->id;
 
             $item->save();
-dd($item);
+
             if ($request->ajax()) {
                 return response()->json(['success' => true, 'data' => $item]);
             }

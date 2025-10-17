@@ -33,10 +33,12 @@
                     <td>{{ $item->faultStatus->name }}</td>
                     <td>{{ $item->sparePartStatus->name }}</td>
                     <td>{{ $item->serviceArea->name }}</td>
-                    <td>{{ $item->days_since_report }}</td>
+                    <td>
+                        {{ $item->days_since_report }} <br>
+                        <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" /> <br>
+                    </td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">
-                            <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" />
                             <div class="mt-3">
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">

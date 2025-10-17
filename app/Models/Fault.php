@@ -63,12 +63,27 @@ class Fault extends Model
                 $rawReportDate = $attributes['report_date'] ?? null;
 
                 if ($rawReportDate) {
-                    // 🎯 FIX: Usamos Carbon::parse en el valor crudo para garantizar que es un objeto de fecha.
-                    $carbonDate = Carbon::parse($rawReportDate);
+                    // 1. Parseamos la fecha cruda y la fijamos a medianoche (inicio del día).
+                    // Esto es crucial para una comparación limpia de solo días.
+                    $reportDate = Carbon::parse($rawReportDate)->startOfDay();
 
-                    // Usar diffForHumans para obtener el tiempo transcurrido en formato legible (ej: "hace 5 días")
-                    return $carbonDate->diffForHumans(['syntax' => CarbonInterface::DIFF_RELATIVE_TO_NOW]);
+                    // 2. Obtenemos el inicio del día actual.
+                    $today = Carbon::now()->startOfDay();
+
+                    // 3. Calculamos la diferencia en días enteros (ignorando las horas).
+                    // El resultado es un entero: 0, 1, 2, etc.
+                    $days = $reportDate->diffInDays($today);
+
+                    // 4. Formateamos el resultado en español basándonos en el número de días.
+                    if ($days === 0) {
+                        return 'hoy'; // Si es el mismo día
+                    } elseif ($days === 1) {
+                        return 'hace 1 día';
+                    } else {
+                        return "hace {$days} días";
+                    }
                 }
+                // Retorna vacío si no existe la fecha
                 return '';
             },
         );

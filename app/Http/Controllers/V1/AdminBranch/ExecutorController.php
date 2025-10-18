@@ -21,6 +21,7 @@ class ExecutorController extends Controller
     {
         $query = request('query');
         $executors = Employee::query()
+            ->with(['executorServiceAreas:service_areas.id,service_areas.name'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -36,6 +37,7 @@ class ExecutorController extends Controller
             ->where('executor', 1)
             ->orderBy('first_name', 'asc')
             ->paginate(10);
+
         return view('V1.AdminBranch.Executors.index', compact('executors'));
     }
 

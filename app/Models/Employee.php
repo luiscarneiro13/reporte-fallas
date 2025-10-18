@@ -27,4 +27,20 @@ class Employee extends Model
     {
         return $this->hasMany(Fault::class, 'employee_reported_id');
     }
+
+    public function executorServiceAreas()
+    {
+        // Sintaxis:
+        // HasManyThrough(Modelo_Final, Modelo_Intermedio, Llave_Foránea_en_Intermedio, Llave_Foránea_en_Final)
+
+        return $this->hasManyThrough(
+            ServiceArea::class, // Modelo final (el que quieres obtener)
+            Fault::class,       // Modelo intermedio (el que tiene la llave foránea del Empleado y la de ServiceArea)
+            'executor_id',      // Llave foránea en la tabla 'faults' que apunta a 'employees'
+            'id',               // Llave foránea en la tabla 'faults' que apunta a 'service_areas' (usamos 'id' de ServiceArea)
+            'id',               // Llave local en la tabla 'employees'
+            'service_area_id'   // Llave local en la tabla 'faults' que apunta a 'service_areas'
+        )
+            ->distinct(); // Opcional: Para evitar duplicados si un empleado tiene varias fallas en la misma área
+    }
 }

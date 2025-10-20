@@ -34,7 +34,10 @@
                     <td>{{ $item->sparePartStatus->name }}</td>
                     <td>{{ $item->serviceArea->name }}</td>
                     <td>
-                        {{ $item->days_since_report }} <br>
+                        @if (!$item->closed)
+                            {{ $item->days_since_report }}
+                            <br>
+                        @endif
                         <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" /> <br>
                     </td>
                     <td>

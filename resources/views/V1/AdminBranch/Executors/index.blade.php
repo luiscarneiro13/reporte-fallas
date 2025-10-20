@@ -8,32 +8,40 @@
 
 @section('content')
     @php
-        $headers = ['Tipo', 'Cédula', 'Nombre', 'Teléfono', 'Dirección', 'Aras de servicio', ''];
+        // Encabezados de la tabla
+        $headers = ['Tipo', 'Cédula', 'Nombre', 'Teléfono', 'Dirección', 'Áreas de servicio', ''];
     @endphp
 
     <x-base-data-table-search title="Ejecutores" :items="$executors" :headers="$headers"
         urlBtnAdd="{{ route('admin.sucursal.executors.create') }}">
+
         <x-slot name="body">
             @forelse ($executors as $item)
                 <tr>
+                    {{-- Datos del Ejecutor --}}
                     <td>{{ $item->external ? 'Externo' : 'Interno' }}</td>
                     <td>{{ $item->identification_number }}</td>
                     <td>{{ $item->lastname . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
                     <td>{{ $item->address }}</td>
                     <td>{{ $item->executorServiceAreas?->pluck('name')?->implode(', ') ?? '' }}</td>
+
+                    {{-- Acciones --}}
                     <td>
                         <div class="input-group" style="cursor:pointer;">
                             <div>
                                 <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
                                 <div class="dropdown-menu">
 
+                                    {{-- Botón Editar --}}
                                     <a class="dropdown-item" href="{{ route('admin.sucursal.executors.edit', $item) }}">
                                         <i class="fa fa-edit">&nbsp;</i>
                                         Editar
                                     </a>
 
                                     <div class="dropdown-divider"></div>
+
+                                    {{-- Botón Eliminar (Formulario) --}}
                                     <form class="formEliminar"
                                         action="{{ route('admin.sucursal.executors.destroy', $item) }}" method="post">
                                         @csrf
@@ -50,10 +58,10 @@
                     </td>
                 </tr>
             @empty
+                {{-- No se requiere acción si no hay ejecutores --}}
             @endforelse
         </x-slot>
     </x-base-data-table-search>
-
 
 @stop
 

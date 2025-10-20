@@ -12,7 +12,7 @@
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-left'), 'item')
         <div class="row w-100">
 
-            {{-- <div class="col-md-12">
+            <div class="col-md-12">
 
                 @if (trim(View::getSection('icon')))
                     <span style="font-size:22px">
@@ -20,13 +20,13 @@
                     </span>
                 @endif
 
-                @if (trim(View::getSection('title')))
+                @if (trim(View::getSection('titleSup')))
                     <span style="font-size:22px">
                         @yield('title')
                     </span>
                 @endif
 
-            </div> --}}
+            </div>
 
         </div>
         @yield('content_top_nav_left')

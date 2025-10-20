@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 @section('title', 'Resumen de fallas')
+@section('titleSup', 'Resumen de fallas')
 
 @section('content_header')
     {{-- <h1>Proyectos</h1> --}}

@@ -40,7 +40,7 @@
     @include('adminlte::plugins', ['type' => 'css'])
 
     {{-- Datepicker Styles --}}
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.css') }}"> --}}
 
     {{-- Livewire Styles --}}
     @if (config('adminlte.livewire'))
@@ -99,7 +99,7 @@
     @include('adminlte::plugins', ['type' => 'js'])
 
     {{-- Datepicker Script --}}
-    <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    {{-- <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script> --}}
     <script>
         $(function () {
             // Datepicker con fecha de hoy por defecto

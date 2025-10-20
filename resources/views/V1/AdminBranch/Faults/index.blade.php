@@ -1,5 +1,4 @@
 @extends('adminlte::page')
-
 @section('title', 'Resumen de fallas')
 
 @section('content_header')
@@ -88,6 +87,8 @@
 @stop
 
 @section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
+
     <script>
         window.branchId = {{ session('branch')->id }};
     </script>

@@ -32,14 +32,14 @@
     </label>
 
     {!! Form::text($name, $value, [
-        // 1. Clase 'datepicker' siempre debe estar para que JS lo detecte.
-        // 2. Si NO es requerido, se añade 'datepicker-optional'.
         'class' => 'form-control datepicker' . (!$required ? ' datepicker-optional' : ''),
         'id' => $id,
-        'placeholder' => $placeholder,
+        'placeholder' => 'dd-mm-yyyy',
         'type' => $type,
-        'required' => $required, // Blade ya maneja los booleanos si solo pasas $required
+        'required' => $required
     ]) !!}
+
+
 
     @if ($help)
         <small class="form-text text-muted">

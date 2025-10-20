@@ -16,7 +16,7 @@
     "name": "bootstrap"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Cy1Ge-SM.css",
+    "file": "assets/app-BKBqZj3d.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -53,7 +53,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-DfHG9n3V.js",
+    "file": "assets/app-D2yocsQE.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -61,7 +61,7 @@
       "_bootstrap-BkjzROZU.js"
     ],
     "css": [
-      "assets/app-Cy1Ge-SM.css"
+      "assets/app-BKBqZj3d.css"
     ]
   }
 }

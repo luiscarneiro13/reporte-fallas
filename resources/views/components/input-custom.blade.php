@@ -8,9 +8,10 @@
     'help' => '',
     'type' => '',
     'id' => '',
+    'noMarginTop' => false,
 ])
 
-<div class="mt-3 {{ $class }}">
+<div class="{{ !$noMarginTop ? 'mt-3' : '' }} {{ $class }}">
     <label for="{{ $name }}">{{ $label }} @if ($required)
             <span class="text-danger">*</span>
         @endif

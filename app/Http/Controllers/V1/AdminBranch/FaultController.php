@@ -20,93 +20,173 @@ class FaultController extends Controller
 
     public function index(Request $request)
     {
+        $initValue = collect(["0" => "Todos"]);
+        // 1. Equipos
+        $equipment = FaultService::equipment()->prepend('Todos', '0');
+
+        // 2. Áreas de Servicio
+        $serviceArea = FaultService::serviceArea()->prepend('Todos', '0');
+
+        // 3. Estados de Falla
+        $faultStatus = FaultService::faultStatus()->prepend('Todos', '0');
+
+        // 4. Estados de Repuesto
+        $sparePartStatuses = FaultService::sparePartStatuses()->prepend('Todos', '0');
+
+        // Ajuste del array $close para incluir 'Todos' (valor '0')
+        $close = collect([
+            '0' => 'Todos',
+            '1' => 'Cerradas',
+            '2' => 'Abiertas'
+        ]);
+
         // 1. Capturar el ID de la sucursal de la sesión y los parámetros de búsqueda
         $branchId = session('branch')->id;
-        $searchName = $request->query('name');                 // Filtro por nombre de empleado
-        $query = $request->query('query');                     // Filtro genérico (ID, descripción, ID Interno)
-        $searchEquipmentName = $request->query('equipment_name'); // Filtro por nombre de equipo
-        $searchServiceAreaName = $request->query('service_area_name'); // Filtro por nombre de área de servicio
 
-        // NUEVOS FILTROS POR ID de estado/ejecutor
-        $searchFaultStatusId = $request->query('status_id'); // Filtro por ID de estado de falla
-        $searchSparePartStatusId = $request->query('spare_status_id'); // Filtro por ID de estado de repuesto
-        $searchExecutorId = $request->query('executor_id'); // Filtro por ID de ejecutor
+        // Filtros de búsqueda existentes (Por nombre o texto)
+        $searchName = $request->query('name');
+        $query = $request->query('query');
+        $searchEquipmentName = $request->query('equipment_name');
+        $searchServiceAreaName = $request->query('service_area_name');
+
+        // Filtros por ID existentes (TUS NOMBRES ORIGINALES)
+        // NOTA: Estos son los nombres que tu código original usaba para la URL,
+        // pero los selects que estamos añadiendo usan 'fault_status_id', etc.
+        $searchFaultStatusId = $request->query('status_id');
+        $searchSparePartStatusId = $request->query('spare_status_id');
+        $searchExecutorId = $request->query('executor_id');
+
+        // ⭐ CAPTURAS DE LOS IDS DESDE LOS SELECTS (NOMBRES DEL BLADE)
+        $equipmentId = $request->query('equipment_id');
+        $serviceAreaId = $request->query('service_area_id');
+        $closeStatus = $request->query('close_status');
+
+        // Filtros de fecha
+        $from = $request->query('from'); // Fecha de inicio para la búsqueda (report_date)
+        $to = $request->query('to');     // Fecha de fin para la búsqueda (report_date)
 
 
         // 2. Iniciar la consulta con Carga Ansiosa (Eager Loading)
         $faultsQuery = Fault::with(['reportedBy', 'equipment', 'serviceArea', 'faultStatus', 'sparePartStatus', 'executor'])
-            // FILTRAR POR LA SUCURSAL DEL USUARIO EN SESIÓN (Requerimiento)
             ->where('branch_id', $branchId);
+
+
+        // ----------------------------------------------------
+        // ⭐ APLICACIÓN DE FILTROS POR ID (equipment_id, service_area_id, close_status)
+        // ----------------------------------------------------
+
+
+        // Aplicar filtro por Cierre (close_status)
+        if (!empty($closeStatus) && $closeStatus != '0') {
+            if ($closeStatus == '1') { // Cerradas
+                $faultsQuery->whereNotNull('closed_at');
+            } elseif ($closeStatus == '2') { // Abiertas
+                $faultsQuery->whereNull('closed_at');
+            }
+        }
+
+
+        // ----------------------------------------------------
+        // APLICACIÓN DE FILTROS ORIGINALES (Nombres, IDs viejos y Fechas)
+        // ----------------------------------------------------
 
         // 3. Aplicar filtro de búsqueda por Nombre de Empleado (Funcionalidad preservada)
         if ($searchName) {
             $faultsQuery->whereHas('reportedBy', function ($q) use ($searchName) {
                 $searchTerm = '%' . $searchName . '%';
-
-                // Buscar coincidencia en first_name o last_name del empleado
                 $q->where('first_name', 'like', $searchTerm)
                     ->orWhere('last_name', 'like', $searchTerm);
             });
         }
 
-        // 4. Aplicar filtro de búsqueda por Nombre de Equipo (NUEVA FUNCIONALIDAD)
+        // 4. Aplicar filtro de búsqueda por Nombre de Equipo (Funcionalidad preservada)
         if ($searchEquipmentName) {
             $faultsQuery->whereHas('equipment', function ($q) use ($searchEquipmentName) {
                 $q->where('name', 'like', "%{$searchEquipmentName}%");
             });
         }
 
-        // 5. Aplicar filtro de búsqueda por Nombre de Área de Servicio (NUEVA FUNCIONALIDAD)
+        if ($equipmentId) {
+            $faultsQuery->whereHas('equipment', function ($q) use ($equipmentId) {
+                $q->where('id', $equipmentId);
+            });
+        }
+
+        // 5. Aplicar filtro de búsqueda por Nombre de Área de Servicio (Funcionalidad preservada)
         if ($searchServiceAreaName) {
             $faultsQuery->whereHas('serviceArea', function ($q) use ($searchServiceAreaName) {
                 $q->where('name', 'like', "%{$searchServiceAreaName}%");
             });
         }
 
-        // 6. Aplicar filtro por Estado de Falla (fault_status_id)
+        if ($serviceAreaId) {
+            $faultsQuery->whereHas('serviceArea', function ($q) use ($serviceAreaId) {
+                $q->where('id', $serviceAreaId);
+            });
+        }
+
+        // ⭐ 6. Aplicar filtro de Rango de Fechas (report_date)
+        if ($from) {
+            $faultsQuery->whereDate('report_date', '>=', $from);
+        }
+        if ($to) {
+            $faultsQuery->whereDate('report_date', '<=', $to);
+        }
+
+        // 8. Aplicar filtro por Estado de Falla (fault_status_id - Usando el viejo 'status_id')
         if ($searchFaultStatusId) {
             $faultsQuery->where('fault_status_id', $searchFaultStatusId);
         }
 
-        // 7. Aplicar filtro por Estado de Repuesto (spare_part_status_id)
+        // 9. Aplicar filtro por Estado de Repuesto (spare_part_status_id - Usando el viejo 'spare_status_id')
         if ($searchSparePartStatusId) {
             $faultsQuery->where('spare_part_status_id', $searchSparePartStatusId);
         }
 
-        // 8. Aplicar filtro por Ejecutor (executor_id)
+        // 10. Aplicar filtro por Ejecutor (executor_id)
         if ($searchExecutorId) {
             $faultsQuery->where('executor_id', $searchExecutorId);
         }
 
-        // 9. Aplicar filtro de búsqueda genérico (ID/Descripción) (Funcionalidad preservada)
+        // 11. Aplicar filtro de búsqueda genérico (ID/Descripción/Internal ID)
         if ($query) {
             $faultsQuery->where(function ($q) use ($query) {
-                // Criterios directos (ID - quitando ceros a la izquierda)
                 $q->where('id', ltrim($query, '0'))
-                    // Criterio por descripción
                     ->orWhere('description', 'like', "%{$query}%")
-                    // Criterio por ID interno
                     ->orWhere('internal_id', 'like', "%{$query}%");
             });
         }
 
-        // 10. Aplicar ordenamiento (Requerimiento: descendente por ID)
+        // 12. Aplicar ordenamiento (Requerimiento: descendente por ID)
         $faultsQuery->orderBy('faults.id', 'desc');
 
-        // 11. Ejecutar la consulta con paginación (Requerimiento: 10 elementos)
+        // 13. Ejecutar la consulta con paginación (Requerimiento: 10 elementos)
         $faults = $faultsQuery->paginate(10);
-
-        // 12. Devolver la vista con los resultados
-        // Utilizamos la cadena literal de la vista según tu indicación, pasando todos los filtros.
+        // return $faults;
+        // 14. Devolver la vista con los resultados
         return view('V1.AdminBranch.Faults.index', compact(
             'faults',
             'searchName',
             'query',
             'searchEquipmentName',
             'searchServiceAreaName',
+            // IDs Originales (para restaurar estado)
             'searchFaultStatusId',
             'searchSparePartStatusId',
-            'searchExecutorId'
+            'searchExecutorId',
+            // IDs de Selects NUEVOS (para restaurar estado)
+            'equipmentId',       // ⭐ NUEVO (Para el select equipment_id)
+            'serviceAreaId',     // ⭐ NUEVO (Para el select service_area_id)
+            'closeStatus',       // ⭐ NUEVO (Para el select close_status)
+            // Variables de fecha (restauran inputs)
+            'from',
+            'to',
+            // Variables para rellenar los selects
+            "equipment",
+            "serviceArea",
+            "faultStatus",
+            "sparePartStatuses",
+            "close"
         ));
     }
 

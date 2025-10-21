@@ -4,6 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon; // Mantenemos Carbon para obtener la fecha
 
 class FaultRequest extends FormRequest
 {
@@ -20,35 +21,47 @@ class FaultRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
+        // 1. Manejo del ID del Ejecutor (mantener tu lógica)
         if ($this->has('executor_id') && $this->input('executor_id') === '0') {
             $this->merge([
                 'executor_id' => 0,
+            ]);
+        }
+
+        // 2. ⭐ Lógica para el campo de FECHA de cierre (closed)
+        // Si el campo 'closed' existe (bandera enviada como "true"),
+        // lo reemplazamos con la FECHA actual en formato 'Y-m-d'.
+        if ($this->has('closed')) {
+            $this->merge([
+                // Usamos toDateString() o format('Y-m-d') para obtener solo la fecha
+                'closed' => Carbon::now()->toDateString(),
             ]);
         }
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $faultId = (int) $this->id;
 
-        // 1. Reglas base (Comportamiento normal de edición: nullable en la mayoría)
+        // 1. Reglas base
         $rules = [
             'internal_id' => [
                 'nullable', 'string', 'max:255',
                 Rule::unique('faults', 'internal_id')->ignore($faultId),
             ],
 
-            // Campos de Asignación/Reporte (siempre deben ser válidos si se envían)
+            // ⭐ Regla para el campo de fecha 'closed'
+            'closed' => ['nullable', 'date'], // 'date' valida tanto 'date' como 'datetime', lo cual es suficiente
+
+            // Campos de Asignación/Reporte
             'employee_reported_id' => ['nullable', 'integer', 'exists:employees,id'],
             'equipment_id' => ['nullable', 'integer', 'exists:equipment,id'],
             'service_area_id' => ['nullable', 'integer', 'exists:service_areas,id'],
 
-            'description' => ['required', 'string'], // Se mantiene como requerido
+            'description' => ['required', 'string'],
 
             // Estados
             'fault_status_id' => ['nullable', 'integer', 'exists:fault_statuses,id'],
@@ -62,7 +75,6 @@ class FaultRequest extends FormRequest
             // Ejecutor y Log
             'executor_id' => [
                 'nullable', 'integer',
-                // Asegura que el ejecutor_id sea válido o 0
                 function ($attribute, $value, $fail) {
                     if ($value !== 0 && !\DB::table('employees')->where('id', $value)->exists()) {
                         $fail('El ejecutor seleccionado no es válido.');
@@ -73,32 +85,26 @@ class FaultRequest extends FormRequest
         ];
 
         // 2. Lógica Condicional para el CIERRE
-        // Si el campo 'closed' existe (es decir, estamos cerrando la falla),
-        // ¡todos los campos clave pasan a ser requeridos!
         if ($this->has('closed')) {
             // Requerir campos clave
             $requiredRules = [
                 'employee_reported_id' => ['required', 'integer', 'exists:employees,id'],
                 'equipment_id' => ['required', 'integer', 'exists:equipment,id'],
                 'service_area_id' => ['required', 'integer', 'exists:service_areas,id'],
-                'description' => ['required', 'string'],
 
                 'fault_status_id' => ['required', 'integer', 'exists:fault_statuses,id'],
                 'spare_part_status_id' => ['required', 'integer', 'exists:spare_part_statuses,id'],
 
                 'report_date' => ['required', 'date'],
-
-                'scheduled_execution' => ['required', 'date'], // Requerido al cerrar
-                'completed_execution' => ['required', 'date'], // Requerido al cerrar
+                'scheduled_execution' => ['required', 'date'],
+                'completed_execution' => ['required', 'date'],
 
                 'executor_id' => [
-                    'required', 'integer', 'min:1', // min:1 para asegurar que no sea '0' (Todos)
-                    // Puedes reutilizar la lógica de validación manual si es necesaria
+                    'required', 'integer', 'min:1',
                 ],
                 'equipment_maintenance_log' => ['required', 'string'],
             ];
 
-            // Fusionar y sobrescribir las reglas base con las reglas requeridas
             $rules = array_merge($rules, $requiredRules);
         }
 
@@ -107,9 +113,6 @@ class FaultRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.
-     *
-     * Aquí tendrás que añadir los mensajes de 'required' para los campos.
-     * @return array<string, string>
      */
     public function messages(): array
     {
@@ -128,33 +131,20 @@ class FaultRequest extends FormRequest
             'completed_execution.required' => 'La Ejecución completada es obligatoria al cerrar la falla.',
 
             'executor_id.required' => 'El campo Actividad realizada por es obligatorio al cerrar la falla.',
-            'executor_id.min' => 'El ejecutor es obligatorio al cerrar la falla.',
+            'executor_id.min' => 'Debe seleccionar un ejecutor válido al cerrar la falla.',
 
             'equipment_maintenance_log.required' => 'El registro de mantenimiento es obligatorio al cerrar la falla.',
         ];
 
 
         // Mensajes base
-        $baseMessages = [
-            // Internal ID
-            'internal_id.unique' => 'El identificador interno ya existe. Debe ser único.',
-            'internal_id.string' => 'El identificador interno debe ser texto.',
-            'internal_id.max' => 'El identificador interno no debe exceder :max caracteres.',
+        $baseMessages = $this->getBaseMessages();
 
-            // Relaciones (Foreign Keys)
-            'employee_reported_id.integer' => 'El ID del empleado que reporta debe ser un número entero.',
-            'employee_reported_id.exists' => 'El empleado que reporta seleccionado no es válido.',
-            // ... (Otros mensajes de exists/integer se mantienen igual) ...
-        ];
+        $baseMessages['closed.date'] = 'El campo de cierre debe ser una fecha válida.';
 
-        // Fusionar los mensajes. Los mensajes de 'required' sobrescriben los genéricos.
-        return array_merge(
-            $this->getBaseMessages(),
-            $requiredMessages
-        );
+        return array_merge($baseMessages, $requiredMessages);
     }
 
-    // Método auxiliar para mantener limpio el código (OPCIONAL)
     protected function getBaseMessages(): array
     {
         return [

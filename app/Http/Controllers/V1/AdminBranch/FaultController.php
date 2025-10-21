@@ -5,12 +5,14 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
 use App\Models\Fault;
+use App\Models\FaultHistory;
 use App\Services\FaultService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\FaultView;
+use Illuminate\Support\Facades\DB;
 
 class FaultController extends Controller
 {
@@ -52,8 +54,7 @@ class FaultController extends Controller
         // --- 2. Iniciar la consulta con la Vista ---
         $faultsQuery = FaultView::query()
             ->where('branch_id', $branchId)
-            ->whereNull('closed_at')
-            ;
+            ->whereNull('closed_at');
 
 
         // ----------------------------------------------------
@@ -218,49 +219,98 @@ class FaultController extends Controller
         return $this->saveOrUpdate($request, $id);
     }
 
-    /**
-     * Guarda o actualiza una falla usando los datos validados del FaultRequest.
-     * La lógica de negocio más compleja se ha movido a métodos privados y al Modelo.
-     *
-     * @param FaultRequest $request Los datos ya validados.
-     * @param string|null $id El ID de la falla a actualizar.
-     */
     private function saveOrUpdate(FaultRequest $request, string $id = null)
     {
+        // Transacciones comentadas SOLO para fines de prueba.
+        // DB::beginTransaction();
+
         try {
             $validatedData = $request->validated();
+            $isClosing = isset($validatedData['closed']);
 
-            // 1. Obtener o crear el modelo
+            // 1. Obtener el modelo de la TABLA BASE ('faults') para la edición.
             $item = $id ? Fault::find($id) : new Fault();
             if (!$item) {
+                // DB::rollBack(); // Comentado
                 return $this->alertError(self::INDEX, 'Falla no encontrada para actualizar.');
             }
 
-            // 2. Transforma fechas usando el Trait helper.
+            // 2. Transforma fechas
             $dateFields = ['report_date', 'scheduled_execution', 'completed_execution'];
-
-            // 👈 LLAMADA AL TRAIT: Se invoca como un método de la clase
             $validatedData = $this->transformDateFields($validatedData, $dateFields);
 
-            // 3. Asignación Masiva Segura (Mass Assignment)
+            // 3. Asignación Masiva y Guardar en la tabla 'faults'.
+            // Esto asignará el campo 'closed' con el valor de la fecha.
             $item->fill($validatedData);
             $item->branch_id = session('branch')->id;
-
             $item->save();
 
-            if ($request->ajax()) {
-                return response()->json(['success' => true, 'data' => $item]);
-            }
+            // --- LÓGICA DE CIERRE Y MOVIMIENTO AL HISTÓRICO ---
 
-            if (request()->back_url) {
-                return redirect(request()->back_url);
-            }
+            if ($isClosing) {
 
-            $action_msg = $id ? 'actualizada' : 'creada';
-            $message = "Falla {$action_msg} ";
-            return $this->alertSuccess(self::INDEX, $message);
+                // ⭐ CLAVE: Recargar el registro actualizado usando el Modelo de la VISTA.
+                // Esto es necesario porque $item (Fault) solo tiene columnas de la tabla base.
+                // Asumiendo que el modelo de la vista es 'FaultView'.
+                $historyRecord = FaultView::find($item->id);
+
+                // Verificación de seguridad
+                if (!$historyRecord) {
+                    // DB::rollBack(); // Comentado
+                    return $this->alertError(self::INDEX, 'Error al obtener datos de la vista para archivar.');
+                }
+
+                // Aquí deberías hacer un dd($historyRecord->getAttributes());
+                // para ver si los nombres desnormalizados (reported_by_name, equipment_name, etc.)
+                // están presentes después del save.
+                $historyData = $historyRecord->getAttributes();
+
+                // 4. Mapeo y Limpieza de datos antes de la inserción
+
+                // Mapear el ID original de la falla activa
+                $historyData['original_fault_id'] = $item->id;
+
+                // Mapeo de la columna de cierre: 'closed' de la tabla/vista a 'closed_at' en el historial.
+                if (isset($historyData['closed']) && !isset($historyData['closed_at'])) {
+                    $historyData['closed_at'] = $historyData['closed'];
+                }
+
+                // Limpiar claves que NO van en la tabla histórica:
+                unset($historyData['id']);
+                unset($historyData['closed']);
+                unset($historyData['duration_days']);
+
+                // 5. Crear el registro en la tabla histórica
+                FaultHistory::create($historyData);
+
+                // 6. Eliminar el registro de la tabla de fallas activas
+                $item->delete();
+
+                // DB::commit(); // Comentado
+
+                $message = "Falla cerrada y archivada correctamente.";
+                return $this->alertSuccess(self::INDEX, $message);
+            } else {
+                // LÓGICA DE EDICIÓN/CREACIÓN NORMAL
+                // DB::commit(); // Comentado
+
+                $action_msg = $id ? 'actualizada' : 'creada';
+                $message = "Falla {$action_msg}";
+
+                // Redirección normal
+                if ($request->ajax()) {
+                    return response()->json(['success' => true, 'data' => $item]);
+                }
+
+                if (request()->back_url) {
+                    return redirect(request()->back_url);
+                }
+
+                return $this->alertSuccess(self::INDEX, $message);
+            }
         } catch (\Throwable $th) {
-            // Manejo de errores
+            // DB::rollBack(); // Comentado
+
             $action = $id ? 'actualizar' : 'crear';
             info($th->getMessage());
             return $this->alertError(self::INDEX, "Error al {$action} la falla: " . $th->getMessage());

@@ -59,12 +59,12 @@
                             <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""
                                 class="col-md-3" />
 
-                            <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
-                                class="col-md-3" />
+                            {{-- <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
+                                class="col-md-3" /> --}}
 
                         </div>
 
-                        <div class="row mt-3">
+                        {{-- <div class="row mt-3">
 
                             <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
                                 classControl="select2 form-control" />
@@ -72,7 +72,7 @@
                             <x-adminlte-textarea name="equipment_maintenance_log" label="Actividades realizadas al equipo"
                                 placeholder="" fgroup-class="col-md-12 mt-3"
                                 value="{{ old('equipment_maintenance_log') }}" />
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>

@@ -55,7 +55,11 @@
                                             Editar
                                         </a>
 
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item"
+                                            href="{{ route('admin.sucursal.faults.edit', [
+                                                'falla' => $item, // Primer parámetro: el modelo o ID de la ruta
+                                                'action' => 'close', // ⭐ Parámetro Query
+                                            ]) }}">
                                             <i class="fas fa-check">&nbsp;</i>
                                             Cerrar falla
                                         </a>

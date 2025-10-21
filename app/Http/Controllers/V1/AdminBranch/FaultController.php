@@ -23,11 +23,13 @@ class FaultController extends Controller
 
     public function index(Request $request)
     {
-        // --- Variables de Selects (Se mantienen sin cambios) ---
-        $equipment = FaultService::equipment()->prepend('Todos', '0');
-        $serviceArea = FaultService::serviceArea()->prepend('Todos', '0');
-        $faultStatus = FaultService::faultStatus()->prepend('Todos', '0');
-        $sparePartStatuses = FaultService::sparePartStatuses()->prepend('Todos', '0');
+        // Esto es un service provider quee carga data inicial de equipos y demás, para que esté disponible en todo el sistema
+        $faultData = app('fault_data');
+
+        $equipment = $faultData['equipment'];
+        $serviceArea = $faultData['serviceArea'];
+        $faultStatus = $faultData['faultStatus'];
+        $sparePartStatuses = $faultData['sparePartStatuses'];
 
         // --- 1. Captura de Parámetros (¡AQUÍ ESTÁ LA CORRECCIÓN!) ---
         $branchId = session('branch')->id;
@@ -161,12 +163,17 @@ class FaultController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
+
+        $faultData = app('fault_data');
+
+        $equipment = $faultData['equipment'];
+        $serviceArea = $faultData['serviceArea'];
+        $faultStatus = $faultData['faultStatus'];
+        $sparePartStatuses = $faultData['sparePartStatuses'];
+
         $employeeReported = FaultService::employeeReported();
-        $equipment = FaultService::equipment();
-        $serviceArea = FaultService::serviceArea();
-        $faultStatus = FaultService::faultStatus();
-        $sparePartStatuses = FaultService::sparePartStatuses();
         $executors = FaultService::executors();
+
         return view(
             'V1.AdminBranch.Faults.create',
             compact('back_url')
@@ -188,11 +195,15 @@ class FaultController extends Controller
         }
 
         $back_url = request()->back_url ?? null;
+
+        $faultData = app('fault_data');
+
+        $equipment = $faultData['equipment'];
+        $serviceArea = $faultData['serviceArea'];
+        $faultStatus = $faultData['faultStatus'];
+        $sparePartStatuses = $faultData['sparePartStatuses'];
+
         $employeeReported = FaultService::employeeReported();
-        $equipment = FaultService::equipment();
-        $serviceArea = FaultService::serviceArea();
-        $faultStatus = FaultService::faultStatus();
-        $sparePartStatuses = FaultService::sparePartStatuses();
         $executors = FaultService::executors();
 
         return view(

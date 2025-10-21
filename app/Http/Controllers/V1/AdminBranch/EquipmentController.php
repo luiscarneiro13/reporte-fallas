@@ -9,6 +9,7 @@ use App\Models\Equipment;
 use App\Models\Project;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class EquipmentController extends Controller
 {
@@ -146,6 +147,11 @@ class EquipmentController extends Controller
             // 5. Sincronizar la relación Muchos a Muchos (Tabla Pivote) 🎯
             // Esto maneja la asignación, actualización y desasignación (borrado) de proyectos.
             $item->projects()->sync($projectIds);
+
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
+
 
             // 6. Retornos y mensajes
             if ($request->ajax()) {

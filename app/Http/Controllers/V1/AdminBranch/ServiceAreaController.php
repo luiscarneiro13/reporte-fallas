@@ -8,6 +8,7 @@ use App\Http\Requests\V1\ServiceAreaRequest;
 use App\Models\ServiceArea;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class ServiceAreaController extends Controller
 {
@@ -44,6 +45,10 @@ class ServiceAreaController extends Controller
             $item->branch_id = session('branch')->id;
             $item->save();
 
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
+
             if ($request->ajax()) {
                 // Si es AJAX, devuelve un JSON
                 return response()->json(['data' => $item]);
@@ -73,6 +78,10 @@ class ServiceAreaController extends Controller
             $item->name = $request->input('name');
             $item->description = $request->input('description');
             $item->save();
+
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
 
             if (request()->back_url) {
                 return redirect(request()->back_url);

@@ -8,6 +8,7 @@ use App\Http\Requests\V1\FaultStatusRequest;
 use App\Models\FaultStatus;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class FaultStatusController extends Controller
 {
@@ -61,6 +62,10 @@ class FaultStatusController extends Controller
             $item->name = $request->input('name');
             $item->branch_id = session('branch')->id;
             $item->save();
+
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
 
             if ($request->ajax()) {
                 return response()->json(['success' => true, 'data' => $item]);

@@ -16,12 +16,9 @@
 
             </div>
             <div class="row mb-2 align-items-end">
-                {{-- ⭐ Nombre del select ajustado a 'close_status' para evitar duplicidad --}}
-                <x-select label="Cierre" name="close_status" :items="$close" class="col-md-2"
-                    classControl="select2 form-control" />
                 <x-input-date-custom name="from" label="Desde" placeholder="" class="col-md-2" />
                 <x-input-date-custom name="to" label="Hasta" placeholder="" class="col-md-2" />
-                <x-input-custom name="searchInput" id="searchInput" class="col-md-3" label="Búsqueda" noMarginTop />
+                <x-input-custom name="searchInput" id="searchInput" class="col-md-4" label="Búsqueda" noMarginTop />
 
                 {{-- Contenedor para los botones --}}
                 <div class="col-md-3 d-flex">
@@ -35,8 +32,7 @@
                             (request()->has('equipment_id') && request('equipment_id') != '0') ||
                             (request()->has('service_area_id') && request('service_area_id') != '0') ||
                             (request()->has('fault_status_id') && request('fault_status_id') != '0') ||
-                            (request()->has('spare_part_status_id') && request('spare_part_status_id') != '0') ||
-                            (request()->has('close_status') && request('close_status') != '0');
+                            (request()->has('spare_part_status_id') && request('spare_part_status_id') != '0');
                     @endphp
 
                     {{-- El botón Aplicar Filtro siempre usa mr-2 para dejar espacio a la derecha --}}
@@ -143,10 +139,7 @@
             }
 
             // ⭐ Parámetros de los SELECTS: CLAVE para la inicialización
-            const selectParams = ['equipment_id', 'service_area_id', 'fault_status_id', 'spare_part_status_id',
-                'close_status'
-            ];
-
+            const selectParams = ['equipment_id', 'service_area_id', 'fault_status_id', 'spare_part_status_id'];
 
             // ------------------------------------------
             // --- INICIALIZACIÓN DE VALORES DE FILTRO ---

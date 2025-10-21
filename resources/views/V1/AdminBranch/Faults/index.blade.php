@@ -23,21 +23,23 @@
     @endphp
 
     <x-faults-resume title="Resumen de fallas" :items="$faults" :headers="$headers" :equipment="$equipment" :serviceArea="$serviceArea"
-        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses" :close="$close" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId">
+        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId">
         <x-slot name="body">
             @forelse ($faults as $item)
                 <tr>
                     <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }} </td>
-                    <td>{{ $item->equipment->internal_code }}</td>
-                    <td>{{ $item->equipment->fullEquipmentName }}</td>
+                    <td>{{ $item->internal_code }}</td>
+                    <td>{{ $item->equipment_name }}</td>
                     <td>{{ Str::limit($item->description, 20, '...') }}</td>
-                    <td>{{ $item->faultStatus->name }}</td>
-                    <td>{{ $item->sparePartStatus->name }}</td>
-                    <td>{{ $item->serviceArea->name }}</td>
+                    <td>{{ $item->fault_status_name }}</td>
+                    <td>{{ $item->spare_part_status_name }}</td>
+                    <td>{{ $item->service_area_name }}</td>
                     <td>
-                        @if (!$item->closed)
-                            {{ $item->days_since_report }}
+                        @if (!$item->duration_days)
+                            Hoy
                             <br>
+                        @else
+                            {{ $item->duration_days }} dias
                         @endif
                         <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" /> <br>
                     </td>

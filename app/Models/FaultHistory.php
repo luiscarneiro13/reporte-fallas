@@ -57,9 +57,6 @@ class FaultHistory extends Model
         'executor_name',
     ];
 
-    /**
-     * Los atributos que deberían ser casteados a tipos nativos.
-     */
     protected $casts = [
         'report_date' => 'date',
         'scheduled_execution' => 'date',

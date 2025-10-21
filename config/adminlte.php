@@ -318,6 +318,11 @@ return [
             'route'  => 'admin.sucursal.faults.create',
         ],
         [
+            'text' => 'Histórico de fallas',
+            'icon' => 'fas fa-history',
+            'route'  => 'admin.sucursal.fault.history.index',
+        ],
+        [
             'text' => 'Equipos',
             'icon' => 'fas fa-truck',
             'route'  => 'admin.sucursal.equipment.index',

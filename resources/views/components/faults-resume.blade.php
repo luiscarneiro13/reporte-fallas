@@ -21,7 +21,7 @@
                 <x-input-custom name="searchInput" id="searchInput" class="col-md-4" label="Búsqueda" noMarginTop />
 
                 {{-- Contenedor para los botones --}}
-                <div class="col-md-3 d-flex">
+                <div class="col-md-3 d-flex mt-3 mt-md-0">
 
                     @php
                         // Lógica de PHP para determinar si se aplicó cualquier filtro (selects, fechas o búsqueda)

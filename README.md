@@ -7,3 +7,6 @@ para ejecutar solo permisos nuevos: php artisan db:seed --class=PermissionsSeede
 
 
 Se usó inputmask en layouts/app.blade.php
+
+
+docker exec reportefallasbackend-php php artisan migrate:fresh --seed

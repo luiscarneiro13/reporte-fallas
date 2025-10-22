@@ -86,7 +86,20 @@ class EquipmentController extends Controller
 
         $history = FaultHistory::where('equipment_id', $id)->get();
 
+        // return view('V1.AdminBranch.Equipment.show', compact('back_url', 'equipment', 'history'));
         return view('V1.AdminBranch.Equipment.show', compact('back_url', 'equipment', 'history'));
+    }
+
+    public function imp(string $id)
+    {
+        $back_url = request()->back_url ?? null;
+        $equipment = Equipment::query()
+            ->where('id', $id)->first();
+
+        $history = FaultHistory::where('equipment_id', $id)->get();
+
+        // return view('V1.AdminBranch.Equipment.show', compact('back_url', 'equipment', 'history'));
+        return view('V1.AdminBranch.Equipment.imp', compact('back_url', 'equipment', 'history'));
     }
 
     public function edit(string $id)

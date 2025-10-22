@@ -125,6 +125,7 @@ Route::middleware([
         Route::resource('/clientes', CustomerController::class)->names('admin.sucursal.customers');
         Route::resource('/proyectos', ProjectController::class)->names('admin.sucursal.projects');
         Route::resource('/equipos', EquipmentController::class)->names('admin.sucursal.equipment');
+        Route::get('/equipos/fallas/{equipo}/imprimir', [EquipmentController::class, 'imp'])->name('equipos-fallas.imp');
         Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');

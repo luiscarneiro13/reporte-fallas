@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EquipmentEditRequest;
 use App\Http\Requests\V1\EquipmentRequest;
 use App\Models\Equipment;
+use App\Models\FaultHistory;
 use App\Models\Project;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
@@ -29,12 +30,15 @@ class EquipmentController extends Controller
         $equipmentQuery = Equipment::query()
             // FILTRAR POR LA SUCURSAL DEL USUARIO EN SESIÓN
             ->where('branch_id', $branchId)
-            ->with([
-                // Último Proyecto (solo id y name)
-                'lastProject' => function ($projectQuery) {
-                    $projectQuery->select('projects.id', 'name');
-                },
-            ]);
+            ->with(
+                [
+                    // Último Proyecto (solo id y name)
+                    'lastProject' => function ($projectQuery) {
+                        $projectQuery->select('projects.id', 'name');
+                    },
+                ],
+                'history'
+            );
 
         // 4. Aplicar filtro de búsqueda si existe un query
         if ($query) {
@@ -74,6 +78,17 @@ class EquipmentController extends Controller
         return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears'));
     }
 
+    public function show(string $id)
+    {
+        $back_url = request()->back_url ?? null;
+        $equipment = Equipment::query()
+            ->where('id', $id)->first();
+
+        $history = FaultHistory::where('equipment_id', $id)->get();
+
+        return view('V1.AdminBranch.Equipment.show', compact('back_url', 'equipment', 'history'));
+    }
+
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
@@ -87,6 +102,7 @@ class EquipmentController extends Controller
                     $projectQuery->select('projects.id', 'name');
                 },
             ])->first();
+
         return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment'));
     }
 

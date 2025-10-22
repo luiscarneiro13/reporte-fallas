@@ -58,19 +58,21 @@
             </div>
 
             {{-- Paginación y Contador --}}
-            <div class="row mt-2">
-                <div class="col-sm-12 col-md-5">
-                    <div class="dataTables_info" id="table2_info" role="status" aria-live="polite">
-                        Mostrando {{ $items->firstItem() }} a {{ $items->lastItem() }} de {{ $items->total() }}
-                        registros
+            @if ($items instanceof \Illuminate\Pagination\LengthAwarePaginator && $items->total() > 0)
+                <div class="row mt-2">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="table2_info" role="status" aria-live="polite">
+                            Mostrando {{ $items->firstItem() }} a {{ $items->lastItem() }} de {{ $items->total() }}
+                            registros
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="table2_paginate">
+                            {{ $items->links() }}
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="table2_paginate">
-                        {{ $items->links() }}
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>

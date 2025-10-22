@@ -93,4 +93,9 @@ class Equipment extends Model
     {
         return $this->belongsTo(Fault::class);
     }
+
+    public function history()
+    {
+        return $this->hasMany(FaultHistory::class, 'equipment_id');
+    }
 }

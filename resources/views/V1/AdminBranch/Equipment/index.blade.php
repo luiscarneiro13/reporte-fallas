@@ -34,6 +34,15 @@
                                         Editar
                                     </a>
 
+                                    <a class="dropdown-item"
+                                        href="{{ route('admin.sucursal.equipment.show', [
+                                            'equipo' => $item,
+                                            'back_url' => request()->url(),
+                                        ]) }}">
+                                        <i class="fas fa-history">&nbsp;</i>
+                                        Histtórico de fallas
+                                    </a>
+
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"
                                         action="{{ route('admin.sucursal.equipment.destroy', $item) }}" method="post">

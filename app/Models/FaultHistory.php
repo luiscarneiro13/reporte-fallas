@@ -64,5 +64,8 @@ class FaultHistory extends Model
         'closed_at' => 'date',
     ];
 
-    // Por defecto, Laravel gestiona 'created_at' y 'updated_at'
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class, 'equipment_id');
+    }
 }

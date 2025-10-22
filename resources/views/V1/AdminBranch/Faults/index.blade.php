@@ -30,7 +30,8 @@
                     <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }} </td>
                     <td>{{ $item->internal_code }}</td>
                     <td>{{ $item->equipment_name }}</td>
-                    <td>{{ Str::limit($item->description, 20, '...') }}</td>
+                    {{-- <td>{{ Str::limit($item->description, 20, '...') }}</td> --}}
+                    <td>{{ $item->description }}</td>
                     <td>{{ $item->fault_status_name }}</td>
                     <td>{{ $item->spare_part_status_name }}</td>
                     <td>{{ $item->service_area_name }}</td>

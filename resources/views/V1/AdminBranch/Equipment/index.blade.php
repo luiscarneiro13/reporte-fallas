@@ -34,14 +34,16 @@
                                         Editar
                                     </a>
 
-                                    <a class="dropdown-item"
-                                        href="{{ route('admin.sucursal.equipment.show', [
-                                            'equipo' => $item,
-                                            'back_url' => request()->url(),
-                                        ]) }}">
-                                        <i class="fas fa-history">&nbsp;</i>
-                                        Histtórico de fallas
-                                    </a>
+                                    @if (isset($item->history) && count($item->history) > 0)
+                                        <a class="dropdown-item"
+                                            href="{{ route('admin.sucursal.equipment.show', [
+                                                'equipo' => $item,
+                                                'back_url' => request()->url(),
+                                            ]) }}">
+                                            <i class="fas fa-history">&nbsp;</i>
+                                            Histtórico de fallas
+                                        </a>
+                                    @endif
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"

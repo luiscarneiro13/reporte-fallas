@@ -23,7 +23,7 @@
                 <x-input-custom name="searchInput" id="searchInput" class="col-md-3" label="Búsqueda" noMarginTop />
 
                 {{-- Contenedor para los botones --}}
-                <div class="col-md-2 d-flex mt-3 mt-md-0">
+                <div class="col-md-1 d-flex mt-3 mt-md-0">
 
                     @php
                         // Lógica de PHP para determinar si se aplicó cualquier filtro (selects, fechas o búsqueda)
@@ -38,9 +38,7 @@
                             (request()->has('project_id') && request('project_id') != '0');
                     @endphp
 
-                    {{-- El botón Aplicar Filtro siempre usa mr-2 para dejar espacio a la derecha --}}
-                    {{-- <input type="submit" id="searchButton" name="searchButton"
-                        class="btn btn-primary btn-block h-100 mr-2" value="Filtrar" style="flex: 1;"> --}}
+                    {{-- Botón Aplicar Filtro --}}
                     <div style="flex: 1;">
                         <button type="submit" id="searchButton" name="searchButton"
                             class="btn btn-primary btn-block h-100 mr-2">
@@ -48,11 +46,20 @@
                         </button>
                     </div>
 
-                    {{-- Ajuste Clave: Contenedor con ancho fijo que siempre existe (visibility: hidden) --}}
+                    {{-- Botón Quitar Filtros --}}
                     <div style="flex: 1;" class="ml-2">
                         <button type="button" id="clearFiltersButton"
-                            class="btn btn-secondary btn-block h-100 {{ $hasFilters ? '' : 'invisible' }}">
+                            class="btn btn-secondary btn-block h-100 {{ $hasFilters ? '' : 'invisible' }}"
+                            title="Quitar Filtros">
                             <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    {{-- Botón Imprimir (MODIFICADO) --}}
+                    <div style="flex: 1;" class="ml-2">
+                        <button type="button" id="printButton" class="btn btn-default btn-block h-100"
+                            title="Imprimir Reporte con Filtros">
+                            <i class="fas fa-print"></i>
                         </button>
                     </div>
                 </div>
@@ -98,6 +105,9 @@
 
 @section('customjs')
     <script>
+        // VARIABLE GLOBAL DE LA RUTA BASE DE IMPRESIÓN (establecida desde PHP)
+        const BASE_PRINT_URL = "{{ route('faults.imp') }}";
+
         $(document).ready(function() {
 
             // ⭐ Aplica el foco al campo de búsqueda al cargar la página.
@@ -151,68 +161,91 @@
             ];
 
             // ------------------------------------------
-            // --- INICIALIZACIÓN DE VALORES DE FILTRO ---
+            // --- LÓGICA DE IMPRESIÓN (abrirEImprimir) ---
             // ------------------------------------------
 
-            // Inicializar inputs de búsqueda y fecha
-            $('#searchInput').val(getQueryParam('query') || '');
-            $('input[name="from"]').val(parseDateFromURL(getQueryParam('from')));
-            $('input[name="to"]').val(parseDateFromURL(getQueryParam('to')));
+            /**
+             * Abre la URL de impresión en una nueva ventana, llama a la función print()
+             * y la cierra automáticamente.
+             * @param {string} printUrl - La URL completa (con parámetros de filtro) a imprimir.
+             * @returns {void}
+             */
+            function abrirEImprimir(printUrl) {
+                // Abre la URL en una nueva ventana/pestaña
+                let printWindow = window.open(printUrl, '_blank');
 
+                // Asegura que la ventana se haya abierto correctamente
+                if (printWindow) {
+                    // Espera a que el contenido de la nueva ventana termine de cargar
+                    printWindow.onload = function() {
+                        try {
+                            // 1. Llama a la función de impresión en la nueva ventana
+                            printWindow.print();
 
-            // ⭐ LÓGICA DE INICIALIZACIÓN DE SELECTS (Incluye 'close_status')
-            selectParams.forEach(paramName => {
-                const paramValue = getQueryParam(paramName);
-                const $select = $(`select[name="${paramName}"]`);
+                            // 2. Cierra la ventana después de un breve retraso
+                            // (Necesario porque print() es asíncrono y no siempre se resuelve bien)
+                            setTimeout(function() {
+                                // Antes de cerrar, verificamos si la ventana sigue abierta
+                                if (printWindow && !printWindow.closed) {
+                                    printWindow.close();
+                                }
+                            }, 500); // 500ms de espera
 
-                // Si el valor está en la URL, lo seleccionamos.
-                // Si no, el select mantendrá su valor por defecto (asumimos que es '0' o vacío).
-                if (paramValue !== null) {
-                    // Selecciona el valor de la URL y dispara el evento 'change' (necesario para Select2)
-                    $select.val(paramValue).trigger('change');
+                        } catch (e) {
+                            console.error('Error al intentar imprimir en la nueva ventana:', e);
+                            // Si falla, se deja la ventana abierta para que el usuario pueda interactuar.
+                        }
+                    };
                 } else {
-                    // Si el parámetro no existe en la URL, aseguramos que muestre el valor "Todos" ('0')
-                    // Esto evita que se quede con un valor anterior en la caché del navegador.
-                    $select.val('0').trigger('change');
+                    // Usamos console.error en lugar de alert() como indica la restricción.
+                    console.error('La ventana emergente fue bloqueada. Por favor, permítala para imprimir.');
+                    // NOTA: En producción, usar un toast o modal para informar al usuario sin usar alert().
                 }
-            });
+            }
 
 
             // ------------------------------------------
-            // --- LÓGICA DEL BOTÓN DE BÚSQUEDA (Aplicar Filtro) ---
+            // --- FUNCIÓN REUTILIZABLE PARA OBTENER LA QUERY STRING CON FILTROS ---
             // ------------------------------------------
 
-            document.getElementById('searchButton').addEventListener('click', function() {
+            /**
+             * Recolecta todos los filtros del formulario, realiza validaciones y
+             * devuelve la cadena de consulta (query string) para la URL.
+             * @param {boolean} validateDates - Si se deben validar las fechas y mostrar errores.
+             * @returns {string|null} La query string o null si la validación falla.
+             */
+            function getFilterQueryString(validateDates = true) {
                 const fromInput = document.querySelector('input[name="from"]');
                 const toInput = document.querySelector('input[name="to"]');
 
-                // Valores en formato DD-MM-YYYY desde los inputs
                 const fromInputDate = (fromInput?.value.trim() || '');
                 const toInputDate = (toInput?.value.trim() || '');
                 const searchQuery = document.getElementById('searchInput').value.trim();
 
                 // 1. Validación de Formato de Fechas
                 if (!isValidDateFormat(fromInputDate) || !isValidDateFormat(toInputDate)) {
-                    alert('Las fechas deben tener el formato dd-mm-yyyy y contener solo números.');
-                    $('#searchInput').focus();
-                    return;
+                    if (validateDates) {
+                        console.error('Las fechas deben tener el formato dd-mm-yyyy y contener solo números.');
+                    }
+                    return null;
                 }
 
                 const fromDateObj = parseDate(fromInputDate);
                 const toDateObj = parseDate(toInputDate);
 
-                // 6. Validación de Rango de Fechas
+                // 2. Validación de Rango de Fechas
                 if (fromDateObj && toDateObj && fromDateObj > toDateObj) {
-                    alert('La fecha "Desde" no puede ser mayor que "Hasta".');
-                    $('#searchInput').focus();
-                    return;
+                    if (validateDates) {
+                        console.error('La fecha "Desde" no puede ser mayor que "Hasta".');
+                    }
+                    return null;
                 }
 
                 // CONVERSIÓN: Pasar al formato MySQL (YYYY-MM-DD) para la URL
                 const fromMySQL = parseDateForURL(fromInputDate);
                 const toMySQL = parseDateForURL(toInputDate);
 
-                // 2. Construcción de la URL
+                // 3. Construcción de la URLSearchParams
                 const newParams = new URLSearchParams();
 
                 // A. Añadir parámetros de SELECTS
@@ -238,7 +271,45 @@
                     newParams.append('query', searchQuery);
                 }
 
-                const queryString = newParams.toString();
+                return newParams.toString();
+            }
+
+
+            // ------------------------------------------
+            // --- INICIALIZACIÓN DE VALORES DE FILTRO ---
+            // ------------------------------------------
+
+            // Inicializar inputs de búsqueda y fecha
+            $('#searchInput').val(getQueryParam('query') || '');
+            $('input[name="from"]').val(parseDateFromURL(getQueryParam('from')));
+            $('input[name="to"]').val(parseDateFromURL(getQueryParam('to')));
+
+
+            // ⭐ LÓGICA DE INICIALIZACIÓN DE SELECTS
+            selectParams.forEach(paramName => {
+                const paramValue = getQueryParam(paramName);
+                const $select = $(`select[name="${paramName}"]`);
+
+                if (paramValue !== null) {
+                    $select.val(paramValue).trigger('change');
+                } else {
+                    $select.val('0').trigger('change');
+                }
+            });
+
+
+            // ------------------------------------------
+            // --- LÓGICA DEL BOTÓN DE BÚSQUEDA (Aplicar Filtro) ---
+            // ------------------------------------------
+
+            document.getElementById('searchButton').addEventListener('click', function() {
+                // Reutilizamos la función para generar la query string
+                const queryString = getFilterQueryString(true); // Pasamos true para validar y mostrar errores
+
+                if (queryString === null) {
+                    // Si getFilterQueryString devuelve null, significa que falló una validación
+                    return;
+                }
 
                 let newUrl = window.location.pathname;
                 if (queryString) {
@@ -247,6 +318,32 @@
 
                 window.location.href = newUrl;
             });
+
+
+            // ------------------------------------------
+            // --- LÓGICA DEL BOTÓN DE IMPRIMIR (NUEVO) ---
+            // ------------------------------------------
+
+            document.getElementById('printButton').addEventListener('click', function() {
+                // 1. Obtiene la query string actual con los filtros (sin validación estricta, la validación se hace internamente)
+                const queryString = getFilterQueryString(true);
+
+                if (queryString === null) {
+                    // Si getFilterQueryString devuelve null, significa que falló una validación
+                    $('#searchInput').focus(); // Vuelve a enfocar para indicar un error
+                    return;
+                }
+
+                // 2. Construye la URL de impresión completa
+                let printUrl = BASE_PRINT_URL;
+                if (queryString) {
+                    printUrl += '?' + queryString;
+                }
+
+                // 3. Llama a la función de impresión
+                abrirEImprimir(printUrl);
+            });
+
 
             // Lógica del Botón "Quitar Filtro"
             document.getElementById('clearFiltersButton')?.addEventListener('click', function() {

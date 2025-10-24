@@ -42,7 +42,7 @@
                         @else
                             {{ $item->duration_days }} dias
                         @endif
-                        <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" /> <br>
+                        {{-- <x-badge-button :name="$item->closed ? 'Cerrada' : 'Abierta'" :type="$item->closed ? 'success' : 'warning'" /> <br> --}}
                     </td>
                     <td>
                         <div class="input-group" style="cursor:pointer;">

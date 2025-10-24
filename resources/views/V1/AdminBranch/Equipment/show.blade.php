@@ -27,9 +27,9 @@
                         $printUrl = route('equipos-fallas.imp', ['equipo' => $equipment->id]);
                     @endphp
 
-                    <button type="button" class="btn btn-sm btn-primary" onclick="abrirEImprimir('{{ $printUrl }}')"
+                    <button type="button" class="btn btn-default" onclick="abrirEImprimir('{{ $printUrl }}')"
                         title="Imprimir Reporte">
-                        <i class="fas fa-print"></i> Imprimir
+                        <i class="fas fa-print"></i>
                     </button>
                 </h3>
             </div>

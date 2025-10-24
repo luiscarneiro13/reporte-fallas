@@ -131,6 +131,7 @@ Route::middleware([
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
         Route::resource('/ejecutores', ExecutorController::class)->names('admin.sucursal.executors');
         Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
+        Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
     });
 });

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Employee;
 use App\Models\Equipment;
 use App\Models\FaultStatus;
+use App\Models\Project;
 use App\Models\ServiceArea;
 use App\Models\SparePartStatus;
 use Illuminate\Support\Facades\DB;
@@ -81,5 +82,14 @@ class FaultService
         $result = $initValue->merge($employees);
 
         return $result;
+    }
+
+    static function projects()
+    {
+        $projects = Project::where('branch_id', session('branch')->id)
+            ->orderBy('name', 'asc')
+            ->pluck('name', 'id');
+
+        return $projects;
     }
 }

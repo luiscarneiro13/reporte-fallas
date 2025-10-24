@@ -30,6 +30,7 @@ class FaultController extends Controller
         $serviceArea = $faultData['serviceArea'];
         $faultStatus = $faultData['faultStatus'];
         $sparePartStatuses = $faultData['sparePartStatuses'];
+        $projects = $faultData['projects'];
 
         // --- 1. Captura de Parámetros (¡AQUÍ ESTÁ LA CORRECCIÓN!) ---
         $branchId = session('branch')->id;
@@ -45,6 +46,7 @@ class FaultController extends Controller
         $serviceAreaId = $request->query('service_area_id');         // ⭐ NUEVO/CORREGIDO
         $searchFaultStatusId = $request->query('fault_status_id');   // ⭐ CORREGIDO (Antes 'status_id')
         $searchSparePartStatusId = $request->query('spare_part_status_id'); // ⭐ CORREGIDO (Antes 'spare_status_id')
+        $projectId = $request->query('project_id'); // ⭐ CORREGIDO (Antes 'spare_status_id')
 
         // Otros filtros
         $closeStatus = $request->query('close_status');
@@ -113,6 +115,11 @@ class FaultController extends Controller
             $faultsQuery->where('spare_part_status_id', $searchSparePartStatusId);
         }
 
+        // 9.1. Aplicar filtro por proyecto (project_id) - ¡Funciona ahora!
+        if (!empty($projectId) && $projectId != '0') {
+            $faultsQuery->where('project_id', $projectId);
+        }
+
         // 10. Aplicar filtro por Ejecutor (executor_id)
         if (!empty($searchExecutorId) && $searchExecutorId != '0') {
             $faultsQuery->where('executor_id', $searchExecutorId);
@@ -129,7 +136,7 @@ class FaultController extends Controller
         }
 
         // 12. Aplicar ordenamiento
-        $faultsQuery->orderBy('id', 'desc');
+        $faultsQuery->orderBy('duration_days', 'desc');
 
         // 13. Ejecutar la consulta con paginación
 
@@ -145,6 +152,7 @@ class FaultController extends Controller
             // IDs Corregidos (Para restaurar estado de los selects)
             'searchFaultStatusId',
             'searchSparePartStatusId',
+            'projectId',
             'searchExecutorId',
             'equipmentId',
             'serviceAreaId',
@@ -155,10 +163,10 @@ class FaultController extends Controller
             "equipment",
             "serviceArea",
             "faultStatus",
-            "sparePartStatuses"
+            "sparePartStatuses",
+            "projects"
         ));
     }
-
 
     public function create()
     {

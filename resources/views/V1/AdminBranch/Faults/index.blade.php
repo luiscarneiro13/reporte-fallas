@@ -23,7 +23,7 @@
     @endphp
 
     <x-faults-resume title="Resumen de fallas" :items="$faults" :headers="$headers" :equipment="$equipment" :serviceArea="$serviceArea"
-        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId">
+        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses"  :projects="$projects" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId">
         <x-slot name="body">
             @forelse ($faults as $item)
                 <tr>

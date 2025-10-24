@@ -10,6 +10,7 @@ use App\Models\Division;
 use App\Models\Project;
 use App\Traits\AlertResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class ProjectController extends Controller
 {
@@ -67,6 +68,10 @@ class ProjectController extends Controller
             $item->branch_id = session('branch')->id;
             $item->save();
 
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
+
             if ($request->ajax()) {
                 // Si es AJAX, devuelve un JSON
                 return response()->json(['data' => $item]);
@@ -102,6 +107,10 @@ class ProjectController extends Controller
             $item->geographic_area = $request->input('geographic_area');
             $item->contract_number = $request->input('contract_number');
             $item->save();
+
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
 
             if (request()->back_url) {
                 return redirect(request()->back_url);

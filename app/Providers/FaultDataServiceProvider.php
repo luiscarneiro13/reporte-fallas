@@ -19,6 +19,7 @@ class FaultDataServiceProvider extends ServiceProvider
                 'serviceArea'       => FaultService::serviceArea()->prepend('Todos', '0'),
                 'faultStatus'       => FaultService::faultStatus()->prepend('Todos', '0'),
                 'sparePartStatuses' => FaultService::sparePartStatuses()->prepend('Todos', '0'),
+                'projects' => FaultService::projects()->prepend('Todos', '0'),
             ];
         });
     }

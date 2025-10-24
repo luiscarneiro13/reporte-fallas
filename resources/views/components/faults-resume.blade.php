@@ -16,12 +16,14 @@
 
             </div>
             <div class="row mb-2 align-items-end">
+                <x-select label="Proyectos" name="project_id" :items="$projects" class="col-md-3"
+                    classControl="select2 form-control" />
                 <x-input-date-custom name="from" label="Desde" placeholder="" class="col-md-2" />
                 <x-input-date-custom name="to" label="Hasta" placeholder="" class="col-md-2" />
-                <x-input-custom name="searchInput" id="searchInput" class="col-md-4" label="Búsqueda" noMarginTop />
+                <x-input-custom name="searchInput" id="searchInput" class="col-md-3" label="Búsqueda" noMarginTop />
 
                 {{-- Contenedor para los botones --}}
-                <div class="col-md-3 d-flex mt-3 mt-md-0">
+                <div class="col-md-2 d-flex mt-3 mt-md-0">
 
                     @php
                         // Lógica de PHP para determinar si se aplicó cualquier filtro (selects, fechas o búsqueda)
@@ -32,18 +34,25 @@
                             (request()->has('equipment_id') && request('equipment_id') != '0') ||
                             (request()->has('service_area_id') && request('service_area_id') != '0') ||
                             (request()->has('fault_status_id') && request('fault_status_id') != '0') ||
-                            (request()->has('spare_part_status_id') && request('spare_part_status_id') != '0');
+                            (request()->has('spare_part_status_id') && request('spare_part_status_id') != '0') ||
+                            (request()->has('project_id') && request('project_id') != '0');
                     @endphp
 
                     {{-- El botón Aplicar Filtro siempre usa mr-2 para dejar espacio a la derecha --}}
-                    <input type="submit" id="searchButton" name="searchButton"
-                        class="btn btn-primary btn-block h-100 mr-2" value="Aplicar filtro" style="flex: 1;">
+                    {{-- <input type="submit" id="searchButton" name="searchButton"
+                        class="btn btn-primary btn-block h-100 mr-2" value="Filtrar" style="flex: 1;"> --}}
+                    <div style="flex: 1;">
+                        <button type="submit" id="searchButton" name="searchButton"
+                            class="btn btn-primary btn-block h-100 mr-2">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
 
                     {{-- Ajuste Clave: Contenedor con ancho fijo que siempre existe (visibility: hidden) --}}
-                    <div style="flex: 1;">
+                    <div style="flex: 1;" class="ml-2">
                         <button type="button" id="clearFiltersButton"
                             class="btn btn-secondary btn-block h-100 {{ $hasFilters ? '' : 'invisible' }}">
-                            Quitar filtro
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
                 </div>
@@ -86,8 +95,6 @@
         </div>
     </div>
 </div>
-
----
 
 @section('customjs')
     <script>
@@ -139,7 +146,9 @@
             }
 
             // ⭐ Parámetros de los SELECTS: CLAVE para la inicialización
-            const selectParams = ['equipment_id', 'service_area_id', 'fault_status_id', 'spare_part_status_id'];
+            const selectParams = ['equipment_id', 'service_area_id', 'fault_status_id', 'spare_part_status_id',
+                'project_id'
+            ];
 
             // ------------------------------------------
             // --- INICIALIZACIÓN DE VALORES DE FILTRO ---

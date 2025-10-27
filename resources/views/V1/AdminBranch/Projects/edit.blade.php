@@ -21,18 +21,14 @@
 
                 <div class="row">
 
-                    <div class="col-md-5">
-                        <x-label value="Cliente" btnAddModalTarget="#modalAddCustomer" />
-                        {{ Form::select('customer_id', $customers, $project->customer_id, ['class' => 'select2 form-control']) }}
-                    </div>
+                    <x-select required btnAddModalTarget="#modalAddCustomer" label="Cliente" name="customer_id"
+                        :items="$customers" class="col-md-5" classControl="select2 form-control" :selected="$project->customer_id" />
 
                     <x-input-custom name="name" label="Nombre del proyecto" placeholder="" class="col-md-7"
                         value="{{ $project->name }}" />
 
-                    <div class="col-md-5">
-                        <x-label value="División" btnAddModalTarget="#modalAddDivision" />
-                        {{ Form::select('division_id', $divisions, $project->division_id, ['class' => 'select2 form-control']) }}
-                    </div>
+                    <x-select required btnAddModalTarget="#modalAddDivision" label="División" name="division_id"
+                        :items="$divisions" class="col-md-5" classControl="select2 form-control" :selected="$project->division_id" />
 
                     <x-input-custom name="contract_number" label="Nro. de Contrato (opcional)" placeholder=""
                         class="col-md-7" value="{{ $project->contract_number }}" />

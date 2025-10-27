@@ -11,7 +11,7 @@ class Project extends Model
 
     protected $table = "projects";
 
-    protected $fillable = ['branch_id', 'division_id', 'customer_id',  'name', 'description', 'geographic_area', 'contract_number'];
+    protected $fillable = ['branch_id', 'customer_id', 'division_id', 'name', 'contract_number', 'description', 'geographic_area' ];
 
     public function branch()
     {

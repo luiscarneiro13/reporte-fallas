@@ -57,15 +57,16 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $request)
     {
+        // return $request->all();
         try {
             $item = new Project();
-            $item->name = $request->input('name');
-            $item->description = $request->input('description');
+            $item->branch_id = session('branch')->id;
             $item->customer_id = $request->input('customer_id');
             $item->division_id = $request->input('division_id');
-            $item->geographic_area = $request->input('geographic_area');
+            $item->name = $request->input('name');
             $item->contract_number = $request->input('contract_number');
-            $item->branch_id = session('branch')->id;
+            $item->description = $request->input('description');
+            $item->geographic_area = $request->input('geographic_area');
             $item->save();
 
             // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales

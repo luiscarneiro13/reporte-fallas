@@ -42,11 +42,11 @@ class FaultController extends Controller
         // Esto es un service provider que carga data inicial de equipos y demás
         $faultData = app('fault_data');
 
-        $equipment = $faultData['equipment'];
-        $serviceArea = $faultData['serviceArea'];
-        $faultStatus = $faultData['faultStatus'];
-        $sparePartStatuses = $faultData['sparePartStatuses'];
-        $projects = $faultData['projects'];
+        $equipment = $faultData['equipment']->prepend('Todos', '0');
+        $serviceArea = $faultData['serviceArea']->prepend('Todos', '0');
+        $faultStatus = $faultData['faultStatus']->prepend('Todos', '0');
+        $sparePartStatuses = $faultData['sparePartStatuses']->prepend('Todos', '0');
+        $projects = $faultData['projects']->prepend('Todos', '0');
 
         // --- 2. Obtener la consulta de fallas ya filtrada ---
         $faultsQuery = $this->getFilteredFaultsQuery($request);

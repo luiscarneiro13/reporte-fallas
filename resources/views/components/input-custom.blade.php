@@ -16,7 +16,7 @@
             <span class="text-danger">*</span>
         @endif
     </label>
-    <input type="{{ $type ?? 'text' }}" name="{{ $name }}" id="{{ $id }}" class="form-control"
+    <input type="{{ $type ?? 'text' }}" name="{{ $name }}" id="{{ $id }}" class="form-control @error($name) is-invalid @enderror"
         placeholder="{{ $placeholder }}" value="{{ $value }}">
 
     {{-- Texto de ayuda (small) --}}
@@ -25,4 +25,8 @@
             {{ $help }}
         </small>
     @endif
+
+    @error($name)
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
 </div>

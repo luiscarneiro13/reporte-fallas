@@ -308,8 +308,13 @@ return [
         ],
         // --- Menús Principales ---
         [
-            'text' => 'Resumen de fallas',
+            'text' => 'Inicio',
             'icon' => 'fas fa-tachometer-alt',
+            'route'  => 'dashboard',
+        ],
+        [
+            'text' => 'Resumen de fallas',
+            'icon' => 'fas fa-list-alt',
             'route'  => 'admin.sucursal.faults.index',
         ],
         [

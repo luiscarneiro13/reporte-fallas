@@ -40,6 +40,8 @@ use App\Http\Controllers\V1\AdminBranch\OwnerController;
 use App\Http\Controllers\V1\AdminBranch\ProjectController;
 use App\Http\Controllers\V1\AdminBranch\ServiceAreaController;
 use App\Http\Controllers\V1\AdminBranch\SparePartStatusController;
+use App\Mail\ReportarFallaEmail;
+use Illuminate\Support\Facades\Mail;
 
 // *************************************************************************************
 
@@ -134,4 +136,18 @@ Route::middleware([
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
     });
+});
+
+
+
+
+
+Route::get('/email', function () {
+    // 1. Define el destinatario
+    $recipient = 'carneiroluis2@gmail.com'; // Cambia esto por tu dirección para probar
+
+    // 2. Envía el correo
+    Mail::to($recipient)->send(new ReportarFallaEmail());
+
+    return "Correo de prueba enviado a {$recipient}!";
 });

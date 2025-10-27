@@ -15,11 +15,11 @@ class FaultDataServiceProvider extends ServiceProvider
         // Registra los datos de falla como un singleton para que la llamada se haga SOLO UNA VEZ
         $this->app->singleton('fault_data', function ($app) {
             return [
-                'equipment'         => FaultService::equipment()->prepend('Todos', '0'),
-                'serviceArea'       => FaultService::serviceArea()->prepend('Todos', '0'),
-                'faultStatus'       => FaultService::faultStatus()->prepend('Todos', '0'),
-                'sparePartStatuses' => FaultService::sparePartStatuses()->prepend('Todos', '0'),
-                'projects' => FaultService::projects()->prepend('Todos', '0'),
+                'equipment'         => FaultService::equipment(),
+                'serviceArea'       => FaultService::serviceArea(),
+                'faultStatus'       => FaultService::faultStatus(),
+                'sparePartStatuses' => FaultService::sparePartStatuses(),
+                'projects' => FaultService::projects(),
             ];
         });
     }

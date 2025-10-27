@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\FaultService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -22,8 +23,12 @@ class DashboardController extends Controller
         } else {
             //Es un administrador general. Puede ver todas las sucursales
         }
-        // return session('branch');
-        return redirect()->route('admin.sucursal.faults.index');
-        // return view('dashboard');
+
+        $mostFailingEquipment = FaultService::mostFailingEquipment();
+        $mostFailReported = FaultService::mostFailReported();
+        $totalActiveFaults = FaultService::totalActiveFaults();
+        $totalClosedFaults = FaultService::totalClosedFaults();
+
+        return view('dashboard', compact('mostFailingEquipment', 'mostFailReported', 'totalActiveFaults', 'totalClosedFaults'));
     }
 }

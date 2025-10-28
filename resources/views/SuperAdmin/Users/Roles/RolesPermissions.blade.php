@@ -18,7 +18,9 @@
                 @foreach ($permissions as $item)
                     <div class="col-2">
                         <label>
-                            {!! Form::checkbox('permissions[]', $item->id, $role->hasPermissionTo($item->id) ?: false, ['class' => 'mr-1']) !!}
+                            {!! Form::checkbox('permissions[]', $item->id, $role->hasPermissionTo($item->id) ? true : false, [
+                                'class' => 'mr-1',
+                            ]) !!}
                             {{ $item->name }}
                         </label>
                     </div>

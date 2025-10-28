@@ -98,16 +98,39 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
+                    <x-chart title="Fallas por equipo" type="bar" :labels="$failuresByEquipment['labels']" :values="$failuresByEquipment['values']"
+                        :show-percentages="true" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
                     <x-chart title="Fallas por división" type="pie" :labels="$failuresByDivision['labels']" :values="$failuresByDivision['values']"
                         :show-percentages="true" />
-
-                    {{-- <x-chart title="Ventas por mes" type="bar" :labels="['Enero', 'Febrero', 'Marzo', 'Abril']" :values="[120, 90, 150, 200]" /> --}}
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <x-chart title="Fallas por proyectos" type="pie" :labels="$failuresByProject['labels']" :values="$failuresByProject['values']"
+                        :show-percentages="true" />
                 </div>
 
+                <div class="col-md-4">
+                    <x-chart title="Fallas por usuario" type="pie" :labels="$failuresByReporter['labels']" :values="$failuresByReporter['values']"
+                        :show-percentages="true" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <x-chart title="Fallas por estatus" type="pie" :labels="$failuresByStatus['labels']" :values="$failuresByStatus['values']"
+                        :show-percentages="true" />
+
+                </div>
+
+                <div class="col-md-4">
+                    <x-chart title="Fallas por status de repuestos" type="pie" :labels="$failuresBySparePartStatus['labels']" :values="$failuresBySparePartStatus['values']"
+                        :show-percentages="true" />
+                </div>
             </div>
         </div>
     </div>

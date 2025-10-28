@@ -28,7 +28,13 @@ class DashboardController extends Controller
         $mostFailReported = FaultService::mostFailReported();
         $totalActiveFaults = FaultService::totalActiveFaults();
         $totalClosedFaults = FaultService::totalClosedFaults();
+
         $failuresByDivision = FaultService::failuresByDivision();
+        $failuresByProject = FaultService::failuresByProject();
+        $failuresByReporter = FaultService::failuresByReporter();
+        $failuresByEquipment = FaultService::failuresByEquipment();
+        $failuresByStatus = FaultService::failuresByStatus();
+        $failuresBySparePartStatus = FaultService::failuresBySparePartStatus();
 
 
 
@@ -38,6 +44,11 @@ class DashboardController extends Controller
             'totalActiveFaults',
             'totalClosedFaults',
             'failuresByDivision',
+            'failuresByProject',
+            'failuresByReporter',
+            'failuresByEquipment',
+            'failuresByStatus',
+            'failuresBySparePartStatus',
         ));
     }
 }

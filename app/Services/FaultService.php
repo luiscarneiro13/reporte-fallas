@@ -98,6 +98,7 @@ class FaultService
         // 1. Contar las fallas activas (v_faults_base)
         $activeFaults = DB::table('v_faults_base')
             ->select('equipment_id', DB::raw('count(*) as fault_count'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
             ->whereNotNull('equipment_id')
             ->groupBy('equipment_id');
 
@@ -121,6 +122,7 @@ class FaultService
         if ($mostFailingEquipment->isNotEmpty()) {
             $equipmentId = $mostFailingEquipment->first()->equipment_id;
             $equipmentInfo = DB::table('v_faults_base')
+                ->where('branch_id', session('branch')->id)->whereNull('closed_at')
                 ->where('equipment_id', $equipmentId)
                 ->select('equipment_id', 'equipment_name')
                 ->first();
@@ -193,6 +195,7 @@ class FaultService
     {
         $failuresByDivision = DB::table('v_faults_base')
             ->select('service_area_name as division', DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
             ->groupBy('service_area_name')
             ->unionAll(
                 DB::table('fault_history')
@@ -207,6 +210,96 @@ class FaultService
 
         $labels = $failuresByDivision->keys()->toArray();
         $values = $failuresByDivision->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function failuresByProject()
+    {
+        $failuresByProject = DB::table('v_faults_base')
+            ->select(DB::raw('COALESCE(project_name, "Sin proyecto") as project'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->groupBy('project_name')
+            ->get()
+            ->pluck('total', 'project'); // devuelve ['Proyecto A' => 10, 'Proyecto B' => 5, ...]
+
+        $labels = $failuresByProject->keys()->toArray();
+        $values = $failuresByProject->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function failuresByReporter()
+    {
+        $failuresByReporter = DB::table('v_faults_base')
+            ->select(DB::raw('COALESCE(reported_by_name, "Sin reportante") as reporter'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->groupBy('reported_by_name')
+            ->get()
+            ->pluck('total', 'reporter'); // devuelve ['Juan Pérez' => 10, 'Ana Gómez' => 5, ...]
+
+        $labels = $failuresByReporter->keys()->toArray();
+        $values = $failuresByReporter->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function failuresByEquipment()
+    {
+        $failuresByEquipment = DB::table('v_faults_base')
+            ->select(DB::raw('COALESCE(equipment_name, "Sin equipo") as equipment'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->groupBy('equipment_name')
+            ->get()
+            ->pluck('total', 'equipment'); // devuelve ['Equipo A' => 12, 'Equipo B' => 7, ...]
+
+        $labels = $failuresByEquipment->keys()->toArray();
+        $values = $failuresByEquipment->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function failuresByStatus()
+    {
+        $failuresByStatus = DB::table('v_faults_base')
+            ->select(DB::raw('COALESCE(fault_status_name, "Sin estatus") as status'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->groupBy('fault_status_name')
+            ->get()
+            ->pluck('total', 'status'); // devuelve ['Abierta' => 10, 'Cerrada' => 7, ...]
+
+        $labels = $failuresByStatus->keys()->toArray();
+        $values = $failuresByStatus->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function failuresBySparePartStatus()
+    {
+        $failuresBySparePartStatus = DB::table('v_faults_base')
+            ->select(DB::raw('COALESCE(spare_part_status_name, "Sin estatus de repuesto") as status'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->groupBy('spare_part_status_name')
+            ->get()
+            ->pluck('total', 'status'); // devuelve ['Disponible' => 10, 'No disponible' => 5, ...]
+
+        $labels = $failuresBySparePartStatus->keys()->toArray();
+        $values = $failuresBySparePartStatus->values()->toArray();
 
         return [
             'labels' => $labels,

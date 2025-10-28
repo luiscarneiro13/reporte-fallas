@@ -124,11 +124,15 @@
                 <div class="col-md-4">
                     <x-chart title="Fallas por estatus" type="pie" :labels="$failuresByStatus['labels']" :values="$failuresByStatus['values']"
                         :show-percentages="true" />
-
                 </div>
 
                 <div class="col-md-4">
                     <x-chart title="Fallas por status de repuestos" type="pie" :labels="$failuresBySparePartStatus['labels']" :values="$failuresBySparePartStatus['values']"
+                        :show-percentages="true" />
+                </div>
+
+                <div class="col-md-4">
+                    <x-chart title="Fallas abiertas y cerradas" type="pie" :labels="$faultsByStatus['labels']" :values="$faultsByStatus['values']"
                         :show-percentages="true" />
                 </div>
             </div>

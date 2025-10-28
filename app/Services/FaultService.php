@@ -105,6 +105,7 @@ class FaultService
         // 2. Contar las fallas cerradas (fault_history)
         $closedFaults = DB::table('fault_history')
             ->select('equipment_id', DB::raw('count(*) as fault_count'))
+            ->where('branch_id', session('branch')->id)
             ->whereNotNull('equipment_id')
             ->groupBy('equipment_id');
 
@@ -149,6 +150,7 @@ class FaultService
         // 2. Contar las fallas cerradas (fault_history)
         $closedReporters = DB::table('fault_history')
             ->select('reported_by_id', DB::raw('count(*) as report_count'))
+            ->where('branch_id', session('branch')->id)
             ->whereNotNull('reported_by_id')
             ->groupBy('reported_by_id');
 
@@ -188,7 +190,7 @@ class FaultService
 
     static function totalClosedFaults()
     {
-        return DB::table('fault_history')->count();
+        return DB::table('fault_history')->where('branch_id', session('branch')->id)->count();
     }
 
     static function failuresByDivision()
@@ -200,6 +202,7 @@ class FaultService
             ->unionAll(
                 DB::table('fault_history')
                     ->select('service_area_name as division', DB::raw('COUNT(*) as total'))
+                    ->where('branch_id', session('branch')->id)
                     ->groupBy('service_area_name')
             )
             ->get()
@@ -300,6 +303,26 @@ class FaultService
 
         $labels = $failuresBySparePartStatus->keys()->toArray();
         $values = $failuresBySparePartStatus->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
+    }
+
+    static function faultsByStatus()
+    {
+        $totalActive = DB::table('v_faults_base')
+            ->where('branch_id', session('branch')->id)
+            ->whereNull('closed_at')
+            ->count();
+
+        $totalClosed = DB::table('fault_history')
+            ->where('branch_id', session('branch')->id)
+            ->count();
+
+        $labels = ['Fallas Activas', 'Fallas Cerradas'];
+        $values = [$totalActive, $totalClosed];
 
         return [
             'labels' => $labels,

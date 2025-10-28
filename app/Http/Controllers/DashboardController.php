@@ -35,7 +35,7 @@ class DashboardController extends Controller
         $failuresByEquipment = FaultService::failuresByEquipment();
         $failuresByStatus = FaultService::failuresByStatus();
         $failuresBySparePartStatus = FaultService::failuresBySparePartStatus();
-
+        $faultsByStatus = FaultService::faultsByStatus();
 
 
         return view('dashboard', compact(
@@ -49,6 +49,7 @@ class DashboardController extends Controller
             'failuresByEquipment',
             'failuresByStatus',
             'failuresBySparePartStatus',
+            'faultsByStatus',
         ));
     }
 }

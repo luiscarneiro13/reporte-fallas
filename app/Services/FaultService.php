@@ -181,11 +181,36 @@ class FaultService
 
     static function totalActiveFaults()
     {
-        return DB::table('v_faults_base')->count();
+        return DB::table('v_faults_base')->where('branch_id', session('branch')->id)->whereNull('closed_at')->count();
     }
 
     static function totalClosedFaults()
     {
         return DB::table('fault_history')->count();
+    }
+
+    static function failuresByDivision()
+    {
+        $failuresByDivision = DB::table('v_faults_base')
+            ->select('service_area_name as division', DB::raw('COUNT(*) as total'))
+            ->groupBy('service_area_name')
+            ->unionAll(
+                DB::table('fault_history')
+                    ->select('service_area_name as division', DB::raw('COUNT(*) as total'))
+                    ->groupBy('service_area_name')
+            )
+            ->get()
+            ->groupBy('division')  // agrupa por division sumando totales
+            ->map(function ($items) {
+                return $items->sum('total');
+            });
+
+        $labels = $failuresByDivision->keys()->toArray();
+        $values = $failuresByDivision->values()->toArray();
+
+        return [
+            'labels' => $labels,
+            'values' => $values,
+        ];
     }
 }

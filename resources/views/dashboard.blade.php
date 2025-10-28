@@ -95,8 +95,24 @@
 
     </div>
 
-@stop
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <x-chart title="Fallas por división" type="pie" :labels="$failuresByDivision['labels']" :values="$failuresByDivision['values']"
+                        :show-percentages="true" />
 
+                    {{-- <x-chart title="Ventas por mes" type="bar" :labels="['Enero', 'Febrero', 'Marzo', 'Abril']" :values="[120, 90, 150, 200]" /> --}}
+                </div>
+
+                <div class="col-md-6">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+@stop
 
 @section('js')
     <script></script>

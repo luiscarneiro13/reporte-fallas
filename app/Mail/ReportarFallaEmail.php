@@ -16,8 +16,10 @@ class ReportarFallaEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        protected $equipment_name,
+        protected $description
+    ) {
         //
     }
 
@@ -37,7 +39,11 @@ class ReportarFallaEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.ReportarFallaEmail',
+            view: 'emails.ReportarFallaEmail', // Esta será nuestra plantilla Blade
+            with: [
+                'equipment_name' => $this->equipment_name,
+                'description' => $this->description,
+            ],
         );
     }
 

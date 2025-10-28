@@ -6,11 +6,10 @@
 </head>
 
 <body>
-    <h1>¡Hola!</h1>
-    <p>Este es un correo de prueba enviado exitosamente desde una aplicación Laravel</p>
-    <p>usando la configuración SMTP de tu cuenta de correo de cPanel.</p>
+    <h1>¡Se ha reportado una falla!</h1>
+    <p>Se reportó una falla en el equipo: {{ $equipment_name }}</p>
 
-    <p>Si recibes esto, la configuración es correcta. ¡Felicidades!</p>
+    <p>{{ $description }}</p>
 </body>
 
 </html>

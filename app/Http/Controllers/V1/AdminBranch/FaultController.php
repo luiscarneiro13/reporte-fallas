@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1\AdminBranch;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
+use App\Mail\ReportarFallaEmail;
 use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Services\FaultService;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\FaultView;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class FaultController extends Controller
 {
@@ -300,6 +302,19 @@ class FaultController extends Controller
             $item->fill($validatedData);
             $item->branch_id = session('branch')->id;
             $item->save();
+
+            $faultView = FaultView::find($item->id);
+
+            // Se envía el correo
+            try {
+                // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
+                $recipient = 'carneiroluis2@gmail.com'; // Cambia esto por tu dirección para probar
+
+                // 2. Envía el correo
+                Mail::to($recipient)->send(new ReportarFallaEmail($faultView->equipment_name, $faultView->description));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
 
             // --- LÓGICA DE CIERRE Y MOVIMIENTO AL HISTÓRICO ---
 

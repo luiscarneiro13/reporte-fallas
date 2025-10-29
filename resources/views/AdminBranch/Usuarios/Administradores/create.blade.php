@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'JJ&V')
+@section('title', 'Administradores')
 
 @section('content_header')
-    <h1>Nuevo empleado administrador</h1>
+    <h1>Nuevo administrador</h1>
 @stop
 
 @section('content')

@@ -23,6 +23,15 @@ class FaultController extends Controller
 
     const INDEX = "admin.sucursal.faults.index";
 
+    public function __construct()
+    {
+        $basePermission = "Fallas";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index(Request $request)
     {
         // --- 1. CAPTURA DE PARÁMETROS (NECESARIO PARA COMPACT Y RESTAURAR ESTADO DE FILTROS) ---

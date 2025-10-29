@@ -16,6 +16,15 @@ class SparePartStatusController extends Controller
 
     const INDEX = "admin.sucursal.spare.part.statuses.index";
 
+    public function __construct()
+    {
+        $basePermission = "Estatus de repuestos";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $query = request('query');

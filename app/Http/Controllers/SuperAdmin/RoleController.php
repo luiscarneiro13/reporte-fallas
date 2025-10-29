@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 
 class RoleController extends Controller
 {
@@ -33,6 +34,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $role->permissions()->sync($request->permissions);
+        Artisan::call('cache:forget', ['key' => 'spatie.permission.cache']);// Para borrar la cache de los permisos y se carguen nuevamentge
         return redirect()->route('roles.index')->with(['state' => 'success', 'message' => 'Se agregaron permisos para el rol ' . $role->name]);
     }
 

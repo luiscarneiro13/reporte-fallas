@@ -311,16 +311,19 @@ return [
             'text' => 'Inicio',
             'icon' => 'fas fa-tachometer-alt',
             'route'  => 'dashboard',
+            'can'  => 'Dashboard menu Ver',
         ],
         [
             'text' => 'Resumen de fallas',
             'icon' => 'fas fa-list-alt',
             'route'  => 'admin.sucursal.faults.index',
+            'can'  => 'Fallas Ver',
         ],
         [
             'text' => 'Reportar falla',
             'icon' => 'fas fa-bug',
             'route'  => 'admin.sucursal.faults.create',
+            'can'  => ['Fallas Crear', 'Fallas Editar'],
         ],
         // [
         //     'text' => 'Histórico de fallas',
@@ -331,11 +334,13 @@ return [
             'text' => 'Equipos',
             'icon' => 'fas fa-truck',
             'route'  => 'admin.sucursal.equipment.index',
+            'can'  => ['Equipos Ver'],
         ],
         [
             'text' => 'Ejecutores',
             'icon' => 'fas fa-users',
             'route'  => 'admin.sucursal.executors.index',
+            'can'  => ['Ejecutores Ver'],
         ],
         // --- Administración General ---
         [
@@ -348,30 +353,35 @@ return [
                     'icon' => 'fas fa-building',
                     'active' => ['v1/admin/mi-sucursal/edit*'],
                     'url' => '/v1/admin/mi-sucursal/edit',
+                    'can'  => ['Empresa Editar'],
                 ],
                 [
                     'text' => 'Divisiones de la Empresa',
                     'icon' => 'fas fa-code-branch',
                     'active' => ['v1/admin/divisions*'],
                     'route' => 'admin.sucursal.divisions.index',
+                    'can'  => ['Divisiones Ver'],
                 ],
                 [
                     'text' => 'Status de fallas',
                     'icon' => 'fas fa-clipboard-list',
                     'active' => ['v1/admin/status-fallas*'],
                     'route' => 'admin.sucursal.fault.statuses.index',
+                    'can'  => ['Estatus de fallas Ver'],
                 ],
                 [
                     'text' => 'Status de repuestos',
                     'icon' => 'fas fa-boxes',
                     'active' => ['v1/admin/status-repuestos*'],
                     'route' => 'admin.sucursal.spare.part.statuses.index',
+                    'can'  => ['Estatus de repuestos Ver'],
                 ],
                 [
                     'text' => 'Áreas de Servicio',
                     'icon' => 'fas fa-map-marked-alt',
                     'active' => ['v1/admin/areas-de-servicio*'],
                     'route' => 'admin.sucursal.service.areas.index',
+                    'can'  => ['Areas de Servicio Ver'],
                 ],
                 [
                     'text' => 'Conf. Admin',
@@ -382,19 +392,20 @@ return [
                     'icon' => 'fas fa-users',
                     'active' => ['v1/admin/clientes*'],
                     'route' => 'admin.sucursal.customers.index',
-                    'can' => 'Clientes Ver',
+                    'can' => ['Clientes Ver'],
                 ],
                 [
                     'text' => 'Proyectos',
                     'icon' => 'fas fa-project-diagram',
                     'active' => ['v1/admin/proyectos*'],
                     'route' => 'admin.sucursal.projects.index',
-                    'can' => 'Proyectos Ver',
+                    'can' => ['Proyectos Ver'],
                 ],
                 [
                     'text' => 'Empleados',
                     'icon' => 'fas fa-users',
                     'route'  => 'admin.sucursal.employees.index',
+                    'can' => ['Empleados Ver'],
                 ],
             ]
         ],
@@ -409,18 +420,21 @@ return [
                     'icon' => 'fas fa-user-shield', // 🛡️ Admin
                     'active' => ['v1/admin/administradores*'],
                     'route'  => 'admin.sucursal.usuarios.administradores.index',
+                    'can' => ['Administradores Ver'],
                 ],
                 [
                     'text' => 'Supervisores',
                     'icon' => 'fas fa-headset', // 🎧 Supervisor / Soporte
                     'active' => ['v1/admin/supervisores*'],
                     'route'  => 'admin.sucursal.usuarios.supervisors.index',
+                    'can' => ['Supervisores Ver'],
                 ],
                 [
                     'text' => 'Operadores',
                     'icon' => 'fas fa-wrench', // 🔧 Operador / Técnico
                     'active' => ['v1/admin/operadores*'],
                     'route'  => 'admin.sucursal.usuarios.operators.index',
+                    'can' => ['Operadores Ver'],
                 ],
             ]
         ],
@@ -452,11 +466,13 @@ return [
                     'text' => 'Roles',
                     'route'  => 'roles.index',
                     'icon' => 'fas fa-user-tag', // 🏷️ Roles
+                    'can' => ['Roles Ver'],
                 ],
                 [
                     'text' => 'Permisos',
                     'route'  => 'permissions.index',
                     'icon' => 'fas fa-user-lock', // 🔑 Permisos
+                    'can' => ['Permisos Ver'],
                 ],
                 [
                     'text' => 'Usuarios',

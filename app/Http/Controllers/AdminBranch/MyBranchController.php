@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Session;
 
 class MyBranchController extends Controller
 {
+
+    public function __construct()
+    {
+        $basePermission = "Empresa";
+        // $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        // $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        // $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function edit()
     {
         $branch = Branch::find(session('branch')->id);

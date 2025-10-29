@@ -142,12 +142,14 @@ Route::middleware([
 
 
 
-Route::get('/email', function () {
-    // 1. Define el destinatario
-    $recipient = 'carneiroluis2@gmail.com'; // Cambia esto por tu dirección para probar
 
-    // 2. Envía el correo
-    Mail::to($recipient)->send(new ReportarFallaEmail());
+// RUTA TEMPORAL PARA LIMPIAR CACHÉ DE SPATIE
+Route::get('/limpiar-permisos-cache', function () {
+    // Borra la caché específica de Spatie
+    \Illuminate\Support\Facades\Artisan::call('cache:forget', ['key' => 'spatie.permission.cache']);
+    // Opcional: limpia la configuración y la caché general
+    // \Illuminate\Support\Facades\Artisan::call('config:clear');
+    // \Illuminate\Support\Facades\Artisan::call('cache:clear');
 
-    return "Correo de prueba enviado a {$recipient}!";
+    return "Caché de Spatie Permission eliminada con éxito.";
 });

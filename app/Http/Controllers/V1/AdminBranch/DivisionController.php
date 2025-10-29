@@ -13,6 +13,15 @@ class DivisionController extends Controller
 
     const INDEX = "admin.sucursal.divisions.index";
 
+    public function __construct()
+    {
+        $basePermission = "Divisiones";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $query = request('query');

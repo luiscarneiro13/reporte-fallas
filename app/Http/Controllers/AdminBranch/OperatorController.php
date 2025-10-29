@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\AdminBranch;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OperatorEditRequest;
-use App\Models\Employee;
+use App\Http\Requests\V1\UserRequest;
 use App\Models\User;
 use App\Models\UserBranch;
 use App\Traits\AlertResponser;
@@ -17,6 +16,15 @@ class OperatorController extends Controller
     use AlertResponser;
 
     const INDEX = "admin.sucursal.usuarios.operators.index";
+
+    public function __construct()
+    {
+        $basePermission = "Supervisores";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
 
     public function index()
     {
@@ -47,7 +55,7 @@ class OperatorController extends Controller
         return view('AdminBranch.Usuarios.Operadores.create');
     }
 
-    public function store(OperatorRequest $request)
+    public function store(UserRequest $request)
     {
         try {
             $user = User::create([
@@ -78,7 +86,7 @@ class OperatorController extends Controller
         return view('AdminBranch.Usuarios.Operadores.edit', compact('operator'));
     }
 
-    public function update(OperatorEditRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
         try {
             $user = User::find($id);

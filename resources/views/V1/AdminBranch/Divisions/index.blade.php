@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('icon', 'fas fa-code-branch')
+{{-- @section('icon', 'fas fa-code-branch') --}}
 @section('title', 'Divisiones')
 
 @section('content')

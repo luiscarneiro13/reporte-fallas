@@ -25,6 +25,9 @@ class Permisos
 
         'Menu Conf Admin' => [0, 1],
 
+        //Fallas ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Dashboard menu Ver' => [0, 1, 2],
+
         // Usuarios ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
         'Administradores Ver' => [0, 1],
         'Administradores Crear' => [0, 1],

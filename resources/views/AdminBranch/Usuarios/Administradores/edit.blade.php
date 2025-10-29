@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'JJ&V')
+@section('title', 'Administradores')
 
 @section('content_header')
-    <h1>Editar empleado administrador</h1>
+    <h1>Editar administrador</h1>
     <small>{{ $employee->name }}</small>
 @stop
 

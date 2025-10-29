@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'JJ&V')
+@section('title', 'Administradores')
 
 @section('content')
 
@@ -8,8 +8,8 @@
         $headers = ['Nombre', 'Email', 'Teléfono', ''];
     @endphp
 
-    <x-base-data-table-search title="Empleados Administradores" :items="$employees" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.usuarios.administradores.create') }}">
+    <x-base-data-table-search title="Administradores" :items="$employees" :headers="$headers"
+        urlBtnAdd="{{ route('admin.sucursal.usuarios.administradores.create') }}" >
         <x-slot name="body">
             @forelse ($employees as $item)
                 <tr>

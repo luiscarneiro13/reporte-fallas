@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\AdminBranch;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeEditRequest;
-use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\V1\UserRequest;
 use App\Models\User;
 use App\Models\UserBranch;
 use App\Traits\AlertResponser;
@@ -18,6 +17,15 @@ class AdministradoresController extends Controller
 
     const INDEX = "admin.sucursal.usuarios.administradores.index";
 
+    public function __construct()
+    {
+        $basePermission = "Administradores";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
     public function index()
     {
         $query = request('query');
@@ -27,7 +35,7 @@ class AdministradoresController extends Controller
             ->leftJoin('user_branch', 'users.id', 'user_branch.user_id')
             ->leftJoin('branches', 'user_branch.branch_id', 'branches.id')
             ->select('users.id', 'users.name', 'users.email', 'users.phone', 'roles.name as rol', 'branches.id as branch_id', 'branches.name as branch')
-            ->where('roles.name', 'Admin Sucursal')
+            ->where('roles.name', 'Admin')
             ->where('branches.id', session('branch')->id)
             ->where('users.id', '!=', auth()->user()->id)
             ->when($query, function ($q) use ($query) {
@@ -47,8 +55,9 @@ class AdministradoresController extends Controller
         return view('AdminBranch.Usuarios.Administradores.create');
     }
 
-    public function store(EmployeeRequest $request)
+    public function store(UserRequest $request)
     {
+        info("Entró al controlador");
         try {
             $user = User::create([
                 "name" => $request->input('name'),
@@ -59,7 +68,7 @@ class AdministradoresController extends Controller
                 "profile_photo_path" => 'images/user-icon.webp',
             ]);
 
-            $rol = Role::where('name', "Admin Sucursal")->first();
+            $rol = Role::where('name', "Admin")->first();
             $user->roles()->sync([$rol->id]);
 
             $userBranch = new UserBranch();
@@ -78,7 +87,7 @@ class AdministradoresController extends Controller
         return view('AdminBranch.Usuarios.Administradores.edit', compact('employee'));
     }
 
-    public function update(EmployeeEditRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
         try {
             $user = User::find($id);

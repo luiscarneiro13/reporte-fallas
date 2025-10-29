@@ -10,10 +10,15 @@
                             <div class="form-inline justify-content-between align-items-center">
                                 <h4 class="mr-3">{{ $title }}</h4>
                                 @if (isset($urlBtnAdd))
-                                    <a href="{{ $urlBtnAdd }}" style="margin-top:-6px">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                    {{-- @if (isset($permissions)) --}}
+                                        {{-- @can($permissions) --}}
+                                            <a href="{{ $urlBtnAdd }}" style="margin-top:-6px">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </a>
+                                        {{-- @endcan --}}
+                                    {{-- @endif --}}
                                 @endif
+
                             </div>
                         </label>
                     @endif

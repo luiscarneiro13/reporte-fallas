@@ -40,14 +40,16 @@ return new class extends Migration
             $table->unsignedBigInteger('fault_status_id')->nullable();
             $table->unsignedBigInteger('spare_part_status_id')->nullable();
             $table->unsignedBigInteger('executor_id')->nullable();
+            $table->unsignedBigInteger('division_id')->nullable();
 
             // DATOS DESNORMALIZADOS (NOMBRES/LABELS)
-            $table->text('reported_by_name')->nullable();
-            $table->text('equipment_name')->nullable();
+            $table->string('reported_by_name')->nullable();
+            $table->string('equipment_name')->nullable();
             $table->string('service_area_name')->nullable();
             $table->string('fault_status_name')->nullable();
             $table->string('spare_part_status_name')->nullable();
-            $table->text('executor_name')->nullable();
+            $table->string('executor_name')->nullable();
+            $table->string('division_name')->nullable();
 
             // OTROS DATOS DESNORMALIZADOS
             $table->string('internal_code')->nullable();

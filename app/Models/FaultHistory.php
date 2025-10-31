@@ -55,6 +55,10 @@ class FaultHistory extends Model
         // IDs y Nombres del Ejecutor
         'executor_id',
         'executor_name',
+
+        // IDs y Divisiones
+        'division_id',
+        'division_name',
     ];
 
     protected $casts = [

@@ -18,8 +18,8 @@ class Division extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function equipment()
+    public function project()
     {
-        return $this->hasMany(Equipment::class);
+        return $this->hasMany(Project::class);
     }
 }

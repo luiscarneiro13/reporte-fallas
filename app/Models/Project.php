@@ -23,6 +23,11 @@ class Project extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
+
     public function equipment()
     {
         return $this->hasMany(Equipment::class);

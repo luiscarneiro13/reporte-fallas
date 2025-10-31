@@ -39,9 +39,11 @@ return new class extends Migration
                 (to_days(if((`f`.`completed_execution` is not null),`f`.`completed_execution`,now())) - to_days(`f`.`report_date`)) AS `duration_days`,
                 /* --- Nuevos Campos --- */
                 `ep_latest`.`project_id` AS `project_id`,
-                `proj`.`name` AS `project_name`
+                `proj`.`name` AS `project_name`,
+                `divs`.`id` AS `division_id`,
+                `divs`.`name` AS `division_name`
                 /* ---------------------- */
-                from
+            from
                 `faults` `f`
                 join `equipment` `eq` on((`f`.`equipment_id` = `eq`.`id`))
                 /* --- Tablas para el Último Proyecto --- */
@@ -53,6 +55,7 @@ return new class extends Migration
                     limit 1
                 )
                 left join `projects` `proj` on `ep_latest`.`project_id` = `proj`.`id`
+                left join `divisions` `divs` on `proj`.`division_id` = `divs`.`id`
                 /* -------------------------------------- */
                 join `service_areas` `sa` on((`f`.`service_area_id` = `sa`.`id`))
                 join `fault_statuses` `fs` on((`f`.`fault_status_id` = `fs`.`id`))

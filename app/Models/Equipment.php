@@ -17,7 +17,6 @@ class Equipment extends Model
 
     protected $fillable = [
         'branch_id',
-        'division_id',
         'project_id',
         'internal_code',
         'owner',
@@ -44,11 +43,6 @@ class Equipment extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
-    }
-
-    public function division()
-    {
-        return $this->belongsTo(Division::class);
     }
 
     // Definición de la relación Muchos a Muchos (Usando 'projects' por convención)

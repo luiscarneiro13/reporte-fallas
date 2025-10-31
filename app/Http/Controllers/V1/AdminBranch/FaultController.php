@@ -65,6 +65,8 @@ class FaultController extends Controller
         // --- 3. Ejecutar la consulta con paginación ---
         $faults = $faultsQuery->paginate(10)->appends($request->query());
 
+
+
         // --- 4. Devolver la vista con los resultados y parámetros de filtro ---
         return view('V1.AdminBranch.Faults.index', compact(
             'faults',

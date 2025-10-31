@@ -40,9 +40,7 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('.select2').select2({
-                width: '100%',
-            });
+
         });
     </script>
 @stop

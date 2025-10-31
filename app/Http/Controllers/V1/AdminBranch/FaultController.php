@@ -221,12 +221,12 @@ class FaultController extends Controller
 
         $faultData = app('fault_data');
 
-        $equipment = $faultData['equipment'];
-        $serviceArea = $faultData['serviceArea'];
-        $faultStatus = $faultData['faultStatus'];
-        $sparePartStatuses = $faultData['sparePartStatuses'];
+        $equipment = $faultData['equipment']->prepend('Seleccione', '0');
+        $serviceArea = $faultData['serviceArea']->prepend('Seleccione', '0');
+        $faultStatus = $faultData['faultStatus']->prepend('Seleccione', '0');
+        $sparePartStatuses = $faultData['sparePartStatuses']->prepend('Seleccione', '0');
 
-        $employeeReported = FaultService::employeeReported();
+        $employeeReported = FaultService::employeeReported()->prepend('Seleccione', '0');
         $executors = FaultService::executors();
 
         return view(

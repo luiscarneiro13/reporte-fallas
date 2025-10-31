@@ -60,8 +60,9 @@
                         required="{{ $isClosing ? 'required' : '' }}" />
 
                     {{-- La descripción puede ser deshabilitada si no se permite edición --}}
-                    <x-textarea-custom required="{{ $isClosing ? 'required' : '' }}" name="description" label="Descripción de la falla" placeholder=""
-                        class="col-md-12 mt-3" value="{{ $fault->description }}" />
+                    <x-textarea-custom required="{{ $isClosing ? 'required' : '' }}" name="description"
+                        label="Descripción de la falla" placeholder="" class="col-md-12 mt-3"
+                        value="{{ $fault->description }}" />
 
 
                 </div>
@@ -125,10 +126,6 @@
         $(document).ready(function() {
             // ... (Código JavaScript se mantiene igual) ...
             window.branchId = {{ session('branch')->id ?? 'null' }};
-
-            $('.select2').select2({
-                width: '100%'
-            });
 
             $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
                 $(this).modal("hide");

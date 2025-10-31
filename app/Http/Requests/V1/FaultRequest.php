@@ -57,15 +57,15 @@ class FaultRequest extends FormRequest
             'closed' => ['nullable', 'date'], // 'date' valida tanto 'date' como 'datetime', lo cual es suficiente
 
             // Campos de Asignación/Reporte
-            'employee_reported_id' => ['nullable', 'integer', 'exists:employees,id'],
-            'equipment_id' => ['nullable', 'integer', 'exists:equipment,id'],
-            'service_area_id' => ['nullable', 'integer', 'exists:service_areas,id'],
+            'employee_reported_id' => ['required', 'integer', 'exists:employees,id'],
+            'equipment_id' => ['required', 'integer', 'exists:equipment,id'],
+            'service_area_id' => ['required', 'integer', 'exists:service_areas,id'],
 
             'description' => ['required', 'string'],
 
             // Estados
-            'fault_status_id' => ['nullable', 'integer', 'exists:fault_statuses,id'],
-            'spare_part_status_id' => ['nullable', 'integer', 'exists:spare_part_statuses,id'],
+            'fault_status_id' => ['required', 'integer', 'exists:fault_statuses,id'],
+            'spare_part_status_id' => ['required', 'integer', 'exists:spare_part_statuses,id'],
 
             // Fechas
             'report_date' => ['nullable', 'date'],

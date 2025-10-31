@@ -63,10 +63,6 @@
 
             window.branchId = {{ session('branch')->id ?? 'null' }};
 
-            $('.select2').select2({
-                width: '100%'
-            });
-
             $("#modalAddCustomer").on('customerAdded', function(event, newCustomer) {
                 $(this).modal("hide");
                 var customerSelect = $('select[name="customer_id"]');

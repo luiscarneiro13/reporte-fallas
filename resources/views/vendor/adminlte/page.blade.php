@@ -13,12 +13,12 @@
 
 @section('body')
     <div class="wrapper bg">
-        @section('tasa_del_dia')
-            <x-dailyRate />
-        @endsection
-        @section('tasa_promedio')
-            <x-averageRate />
-        @endsection
+    @section('tasa_del_dia')
+        <x-dailyRate />
+    @endsection
+    @section('tasa_promedio')
+        <x-averageRate />
+    @endsection
     {{-- Preloader Animation --}}
     {{-- @if ($layoutHelper->isPreloaderEnabled())
         @include('adminlte::partials.common.preloader')
@@ -26,7 +26,7 @@
 
     {{-- Top Navbar --}}
     @if ($layoutHelper->isLayoutTopnavEnabled())
-    @include('adminlte::partials.navbar.navbar-layout-topnav')
+        @include('adminlte::partials.navbar.navbar-layout-topnav')
     @else
         @include('adminlte::partials.navbar.navbar')
     @endif
@@ -57,6 +57,12 @@
 @stop
 
 @section('adminlte_js')
+<script>
+    $(document).ready(function() {
+        // Inicialización global de Select2. Se ejecutará una sola vez.
+
+    });
+</script>
 @stack('js')
 @yield('js')
 @stop

@@ -31,7 +31,7 @@
                         <div class="row">
 
                             <x-select required label="Reportado por" name="employee_reported_id" :items="$employeeReported"
-                                class="col-md-4" />
+                                class="col-md-4" classControl="select2 form-control" />
 
                             <x-select required label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
                                 classControl="select2 form-control" />
@@ -40,7 +40,7 @@
                                 class="col-md-4" classControl="select2 form-control" />
 
                             <x-select required label="Status de la falla" name="fault_status_id" :items="$faultStatus"
-                                class="col-md-5" />
+                                class="col-md-5" classControl="select2 form-control" />
 
                             <x-select required label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
                                 class="col-md-3" classControl="select2 form-control" />
@@ -96,13 +96,12 @@
 @stop
 
 @section('js')
-    <script>
-        $(document).ready(function() {
 
-            $('.select2').select2({
-                width: '100%'
-            });
+@stop
 
-        });
-    </script>
+@section('css')
+
+    <style>
+
+    </style>
 @stop

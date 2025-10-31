@@ -53,9 +53,8 @@ class EmployeeController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        $initValue = collect(["0" => "Sin usuario de sistema"]);
         $rolesCollection =  Role::get()->pluck('name', 'id');
-        $roles = $initValue->merge($rolesCollection);
+        $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
         return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles'));
     }
 
@@ -63,9 +62,8 @@ class EmployeeController extends Controller
     {
         $back_url = request()->back_url ?? null;
         $employee = Employee::find($id);
-        $initValue = collect(["0" => "Sin usuario de sistema"]);
         $rolesCollection =  Role::get()->pluck('name', 'id');
-        $roles = $initValue->merge($rolesCollection);
+        $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
         return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles'));
     }
 

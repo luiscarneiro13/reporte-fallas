@@ -80,9 +80,8 @@ class EquipmentController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        $initValue = collect(["0" => "Stand by / Sin Proyecto"]);
         $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
-        $projects = $initValue->merge($projectsCollection);
+        $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
         $modelYears = $this->getModelYears();
         return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears'));
     }
@@ -114,9 +113,8 @@ class EquipmentController extends Controller
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $initValue = collect(["0" => "Stand by / Sin Proyecto"]);
         $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
-        $projects = $initValue->merge($projectsCollection);
+        $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
         $equipment = Equipment::query()
             ->where('id', $id)
             ->with([
@@ -163,7 +161,7 @@ class EquipmentController extends Controller
             $item->serial_niv = $request->input('serial_niv');
             $item->body_serial_number = $request->input('body_serial_number');
             $item->chassis_serial_number = $request->input('chassis_serial_number');
-            $item->engine_serial_number = $request->input('engine_serial_number');
+            // $item->engine_serial_number = $request->input('engine_serial_number');
             $item->racda = $request->input('racda'); // Campo específico
             $item->owner = $request->input('owner'); // (Asumo que lo necesitas)
             $item->internal_code = $request->input('internal_code'); // (Asumo que lo necesitas)

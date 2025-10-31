@@ -106,7 +106,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <x-chart title="Fallas por división" type="pie" :labels="$failuresByDivision['labels']" :values="$failuresByDivision['values']"
+                    <x-chart title="Fallas por área de servicio" type="pie" :labels="$failuresByServiceArea['labels']" :values="$failuresByServiceArea['values']"
                         :show-percentages="true" />
                 </div>
 

@@ -193,10 +193,10 @@ class FaultService
         return DB::table('fault_history')->where('branch_id', session('branch')->id)->count();
     }
 
-    static function failuresByDivision()
+    static function failuresByServiceArea()
     {
         $failuresByDivision = DB::table('v_faults_base')
-            ->select('service_area_name as division', DB::raw('COUNT(*) as total'))
+            ->select('service_area_name', DB::raw('COUNT(*) as total'))
             ->where('branch_id', session('branch')->id)->whereNull('closed_at')
             ->groupBy('service_area_name')
             ->unionAll(
@@ -206,7 +206,7 @@ class FaultService
                     ->groupBy('service_area_name')
             )
             ->get()
-            ->groupBy('division')  // agrupa por division sumando totales
+            ->groupBy('service_area_name')  // agrupa por division sumando totales
             ->map(function ($items) {
                 return $items->sum('total');
             });

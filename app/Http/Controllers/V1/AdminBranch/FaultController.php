@@ -34,6 +34,7 @@ class FaultController extends Controller
 
     public function index(Request $request)
     {
+
         // --- 1. CAPTURA DE PARÁMETROS (NECESARIO PARA COMPACT Y RESTAURAR ESTADO DE FILTROS) ---
         // Estas variables DEBEN existir en el scope de 'index' para que compact() funcione.
         $searchName = $request->query('name');
@@ -132,6 +133,15 @@ class FaultController extends Controller
         $faultsQuery = FaultView::query()
             ->where('branch_id', $branchId);
         // ->whereNull('closed_at'); // Se elimina este filtro base si $closeStatus lo controla
+
+        /** @var User $session */ //Esto es para que no aparezca el warning en el metodo getRoleNames()
+        $session = auth()->user();
+        $roleNames = $session->getRoleNames();
+        $firstRoleName = $roleNames->first();
+
+        if ($firstRoleName == 'Operador') {
+            $faultsQuery->where('closed_at');
+        }
 
         // ----------------------------------------------------
         // APLICACIÓN DE FILTROS CONDICIONALES

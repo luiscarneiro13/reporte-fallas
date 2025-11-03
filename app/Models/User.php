@@ -109,6 +109,19 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'employee_user')->withTimestamps();
+        return $this->belongsToMany(Employee::class, 'employee_users')->withTimestamps();
+    }
+
+    /**
+     * Get the first employee ID associated with the user.
+     * Assumes a user is primarily linked to one employee record.
+     *
+     * @return int|null
+     */
+    public function getEmployeeIdAttribute()
+    {
+        // El método first() devuelve el primer modelo Employee o null
+        // Luego usamos el operador de acceso nulo "?->" para obtener el 'id'
+        return $this->employees->first()?->id;
     }
 }

@@ -36,7 +36,15 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+        /** @var User $session */ //Esto es para que no aparezca el warning en el metodo getRoleNames()
         $session = auth()->user();
+        $roleNames = $session->getRoleNames();
+        $firstRoleName = $roleNames->first();
+
+        if ($firstRoleName == 'Operador') {
+            return redirect()->route('admin.sucursal.faults.index');
+        }
+
         $userId = $session->id;
 
         // 1. Capturar los valores de los inputs.

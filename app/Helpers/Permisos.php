@@ -29,22 +29,22 @@ class Permisos
         'Dashboard menu Ver' => [0, 1, 2],
 
         // Usuarios ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
-        'Administradores Ver' => [0, 1],
-        'Administradores Crear' => [0, 1],
-        'Administradores Editar' => [0, 1],
-        'Administradores Eliminar' => [0, 1],
+        'Administradores Ver' => [0],
+        'Administradores Crear' => [0],
+        'Administradores Editar' => [0],
+        'Administradores Eliminar' => [0],
 
         // Usuarios ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
-        'Supervisores Ver' => [0, 1],
-        'Supervisores Crear' => [0, 1],
-        'Supervisores Editar' => [0, 1],
-        'Supervisores Eliminar' => [0, 1],
+        'Supervisores Ver' => [0],
+        'Supervisores Crear' => [0],
+        'Supervisores Editar' => [0],
+        'Supervisores Eliminar' => [0],
 
         // Usuarios ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
-        'Operadores Ver' => [0, 1],
-        'Operadores Crear' => [0, 1],
-        'Operadores Editar' => [0, 1],
-        'Operadores Eliminar' => [0, 1],
+        'Operadores Ver' => [0],
+        'Operadores Crear' => [0],
+        'Operadores Editar' => [0],
+        'Operadores Eliminar' => [0],
 
         // Editar mi empresa ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
         'Empresa Editar' => [1],

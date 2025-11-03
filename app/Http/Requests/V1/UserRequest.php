@@ -3,61 +3,73 @@
 namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule; // <-- Importante: Añadimos la clase Rule
 
 class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     * * @return bool
+     * @return bool
      */
     public function authorize(): bool
     {
-        // Generalmente, si usas permisos (Spatie), la autorización se hace en el controlador o middleware.
-        // Aquí lo dejaremos en true para que el Request sea ejecutado.
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     * * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
     public function rules(): array
     {
-        // Determina si estamos en una operación de edición (UPDATE)
-        // Esto se asume si el método HTTP es PUT o PATCH.
+        // Determina si estamos en una operación de edición (PUT/PATCH)
         $isUpdate = $this->method() === 'PUT' || $this->method() === 'PATCH';
 
-        // Reglas de Email: ignora el email del usuario actual en las validaciones de unicidad si estamos editando.
+        // ----------------------------------------------------
+        // Lógica de Email con exclusión para UPDATE (Soporta múltiples rutas)
+        // ----------------------------------------------------
+
         $emailRules = [
             'required',
             'email',
             'min:3',
         ];
 
-        if ($isUpdate && $this->route('administrador')) {
-            // Asume que la clave de la ruta es 'administrador' y usa su ID.
-            // Si el nombre de tu parámetro de ruta es diferente, cámbialo aquí.
-            $userId = $this->route('administrador')->id;
-            $emailRules[] = 'unique:users,email,' . $userId;
-        } else {
-            $emailRules[] = 'unique:users,email';
+        // 1. Identificamos los posibles nombres de los parámetros de ruta para la edición
+        // NOTA: Los nombres de los parámetros de ruta de Route::resource son por defecto
+        // el singular del recurso. Ejemplo: /operadores/{operadore}
+        $routeParameters = ['operadore', 'supervisore', 'administradore'];
+        $userId = null;
+
+        // 2. Buscamos el valor del parámetro activo en la ruta actual
+        foreach ($routeParameters as $param) {
+            $value = $this->route($param);
+            if ($value) {
+                $userId = $value;
+                break;
+            }
         }
 
+        // 3. Aplicamos la regla de unicidad ignorando el registro actual
+        if ($isUpdate && $userId) {
+            // Usamos Rule::unique para excluir el registro actual por su clave primaria
+            $emailRules[] = Rule::unique('users', 'email')->ignore($userId);
+        } else {
+            // Si estamos creando (POST), simplemente verificamos la unicidad
+            $emailRules[] = 'unique:users,email';
+        }
 
         // ----------------------------------------------------
         // Lógica Condicional para Contraseñas
         // ----------------------------------------------------
 
-        // 1. Password: Es requerido solo si se está creando (no en edición)
+        // La contraseña es requerida en creación, opcional en edición
         $passwordRules = $isUpdate ? ['nullable', 'min:6'] : ['required', 'min:6'];
 
-        // 2. Password Confirmation:
-        //    - En edición, es requerido si se envió el campo 'password'.
-        //    - En creación, es requerido (porque 'password' es requerido).
+        // La confirmación es requerida si el campo 'password' fue enviado
         $passwordConfirmationRules = [
             'min:6',
             'same:password',
-            // required_with:password hace que sea requerido si 'password' está presente
             'required_with:password',
         ];
 
@@ -72,7 +84,7 @@ class UserRequest extends FormRequest
 
     /**
      * Get the error messages for the defined validation rules.
-     * * @return array
+     * @return array
      */
     public function messages(): array
     {

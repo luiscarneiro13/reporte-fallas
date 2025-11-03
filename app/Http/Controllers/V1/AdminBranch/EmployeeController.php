@@ -53,7 +53,7 @@ class EmployeeController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        $rolesCollection =  Role::get()->pluck('name', 'id');
+        $rolesCollection = Role::where('name', '!=', 'Super Admin')->get()->pluck('name', 'id');
         $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
         return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles'));
     }
@@ -61,10 +61,11 @@ class EmployeeController extends Controller
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $employee = Employee::find($id);
-        $rolesCollection =  Role::get()->pluck('name', 'id');
+        $employee = Employee::with('users.roles')->find($id);
+        $rolesCollection = Role::where('name', '!=', 'Super Admin')->get()->pluck('name', 'id');
         $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
-        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles'));
+        $userSystem = $employee->users->first() ?? null;
+        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem'));
     }
 
     public function store(Request $request)
@@ -97,6 +98,7 @@ class EmployeeController extends Controller
             // Datos de usuario
             $roleId = $request->input('role_id');
             $password = $request->input('password');
+            $linkedUser = null; // Variable para almacenar el User creado o encontrado
 
             if ($item->email && $roleId) {
                 // Buscar usuario por email
@@ -117,14 +119,26 @@ class EmployeeController extends Controller
 
                 if ($user) {
                     // Actualizar usuario existente
-                    UserService::updateUser($user, $userData);
+                    // UserService::updateUser debe devolver el objeto User actualizado
+                    $linkedUser = UserService::updateUser($user, $userData);
                 } else {
                     // Crear usuario nuevo
                     if (!isset($userData['password'])) {
                         throw new \Exception("Debe proporcionar un password para crear un nuevo usuario.");
                     }
-                    UserService::insertUserRole($userData);
+                    // UserService::insertUserRole debe crear el usuario, asignar el rol, y devolver el objeto User
+                    $linkedUser = UserService::insertUserRole($userData);
                 }
+            }
+
+            // 🚀 VINCULACIÓN CRÍTICA: Asocia el empleado con el usuario
+            if ($linkedUser) {
+                // Utiliza sync() para asegurar que solo este usuario esté vinculado a este empleado
+                // en la tabla pivote 'employee_users'.
+                $item->users()->sync([$linkedUser->id]);
+            } else {
+                // Si se eliminó el rol o el email, desvincular al usuario del empleado
+                $item->users()->sync([]);
             }
 
             // Respuesta AJAX

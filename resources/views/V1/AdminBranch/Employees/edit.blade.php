@@ -51,10 +51,10 @@
                 <div class="row">
 
                     <x-input-custom name="email" type="email" id="employee_email" label="Email (opcional)"
-                        placeholder="" class="col-md-4" value="{{ old('email') }}"
+                        placeholder="" class="col-md-4" value="{{ $userSystem->email ?? '' }}"
                         help="Si agrega un email, también debe agregar una contraseña y seleccionar un rol." />
 
-                    <x-select label="Rol de sistema" name="role_id" :items="$roles" class="col-md-4" />
+                    <x-select label="Rol de sistema" name="role_id" :items="$roles" class="col-md-4" :selected="$userSystem?->roles->first()?->id ?? ''" />
 
                     <x-adminlte-input name="text" id="password_input" label="Contraseña temporal" placeholder=""
                         fgroup-class="col-md-4 mt-3" autocomplete="new-password" value="{{ old('password') }}" />

@@ -122,8 +122,9 @@ class EquipmentController extends Controller
                     $projectQuery->select('projects.id', 'name');
                 },
             ])->first();
+        $modelYears = $this->getModelYears();
 
-        return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment'));
+        return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment', 'modelYears'));
     }
 
     public function store(EquipmentRequest $request)
@@ -238,6 +239,8 @@ class EquipmentController extends Controller
             // Retorna un array [clave => valor]
             return [$yearString => $yearString];
         });
+
+        $modelYears->prepend('N/A', '');
 
         // 4. Retorna el array subyacente de la colección.
         return $modelYears->all();

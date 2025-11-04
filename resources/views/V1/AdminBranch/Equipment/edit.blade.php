@@ -22,7 +22,7 @@
                         value="{{ $equipment->internal_code }}" />
 
                     <div class="col-md-5">
-                        <x-label value="Proyecto" required />
+                        <x-label value="Proyecto" />
                         {{ Form::select('project_id', $projects, null, ['class' => 'select2 form-control']) }}
                     </div>
                 </div>
@@ -42,8 +42,10 @@
                     <x-input-custom required name="vehicle_model" label="Modelo" placeholder=""
                         value="{{ $equipment->vehicle_model }}" class="col-md-2" />
 
-                    <x-input-custom required name="model_year" label="Año" placeholder=""
-                        value="{{ $equipment->model_year }}" class="col-md-2" />
+                    <div class="col-md-2">
+                        <x-label value="Año" />
+                        {{ Form::select('model_year', $modelYears, $equipment->model_year, ['class' => 'select2 form-control']) }}
+                    </div>
 
                     <x-input-custom required name="color" label="Color" placeholder="" value="{{ $equipment->color }}"
                         class="col-md-2" />

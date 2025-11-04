@@ -337,11 +337,12 @@ return [
             'can'  => ['Equipos Ver'],
         ],
         [
-            'text' => 'Ejecutores',
+            'text' => 'Empleados',
             'icon' => 'fas fa-users',
-            'route'  => 'admin.sucursal.executors.index',
-            'can'  => ['Ejecutores Ver'],
+            'route'  => 'admin.sucursal.employees.index',
+            'can' => ['Empleados Ver'],
         ],
+
         // --- Administración General ---
         [
             'text' => 'Administración',
@@ -402,11 +403,12 @@ return [
                     'can' => ['Proyectos Ver'],
                 ],
                 [
-                    'text' => 'Empleados',
+                    'text' => 'Ejecutores',
                     'icon' => 'fas fa-users',
-                    'route'  => 'admin.sucursal.employees.index',
-                    'can' => ['Empleados Ver'],
+                    'route'  => 'admin.sucursal.executors.index',
+                    'can'  => ['Ejecutores Ver'],
                 ],
+
             ]
         ],
         // --- Gestión de Usuarios ---

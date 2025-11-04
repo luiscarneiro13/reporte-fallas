@@ -23,7 +23,7 @@
                         value="{{ old('internal_code') }}" />
 
                     <div class="col-md-5">
-                        <x-label value="Proyecto" required />
+                        <x-label value="Proyecto" />
                         {{ Form::select('project_id', $projects, null, ['class' => 'select2 form-control']) }}
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         value="{{ old('vehicle_model') }}" class="col-md-2" />
 
                     <div class="col-md-2">
-                        <x-label value="Año" required />
+                        <x-label value="Año" />
                         {{ Form::select('model_year', $modelYears, null, ['class' => 'select2 form-control']) }}
                     </div>
 

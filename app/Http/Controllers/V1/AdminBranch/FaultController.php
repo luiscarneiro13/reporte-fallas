@@ -329,7 +329,7 @@ class FaultController extends Controller
             // Se envía el correo
             try {
                 // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
-                $recipient = 'carneiroluis2@gmail.com'; // Cambia esto por tu dirección para probar
+                $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
 
                 // 2. Envía el correo
                 Mail::to($recipient)->send(new ReportarFallaEmail($faultView->equipment_name, $faultView->description));

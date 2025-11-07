@@ -18,7 +18,7 @@ class ServiceAreaController extends Controller
 
     public function __construct()
     {
-        $basePermission = "Areas de servicio";
+        $basePermission = "Areas de Servicio";
         $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
         $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
         $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');

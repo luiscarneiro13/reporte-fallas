@@ -31,7 +31,7 @@ class FaultService
         $equipment = Equipment::where('branch_id', session('branch')->id)
             ->select(
                 'id',
-                DB::raw("CONCAT(placa, ' - ', vehicle_model) AS full_placa")
+                DB::raw("CONCAT_WS(' - ', internal_code, placa, vehicle_model) AS full_placa")
             )
             ->orderBy('vehicle_model', 'asc')
             ->pluck('full_placa', 'id');

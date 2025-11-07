@@ -70,6 +70,11 @@ Route::get('/clear-cache', function () {
 Route::get('/prueba/{id}', [PruebaController::class, 'index']);
 
 Route::get('/', [LoginController::class, 'create'])->name('login.create');
+
+Route::get('/sitioweb', function () {
+    return view('website.index');
+});
+
 Route::post('/', [LoginController::class, 'store'])->name('login.store');
 
 Route::get('/logout', function () {

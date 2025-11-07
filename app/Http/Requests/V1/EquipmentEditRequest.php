@@ -46,7 +46,7 @@ class EquipmentEditRequest extends FormRequest
             'body_serial_number' => ['nullable', 'string', 'max:90', 'min:3'],
             'chassis_serial_number' => ['nullable', 'string', 'max:90', 'min:3'],
             'engine_serial_number' => ['nullable', 'string', 'max:90', 'min:3'],
-            'vehicle_model' => ['nullable', 'string', 'max:90', 'min:3'],
+            'vehicle_model' => ['required', 'string', 'max:90', 'min:3'],
             'brand_name' => ['nullable', 'string', 'max:90', 'min:3'],
 
             // 4. Campos Requeridos con Longitud Máxima de 20 (Min. 3 para owner, validación especial para model_year)

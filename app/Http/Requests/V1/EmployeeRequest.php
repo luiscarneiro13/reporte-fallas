@@ -19,7 +19,8 @@ class EmployeeRequest extends FormRequest
     {
         // Obtiene el ID del empleado para ignorarlo en la validación 'unique' (en caso de edición)
         $employeeId = (int) $this->id;
-        // Nota: Si usas $this->id en tu controlador de edición, mantén (int) $this->id;
+        // Identificamos si es una operación de CREACIÓN (POST)
+        $isCreating = $this->method() === 'POST';
 
         return [
             // --- DATOS BÁSICOS (Requeridos) ---
@@ -33,12 +34,15 @@ class EmployeeRequest extends FormRequest
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
 
-            // --- DATOS BÁSICOS (Opcionales) ---
+            // --- DATOS BÁSICOS (Requeridos según tu código original) ---
             'phone_number' => 'required|string|max:20',
             'address' => 'nullable|string',
 
+            // Asumo que 'position' y 'executor' también deberían ir aquí:
+            'position' => 'nullable|string|max:255',
+            'executor' => 'nullable|integer',
+
             // --- USUARIO DE SISTEMA (Condicionales) ---
-            // El campo 'email' es el que dispara la validación condicional
             'email' => [
                 'nullable',
                 'email',
@@ -46,15 +50,18 @@ class EmployeeRequest extends FormRequest
                 Rule::unique('employees')->ignore($employeeId),
             ],
 
-            // Contraseña: requerida si el campo 'email' fue proporcionado.
+            // Contraseña: CORRECCIÓN CLAVE para edición
             'password' => [
-                // Si el campo email NO está vacío (es decir, el usuario intenta crear un usuario de sistema)
-                Rule::when($this->filled('email'), [
+                'nullable', // Permite que el campo esté vacío en la edición (PUT)
+                'string',
+                'min:6',
+                'max:255',
+
+                // CRÍTICO: La contraseña es requerida solo si es CREACIÓN (POST) Y se proporciona email.
+                Rule::when($isCreating && $this->filled('email'), [
                     'required',
-                    'string',
-                    'min:6',
-                    'max:255',
-                ], ['nullable']), // Si no se proporciona email o está vacío, 'password' no se valida como requerido.
+                ]),
+                // En edición, si el campo está vacío, 'nullable' lo ignora. Si se rellena, se aplican min/max.
             ],
 
             // Rol: Condicionalmente requerido e invalidado si tiene valor '0' cuando se proporciona email.
@@ -63,10 +70,10 @@ class EmployeeRequest extends FormRequest
                 Rule::when($this->filled('email'), [
                     'required',
                     'exists:roles,id',
-                    'not_in:0',   // <-- Si hay email, el valor NO puede ser '0' ("Sin usuario de sistema")
+                    'not_in:0',  // <-- Si hay email, el valor NO puede ser '0'
                 ], [
                     'nullable',
-                    'in:0',       // <-- Si NO hay email, el valor DEBE ser '0' (o nulo, lo cual se cubre con 'nullable')
+                    'in:0',    // <-- Si NO hay email, el valor DEBE ser '0'
                 ]),
             ],
         ];
@@ -74,6 +81,7 @@ class EmployeeRequest extends FormRequest
 
     public function messages(): array
     {
+        // ESTA SECCIÓN HA SIDO RESTAURADA ÍNTEGRAMENTE
         return [
             // --- identification_number Rules ---
             'identification_number.required' => 'La cédula es obligatoria.',
@@ -106,9 +114,10 @@ class EmployeeRequest extends FormRequest
             'address.string' => 'La dirección debe ser un texto válido.',
 
             // --- USUARIO DE SISTEMA CONDICIONAL ---
+            // El mensaje 'password.required_with' se disparará por la regla 'required' condicional
             'password.required_with' => 'La Contraseña temporal es obligatoria si se proporciona el Email.',
             'password.string' => 'La contraseña debe ser una cadena de texto.',
-            'password.min' => 'La Contraseña debe tener al menos 8 caracteres.',
+            'password.min' => 'La Contraseña debe tener al menos 8 caracteres.', // NOTA: Tu regla es min:6, tu mensaje es min:8.
             'password.max' => 'La Contraseña no puede exceder los 255 caracteres.',
 
             'role_id.required_with' => 'Debe seleccionar un Rol de sistema si proporciona el Email.',

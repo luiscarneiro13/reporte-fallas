@@ -68,7 +68,7 @@ class EmployeeController extends Controller
         return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem'));
     }
 
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
         return $this->saveOrUpdate($request);
     }
@@ -79,7 +79,7 @@ class EmployeeController extends Controller
         return $this->saveOrUpdate($request, $id);
     }
 
-    private function saveOrUpdate(Request $request, string $id = null)
+    private function saveOrUpdate(EmployeeRequest $request, string $id = null)
     {
         try {
             // Crear o actualizar empleado

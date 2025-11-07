@@ -56,8 +56,9 @@
 
                     <x-select label="Rol de sistema" name="role_id" :items="$roles" class="col-md-4" :selected="$userSystem?->roles->first()?->id ?? ''" />
 
-                    <x-adminlte-input name="text" id="password_input" label="Contraseña temporal" placeholder=""
-                        fgroup-class="col-md-4 mt-3" autocomplete="new-password" value="{{ old('password') }}" />
+                    <x-input-custom name="password" type="password" id="password_input" label="Contraseña"
+                        placeholder="" class="col-md-4" value=""
+                        help="Si no quiere modificar la clave, entonces la puede dejar vacía" />
                 </div>
 
                 <div class="row mt-5">

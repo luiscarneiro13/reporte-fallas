@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Employee extends Model
 {
@@ -42,5 +43,13 @@ class Employee extends Model
             'service_area_id'   // Llave local en la tabla 'faults' que apunta a 'service_areas'
         )
             ->distinct(); // Opcional: Para evitar duplicados si un empleado tiene varias fallas en la misma área
+    }
+
+    protected function email(): Attribute
+    {
+        // El 'set' se ejecuta justo antes de guardar o actualizar el modelo.
+        return Attribute::make(
+            set: fn(string $value) => strtolower($value),
+        );
     }
 }

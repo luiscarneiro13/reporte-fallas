@@ -61,7 +61,7 @@
                         {{ Form::select('role_id', $roles, null, ['class' => 'form-control', 'id' => 'role_id_select']) }}
                     </div>
 
-                    <x-adminlte-input type="password" name="password" id="password_input" label="Contraseña temporal"
+                    <x-adminlte-input type="password" name="password" id="password_input" label="Contraseña"
                         placeholder="" fgroup-class="col-md-4 mt-3" autocomplete="new-password" />
                 </div>
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EquipmentEditRequest;
 use App\Http\Requests\V1\EquipmentRequest;
 use App\Models\Equipment;
+use App\Models\EquipmentType;
 use App\Models\FaultHistory;
 use App\Models\Project;
 use App\Traits\AlertResponser;
@@ -83,7 +84,9 @@ class EquipmentController extends Controller
         $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
         $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
         $modelYears = $this->getModelYears();
-        return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears'));
+        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name' ,'name');
+        $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
+        return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears', 'equipmentTypes'));
     }
 
     public function show(string $id)
@@ -101,8 +104,7 @@ class EquipmentController extends Controller
     public function imp(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $equipment = Equipment::query()
-            ->where('id', $id)->first();
+        $equipment = Equipment::query()->where('id', $id)->first();
 
         $history = FaultHistory::where('equipment_id', $id)->get();
 
@@ -123,8 +125,10 @@ class EquipmentController extends Controller
                 },
             ])->first();
         $modelYears = $this->getModelYears();
+        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name' ,'name');
+        $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
 
-        return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment', 'modelYears'));
+        return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment', 'modelYears', 'equipmentTypes'));
     }
 
     public function store(EquipmentRequest $request)
@@ -173,6 +177,7 @@ class EquipmentController extends Controller
             $item->model_year = $request->input('model_year');
             $item->color = $request->input('color');
             $item->origin = $request->input('origin');
+            $item->type = $request->input('type');
 
             // Atributo de sucursal
             $item->branch_id = session('branch')->id; // Asignación de la sucursal actual

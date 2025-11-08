@@ -32,6 +32,7 @@ use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\EmployeeController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
+use App\Http\Controllers\V1\AdminBranch\EquipmentTypeController;
 use App\Http\Controllers\V1\AdminBranch\ExecutorController;
 use App\Http\Controllers\V1\AdminBranch\FaultController;
 use App\Http\Controllers\V1\AdminBranch\FaultHistoryController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\V1\AdminBranch\ProjectController;
 use App\Http\Controllers\V1\AdminBranch\ServiceAreaController;
 use App\Http\Controllers\V1\AdminBranch\SparePartStatusController;
 use App\Mail\ReportarFallaEmail;
+use App\Models\EquipmentType;
 use Illuminate\Support\Facades\Mail;
 
 // *************************************************************************************
@@ -140,6 +142,7 @@ Route::middleware([
         Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
+        Route::resource('/tipo-equipo', EquipmentTypeController::class)->names('admin.sucursal.equipment.types');
     });
 });
 

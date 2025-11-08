@@ -25,6 +25,9 @@
                         <x-label value="Proyecto" />
                         {{ Form::select('project_id', $projects, null, ['class' => 'select2 form-control']) }}
                     </div>
+
+                    <x-select required label="Tipo" name="type" :items="$equipmentTypes" class="col-md-2"
+                        classControl="select2 form-control" :selected="$equipment->type ?? '0'" />
                 </div>
 
                 <hr>

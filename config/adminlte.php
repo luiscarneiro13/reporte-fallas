@@ -371,6 +371,13 @@ return [
                     'can'  => ['Estatus de fallas Ver'],
                 ],
                 [
+                    'text' => 'Tipos de equipo',
+                    'icon' => 'fas fa-wrench',
+                    'active' => ['v1/admin/tipo-equipo*'],
+                    'route' => 'admin.sucursal.equipment.types.index',
+                    'can'  => ['Tipos de equipo Ver'],
+                ],
+                [
                     'text' => 'Status de repuestos',
                     'icon' => 'fas fa-boxes',
                     'active' => ['v1/admin/status-repuestos*'],

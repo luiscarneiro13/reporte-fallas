@@ -66,8 +66,6 @@ class FaultController extends Controller
         // --- 3. Ejecutar la consulta con paginación ---
         $faults = $faultsQuery->paginate(10)->appends($request->query());
 
-
-
         // --- 4. Devolver la vista con los resultados y parámetros de filtro ---
         return view('V1.AdminBranch.Faults.index', compact(
             'faults',
@@ -130,8 +128,7 @@ class FaultController extends Controller
         $to = $request->query('to');
 
         // --- 2. Iniciar la consulta con la Vista y filtros base ---
-        $faultsQuery = FaultView::query()
-            ->where('branch_id', $branchId);
+        $faultsQuery = FaultView::query()->where('branch_id', $branchId);
         // ->whereNull('closed_at'); // Se elimina este filtro base si $closeStatus lo controla
 
         /** @var User $session */ //Esto es para que no aparezca el warning en el metodo getRoleNames()

@@ -8,7 +8,7 @@
 
 @section('content')
     @php
-        $headers = ['ID', 'Código interno', 'Placa', 'Modelo', 'Año', 'Color', 'Proyecto', ''];
+        $headers = ['ID', 'Código interno', 'Tipo', 'Placa', 'Marca', 'Modelo', 'Año', 'Color', 'Proyecto', ''];
     @endphp
 
     <x-base-data-table-search title="Equipos" :items="$equipment" :headers="$headers"
@@ -18,7 +18,9 @@
                 <tr>
                     <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</td>
                     <td>{{ $item->internal_code }}</td>
+                    <td>{{ $item->type }}</td>
                     <td>{{ $item->placa }}</td>
+                    <td>{{ $item->brand_name }}</td>
                     <td>{{ $item->vehicle_model }}</td>
                     <td>{{ $item->model_year }}</td>
                     <td>{{ $item->color }}</td>

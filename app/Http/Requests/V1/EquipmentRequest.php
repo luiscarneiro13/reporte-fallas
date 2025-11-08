@@ -24,6 +24,7 @@ class EquipmentRequest extends FormRequest
             'chassis_serial_number' => ['nullable', 'string', 'max:90', 'min:3'],
             'engine_serial_number' => ['nullable', 'string', 'max:90', 'min:3'],
             'vehicle_model' => ['required', 'string', 'max:90', 'min:3'],
+            'type' => ['required', 'exists:equipment_types,name'],
             'brand_name' => ['nullable', 'string', 'max:90', 'min:3'],
 
             // 4. Campos Requeridos con Longitud Máxima de 20 (Min. 3 para owner, validación especial para model_year)
@@ -98,6 +99,9 @@ class EquipmentRequest extends FormRequest
 
             // racda
             'racda.min' => 'El campo RACDA debe tener al menos 3 caracteres.',
+
+            // tipo
+            'type.exists' => 'Seleccione un tipo',
 
             // MENSAJES GENÉRICOS (Fallbacks)
             'required' => 'El campo :attribute es obligatorio.',

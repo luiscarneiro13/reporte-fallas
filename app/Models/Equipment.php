@@ -21,6 +21,7 @@ class Equipment extends Model
         'internal_code',
         'owner',
         'placa',
+        'type',
         'serial_niv',
         'body_serial_number',
         'chassis_serial_number',
@@ -36,7 +37,16 @@ class Equipment extends Model
     protected function fullEquipmentName(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->brand_name . ' ' . $this->vehicle_model . ' ' . $this->model_year . ' ' . $this->placa,
+            get: fn() => collect([
+                $this->type,
+                $this->internal_code,
+                $this->brand_name,
+                $this->vehicle_model,
+                $this->model_year,
+                $this->placa,
+            ])
+                ->filter() // Filtra y elimina todos los valores vacíos, nulos o ceros.
+                ->implode(' '), // Une los valores restantes con un espacio.
         );
     }
 

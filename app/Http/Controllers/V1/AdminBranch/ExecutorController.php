@@ -63,13 +63,13 @@ class ExecutorController extends Controller
         return view('V1.AdminBranch.Executors.edit', compact('back_url', 'executor'));
     }
 
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
         return $this->saveOrUpdate($request);
     }
 
     // public function update(EmployeeRequest $request, string $id)
-    public function update(Request $request, string $id)
+    public function update(EmployeeRequest $request, string $id)
     {
         return $this->saveOrUpdate($request, $id);
     }
@@ -83,7 +83,6 @@ class ExecutorController extends Controller
             $item->identification_number = $request->input('identification_number');
             $item->first_name = $request->input('first_name');
             $item->last_name = $request->input('last_name');
-            $item->email = $request->input('email');
             $item->phone_number = $request->input('phone_number');
             $item->address = $request->input('address');
             $item->external = $request->input('external');

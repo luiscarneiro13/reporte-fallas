@@ -17,7 +17,7 @@
             @forelse ($employees as $item)
                 <tr>
                     <td>{{ $item->identification_number }}</td>
-                    <td>{{ $item->lastname . ' ' . $item->first_name }}</td>
+                    <td>{{ $item->last_name . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
                     <td>{{ $item->position }}</td>
                     <td>{{ $item->address }}</td>

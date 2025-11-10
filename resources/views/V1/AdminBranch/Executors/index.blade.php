@@ -21,7 +21,7 @@
                     {{-- Datos del Ejecutor --}}
                     <td>{{ $item->external ? 'Externo' : 'Interno' }}</td>
                     <td>{{ $item->identification_number }}</td>
-                    <td>{{ $item->lastname . ' ' . $item->first_name }}</td>
+                    <td>{{ $item->last_name . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
                     <td>{{ $item->address }}</td>
                     <td>{{ $item->executorServiceAreas?->pluck('name')?->implode(', ') ?? '' }}</td>

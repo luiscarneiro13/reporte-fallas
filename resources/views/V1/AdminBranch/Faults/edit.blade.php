@@ -75,11 +75,11 @@
                         class="col-md-3" :value="$fault->report_date" />
 
                     <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""
-                        class="col-md-3" :value="$fault->scheduled_execution" required="{{ $isClosing ? 'required' : '' }}" />
+                        class="col-md-3" :value="$fault->scheduled_execution" required="{{ $isClosing ? 'true' : 'false' }}" />
 
                     {{-- Fecha de Ejecución completada debe ser requerida --}}
                     <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
-                        class="col-md-3" :value="$fault->completed_execution" required="{{ $isClosing ? 'required' : '' }}" />
+                        class="col-md-3" :value="$fault->completed_execution" required="{{ $isClosing ? 'true' : 'false' }}" />
 
                 </div>
 

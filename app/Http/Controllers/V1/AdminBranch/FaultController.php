@@ -285,7 +285,6 @@ class FaultController extends Controller
 
     public function store(FaultRequest $request)
     {
-        // return $request->validated();
         return $this->saveOrUpdate($request);
     }
 
@@ -320,13 +319,12 @@ class FaultController extends Controller
             $item->fill($validatedData);
             $item->branch_id = session('branch')->id;
             $item->save();
-
             $faultView = FaultView::find($item->id);
 
             // Se envía el correo
             try {
                 // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
-                $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
+                $recipient = env('EMAIL_FALLAS');
 
                 // 2. Envía el correo
                 Mail::to($recipient)->send(new ReportarFallaEmail($faultView->equipment_name, $faultView->description));

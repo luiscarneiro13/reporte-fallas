@@ -68,7 +68,7 @@ class FaultService
 
     static function executors()
     {
-        $initValue = collect(["0" => "N/A"]);
+        $initValue = collect(["0" => "Seleccione"]);
 
         $employees = Employee::where('branch_id', session('branch')->id)
             ->where('executor', 1)
@@ -77,10 +77,16 @@ class FaultService
                 DB::raw("CONCAT(identification_number, ' - ', last_name, ' ', first_name) AS full_name")
             )
             ->orderBy('last_name', 'asc')
-            ->pluck('full_name', 'id');
+            ->get(); // <-- Cambiar pluck() por get() para obtener la Colección completa
 
-        $result = $initValue->merge($employees);
+        // 1. Mapear para usar solo el full_name como valor
+        // 2. Usar keyBy() para establecer 'id' como la clave
+        $employeesPlucked = $employees->mapWithKeys(function ($item) {
+            return [$item->id => $item->full_name];
+        });
 
+        // 2. Prepend: Añadir el valor "Seleccione" al inicio, usando la clave "0"
+        $result = $employeesPlucked->prepend('Seleccione', '0');
         return $result;
     }
 

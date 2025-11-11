@@ -71,7 +71,7 @@ Route::get('/clear-cache', function () {
 
 Route::get('/prueba/{id}', [PruebaController::class, 'index']);
 
-Route::get('/', [LoginController::class, 'create'])->name('login.create');
+Route::get('/login', [LoginController::class, 'create'])->name('login.create');
 
 Route::get('/sitioweb', function () {
     return view('website.index');
@@ -83,8 +83,8 @@ Route::get('/logout', function () {
     return redirect(url('/'));
 });
 
-Route::get('/login', function () {
-    return redirect(url('/'));
+Route::get('/', function () {
+    return view('website.index');
 });
 
 Route::middleware([

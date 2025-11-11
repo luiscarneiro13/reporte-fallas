@@ -50,6 +50,7 @@
                                 </li>
                                 <li><a href="#">Servicios</a></li>
                                 <li><a href="#">Contacto</a></li>
+                                <li><a href="{{ url("/login") }}">Usuario</a></li>
                             </ul>
                         </div>
                     </nav>

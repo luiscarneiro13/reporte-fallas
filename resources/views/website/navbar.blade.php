@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="site-navbar bg-light">
+    <div class="site-navbar">
         <div class="container py-1">
             <div class="row align-items-center">
                 <div class="col-2">

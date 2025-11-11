@@ -26,6 +26,7 @@ class LoginController extends Controller
 
     public function store(LoginRequest $request)
     {
+
         // $request->session()->flush();
         // return;
         $user = User::where('email', $request->email)->first();
@@ -34,7 +35,7 @@ class LoginController extends Controller
         if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // El usuario ha sido autenticado correctamente
             $dailyRate = DailyRate::orderBy('id', 'desc')->first();
-            Session::put('branch', Branch::find($request->sucursal_id));
+            Session::put('branch', Branch::find(1));
             Session::put('dailyRate', (float)$dailyRate->rate);
             Session::put('averageRate', (float)$dailyRate->average_rate);
 
@@ -45,7 +46,7 @@ class LoginController extends Controller
             return redirect(url('dashboard'));
         } else {
             // Las credenciales son inválidas
-            return redirect(url('/'))->with(['state' => 'error', 'message' => 'Usuario o autorizado']);
+            return redirect(url('/login'))->with(['state' => 'error', 'message' => 'Usuario o autorizado']);
         }
 
         $user->createToken('token')->plainTextToken;

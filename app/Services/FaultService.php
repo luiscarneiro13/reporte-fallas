@@ -98,7 +98,8 @@ class FaultService
         // 1. Contar las fallas activas (v_faults_base)
         $activeFaults = DB::table('v_faults_base')
             ->select('equipment_id', DB::raw('count(*) as fault_count'))
-            ->where('branch_id', session('branch')->id)->whereNull('closed_at')
+            ->where('branch_id', session('branch')->id)
+            ->whereNull('closed_at')
             ->whereNotNull('equipment_id');
 
         // 2. Contar las fallas cerradas (fault_history)

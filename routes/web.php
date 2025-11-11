@@ -77,7 +77,7 @@ Route::get('/sitioweb', function () {
     return view('website.index');
 });
 
-Route::post('/', [LoginController::class, 'store'])->name('login.store');
+Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 
 Route::get('/logout', function () {
     return redirect(url('/'));

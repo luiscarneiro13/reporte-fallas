@@ -63,3 +63,12 @@
     </div>
 
 </div>
+
+<style>
+  .site-navbar-wrap {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999; /* Asegura que esté por encima de otros elementos */
+  }
+</style>

@@ -23,76 +23,92 @@
 </div>
 
 @push('js')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof Chart === 'undefined') {
-        console.error(
-            '❌ Chart.js no está cargado. Activa el plugin Chart.js en AdminLTE o inclúyelo manualmente.'
-        );
-        return;
-    }
-
-    const ctx = document.getElementById('{{ $chartId }}').getContext('2d');
-    const chartType = '{{ $type }}';
-    const showPercentages = {{ $showPercentages ? 'true' : 'false' }};
-
-    const defaultColors = [
-        '#3366CC','#DC3912','#FF9900','#109618','#990099',
-        '#0099C6','#DD4477','#66AA00','#B82E2E','#316395'
-    ];
-
-    const backgroundColors = [];
-    @json($labels).forEach((_, i) => {
-        backgroundColors.push(defaultColors[i % defaultColors.length]);
-    });
-
-    const chartData = {
-        labels: @json($labels),
-        datasets: [{
-            label: chartType === 'bar' ? '{{ $title }}' : null,
-            data: @json($values),
-            backgroundColor: backgroundColors,
-            borderColor: chartType === 'bar' ? '#fff' : '#fff',
-            borderWidth: chartType === 'bar' ? 1 : 2
-        }]
-    };
-
-    const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: chartType === 'bar' ? 'top' : 'bottom'
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Chart === 'undefined') {
+                console.error(
+                    '❌ Chart.js no está cargado. Activa el plugin Chart.js en AdminLTE o inclúyelo manualmente.'
+                );
+                return;
             }
-        }
-    };
 
-    if (chartType === 'bar' || chartType === 'line') {
-        chartOptions.scales = {
-            y: { beginAtZero: true }
-        };
-    }
+            const ctx = document.getElementById('{{ $chartId }}').getContext('2d');
+            const chartType = '{{ $type }}';
+            const showPercentages = {{ $showPercentages ? 'true' : 'false' }};
 
-    // MOSTRAR PORCENTAJES EN PIE O DOUGHNUT
-    if (showPercentages && (chartType === 'pie' || chartType === 'doughnut')) {
-        chartOptions.plugins.tooltip = {
-            callbacks: {
-                label: function(context) {
-                    const value = context.raw;
-                    const dataArray = context.chart.data.datasets[0].data;
-                    const total = dataArray.reduce((a,b) => a + b, 0);
-                    const percentage = ((value / total) * 100).toFixed(1) + '%';
-                    return context.label + ': ' + percentage;
+            const defaultColors = [
+                '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+                '#0099C6', '#DD4477', '#66AA00', '#B82E2E', '#316395'
+            ];
+
+            const backgroundColors = [];
+            @json($labels).forEach((_, i) => {
+                backgroundColors.push(defaultColors[i % defaultColors.length]);
+            });
+
+            const chartData = {
+                labels: @json($labels),
+                datasets: [{
+                    label: chartType === 'bar' ? '{{ $title }}' : null,
+                    data: @json($values),
+                    backgroundColor: backgroundColors,
+                    borderColor: chartType === 'bar' ? '#fff' : '#fff',
+                    borderWidth: chartType === 'bar' ? 1 : 2
+                }]
+            };
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: chartType === 'bar' ? 'top' : 'bottom'
+                    }
                 }
-            }
-        };
-    }
+            };
 
-    new Chart(ctx, {
-        type: chartType,
-        data: chartData,
-        options: chartOptions
-    });
-});
-</script>
+            if (chartType === 'bar' || chartType === 'line') {
+                chartOptions.scales = {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0,
+                            // 👇 Agrega un poco de espacio arriba del valor máximo
+                            suggestedMax: Math.max(...@json($values)) * 1.1, // +10%
+                            callback: function(value) {
+                                if (Number.isInteger(value)) {
+                                    return value;
+                                }
+                            }
+                        },
+                        gridLines: {
+                            zeroLineColor: '#000',
+                            zeroLineWidth: 1
+                        }
+                    }]
+                };
+            }
+
+            // MOSTRAR PORCENTAJES EN PIE O DOUGHNUT
+            if (showPercentages && (chartType === 'pie' || chartType === 'doughnut')) {
+                chartOptions.plugins.tooltip = {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            const dataArray = context.chart.data.datasets[0].data;
+                            const total = dataArray.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1) + '%';
+                            return context.label + ': ' + percentage;
+                        }
+                    }
+                };
+            }
+
+            new Chart(ctx, {
+                type: chartType,
+                data: chartData,
+                options: chartOptions
+            });
+        });
+    </script>
 @endpush

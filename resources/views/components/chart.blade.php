@@ -4,6 +4,7 @@
     'values' => [],
     'type' => 'bar', // 'bar', 'pie', 'doughnut', 'line', etc.
     'showPercentages' => false, // NUEVO
+    'minHeight' => '280px',
 ])
 
 @php
@@ -16,7 +17,7 @@
         <h3 class="card-title font-weight-bold">{{ $title }}</h3>
     </div>
     <div class="card-body">
-        <div style="min-height:280px;">
+        <div style="min-height:{{ $minHeight }};">
             <canvas id="{{ $chartId }}" style="width:100%; height:100%; display:block;"></canvas>
         </div>
     </div>
@@ -73,7 +74,6 @@
                         ticks: {
                             beginAtZero: true,
                             min: 0,
-                            // 👇 Agrega un poco de espacio arriba del valor máximo
                             suggestedMax: Math.max(...@json($values)) * 1.1, // +10%
                             callback: function(value) {
                                 if (Number.isInteger(value)) {
@@ -85,7 +85,20 @@
                             zeroLineColor: '#000',
                             zeroLineWidth: 1
                         }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: false, // fuerza a mostrar todos los labels
+                            maxRotation: 60, // ángulo máximo
+                            minRotation: 45, // ángulo mínimo
+                            fontSize: 11 // reduce el tamaño del texto
+                        }
                     }]
+                };
+                chartOptions.layout = {
+                    margin: {
+                        bottom: 200 // aumenta el espacio debajo del eje X
+                    }
                 };
             }
 

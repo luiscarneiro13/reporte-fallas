@@ -40,14 +40,17 @@
 
                             <ul class="site-menu js-clone-nav d-none d-lg-block">
                                 <li><a href="#">Inicio</a></li>
-                                <li class="has-children">
+                                {{-- <li class="has-children">
                                     <a href="#">Empresa</a>
                                     <ul class="dropdown arrow-top">
                                         <li><a href="#">Misión</a></li>
                                         <li><a href="#">Visión</a></li>
                                         <li><a href="#">Valores</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
+                                <li><a href="#mision">Misión</a></li>
+                                <li><a href="#vision">Visión</a></li>
+                                <li><a href="#valores">Valores</a></li>
                                 <li><a href="#">Servicios</a></li>
                                 <li><a href="#">Contacto</a></li>
                                 <li><a href="{{ url("/login") }}">Usuario</a></li>

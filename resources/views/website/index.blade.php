@@ -43,15 +43,23 @@
 
         @include('website.slider')
 
-        @include('website.number_speak')
+        {{-- @include('website.number_speak') --}}
 
-        @include('website.our_speciality')
+        {{-- @include('website.our_speciality') --}}
 
-        @include('website.lets_grow')
+        @include('website.mision')
 
-        @include('website.reviews')
+        @include('website.vision')
 
-        @include('website.our_video')
+        @include('website.valores')
+
+        @include('website.servicios')
+
+        {{-- @include('website.lets_grow') --}}
+
+        {{-- @include('website.reviews') --}}
+
+        {{-- @include('website.our_video') --}}
 
 
         <div class="promo py-5 bg-warning" data-aos="fade">

@@ -95,7 +95,7 @@
             {{-- ... Resto de tu código de gráficos ... --}}
             <div class="row">
                 <div class="col-md-12">
-                    <x-chart title="Fallas por equipo" type="bar" :labels="$failuresByEquipment['labels']" :values="$failuresByEquipment['values']"
+                    <x-chart minHeight="400px" title="Fallas por equipo" type="bar" :labels="$failuresByEquipment['labels']" :values="$failuresByEquipment['values']"
                         :show-percentages="true" />
                 </div>
             </div>

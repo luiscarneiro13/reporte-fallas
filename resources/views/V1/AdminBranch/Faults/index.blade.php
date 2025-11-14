@@ -70,7 +70,7 @@
                                             Ver datos
                                         </a>
                                     @endif
-                                    {{--
+                                    
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar" action="{{ route('admin.sucursal.faults.destroy', $item) }}"
                                         method="post">
@@ -81,7 +81,7 @@
                                             Eliminar
                                         </button>
                                     </form>
---}}
+
 
                                 </div>
                             </div>

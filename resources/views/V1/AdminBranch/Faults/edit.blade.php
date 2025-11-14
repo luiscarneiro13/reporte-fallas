@@ -75,11 +75,13 @@
                         class="col-md-3" :value="$fault->report_date" />
 
                     <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""
-                        class="col-md-3" :value="$fault->scheduled_execution" required="{{ $isClosing ? 'true' : 'false' }}" />
+                        class="col-md-3" :value="$fault->scheduled_execution ?? null" required="{{ $isClosing ? 'required' : '' }}" />
 
                     {{-- Fecha de Ejecución completada debe ser requerida --}}
-                    <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
-                        class="col-md-3" :value="$fault->completed_execution" required="{{ $isClosing ? 'true' : 'false' }}" />
+                    @if ($isClosing)
+                        <x-input-date-custom name="completed_execution" label="Ejecución completada" placeholder=""
+                            class="col-md-3" :value="$fault->completed_execution" required="{{ $isClosing ? 'true' : 'false' }}" />
+                    @endif
 
                 </div>
 
@@ -87,15 +89,16 @@
 
                     {{-- LOG DE MANTENIMIENTO --}}
 
-                    {{-- El ejecutor debe ser requerido --}}
-                    <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
-                        classControl="select2 form-control" :selected="$fault->executor_id"
-                        required="{{ $isClosing ? 'required' : '' }}" />
+                    @if ($isClosing)
+                        <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
+                            classControl="select2 form-control" :selected="$fault->executor_id"
+                            required="{{ $isClosing ? 'required' : '' }}" />
 
-                    {{-- El log de mantenimiento debe ser requerido --}}
-                    <x-textarea-custom name="equipment_maintenance_log" label="Actividades realizadas al equipo"
-                        placeholder="" class="col-md-12 mt-3" value="{{ $fault->equipment_maintenance_log }}"
-                        required="{{ $isClosing ? 'required' : '' }}" />
+                        {{-- El log de mantenimiento debe ser requerido --}}
+                        <x-textarea-custom name="equipment_maintenance_log" label="Actividades realizadas al equipo"
+                            placeholder="" class="col-md-12 mt-3" value="{{ $fault->equipment_maintenance_log }}"
+                            required="{{ $isClosing ? 'required' : '' }}" />
+                    @endif
                 </div>
 
 

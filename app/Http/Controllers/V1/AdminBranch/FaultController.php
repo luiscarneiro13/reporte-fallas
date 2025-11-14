@@ -254,7 +254,7 @@ class FaultController extends Controller
     {
 
         $fault = Fault::find($id);
-
+// return $fault;
         if (!$fault) {
             return $this->alertError(self::INDEX, 'Falla no encontrada.');
         }
@@ -404,5 +404,19 @@ class FaultController extends Controller
         }
     }
 
-    public function destroy(string $id) {}
+    public function destroy(string $id) {
+        try {
+            $fault = Fault::find($id);
+            if (!$fault) {
+                return $this->alertError(self::INDEX, 'Falla no encontrada para eliminar.');
+            }
+
+            $fault->delete();
+
+            return $this->alertSuccess(self::INDEX, 'Falla eliminada correctamente.');
+        } catch (\Throwable $th) {
+            info($th->getMessage());
+            return $this->alertError(self::INDEX, 'Error al eliminar la falla: ' . $th->getMessage());
+        }
+    }
 }

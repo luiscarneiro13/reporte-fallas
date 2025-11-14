@@ -7,9 +7,9 @@
 
 <body>
     <h1>¡Se ha reportado una falla!</h1>
-    <p>Se reportó una falla en el equipo: {{ $equipment_name }}</p>
-
-    <p>{{ $description }}</p>
+    <p><strong>Reportada por:</strong> {{ $reported_by_name }}</p>
+    <p><strong>Equipo:</strong> {{ $equipment_name }}</p>
+    <p><strong>Falla: </strong>{{ $description }}</p>
 </body>
 
 </html>

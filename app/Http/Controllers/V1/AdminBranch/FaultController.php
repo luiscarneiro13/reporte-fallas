@@ -327,7 +327,7 @@ class FaultController extends Controller
                 $recipient = env('EMAIL_FALLAS');
 
                 // 2. Envía el correo
-                Mail::to($recipient)->send(new ReportarFallaEmail($faultView->equipment_name, $faultView->description));
+                Mail::to($recipient)->send(new ReportarFallaEmail($faultView));
             } catch (\Throwable $th) {
                 //throw $th;
             }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
 use App\Mail\ReportarFallaEmail;
+use App\Mail\CerrarFallaEmail;
 use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Services\FaultService;
@@ -254,7 +255,7 @@ class FaultController extends Controller
     {
 
         $fault = Fault::find($id);
-// return $fault;
+        // return $fault;
         if (!$fault) {
             return $this->alertError(self::INDEX, 'Falla no encontrada.');
         }
@@ -321,17 +322,6 @@ class FaultController extends Controller
             $item->save();
             $faultView = FaultView::find($item->id);
 
-            // Se envía el correo
-            try {
-                // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
-                $recipient = env('EMAIL_FALLAS');
-
-                // 2. Envía el correo
-                Mail::to($recipient)->send(new ReportarFallaEmail($faultView));
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-
             // --- LÓGICA DE CIERRE Y MOVIMIENTO AL HISTÓRICO ---
 
             if ($isClosing) {
@@ -340,6 +330,17 @@ class FaultController extends Controller
                 // Esto es necesario porque $item (Fault) solo tiene columnas de la tabla base.
                 // Asumiendo que el modelo de la vista es 'FaultView'.
                 $historyRecord = FaultView::find($item->id);
+
+                // Se envía el correo
+                try {
+                    // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
+                    $recipient = env('EMAIL_FALLAS');
+
+                    // 2. Envía el correo
+                    Mail::to($recipient)->send(new CerrarFallaEmail($historyRecord));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
 
                 // Verificación de seguridad
                 if (!$historyRecord) {
@@ -378,6 +379,18 @@ class FaultController extends Controller
                 $message = "Falla cerrada y archivada correctamente.";
                 return $this->alertSuccess(self::INDEX, $message);
             } else {
+
+                // Se envía el correo
+                try {
+                    // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
+                    $recipient = env('EMAIL_FALLAS');
+
+                    // 2. Envía el correo
+                    Mail::to($recipient)->send(new ReportarFallaEmail($faultView));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
                 // LÓGICA DE EDICIÓN/CREACIÓN NORMAL
                 // DB::commit(); // Comentado
 
@@ -404,7 +417,8 @@ class FaultController extends Controller
         }
     }
 
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
         try {
             $fault = Fault::find($id);
             if (!$fault) {

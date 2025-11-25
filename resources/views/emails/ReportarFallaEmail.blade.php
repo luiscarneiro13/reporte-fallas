@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Correo de Prueba</title>
+    <title>¡Se ha reportado una falla!</title>
 </head>
 
 <body>

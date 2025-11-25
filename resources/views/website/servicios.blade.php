@@ -14,7 +14,7 @@
             <div class="col-lg-6">
                 <div class="row no-gutters align-items-stretch h-100 half-sm">
                     <div class="col-md-6 bg-image bg-sm-height"
-                        style="background-image: url('website/images/img_4_colored.jpg');" data-aos="fade"
+                        style="background-image: url('website/images/Soldadura.jpg');" data-aos="fade"
                         data-aos-delay="0"></div>
                     <div class="col-md-6 bg-light text">
                         <div class="p-4">
@@ -34,7 +34,7 @@
             <div class="col-lg-6">
                 <div class="row no-gutters align-items-stretch h-100 half-sm">
                     <div class="col-md-6 bg-image order-md-2 order-lg-1 bg-sm-height"
-                        style="background-image: url('website/images/Izamiento.JPG');" data-aos="fade"
+                        style="background-image: url('website/images/Izamiento.jpeg');" data-aos="fade"
                         data-aos-delay="200"></div>
                     <div class="col-md-6 bg-light text order-md-1 order-lg-2">
                         <div class="p-4">
@@ -55,7 +55,7 @@
             <div class="col-lg-6">
                 <div class="row no-gutters align-items-stretch h-100 half-sm">
                     <div class="col-md-6 bg-image order-md-1 order-lg-2 bg-sm-height"
-                        style="background-image: url('website/images/MaquinariaPesada.JPG');" data-aos="fade"
+                        style="background-image: url('website/images/Maquina.jpeg');" data-aos="fade"
                         data-aos-delay="300"></div>
                     <div class="col-md-6 bg-light text order-md-2 order-lg-1">
                         <div class="p-4">
@@ -73,7 +73,7 @@
             <div class="col-lg-6">
                 <div class="row no-gutters align-items-stretch h-100 half-sm">
                     <div class="col-md-6 bg-image order-md-2 bg-sm-height"
-                        style="background-image: url('website/images/img_3_colored.jpg');" data-aos="fade"
+                        style="background-image: url('website/images/TransportePesado.jpeg');" data-aos="fade"
                         data-aos-delay="400"></div>
                     <div class="col-md-6 bg-light text order-md-1">
                         <div class="p-4">

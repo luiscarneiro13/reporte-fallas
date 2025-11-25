@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 bg-image bg-sm-height mb-5 mb-md-0"
-                style="background-image: url('website/images/img_1_colored.jpg');" data-aos="fade-up"></div>
+                style="background-image: url('website/images/Vision.png');" data-aos="fade-up"></div>
             <div class="col-md-6 pr-md-5 order-md-1">
                 <h2 class="ml-3 display-3 line-height-xs text-black mb-4">Visión</h2>
                 <p class="ml-3 mb-4">

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 bg-image bg-sm-height mb-5 mb-md-0 order-md-2"
-                style="background-image: url('website/images/img_1_colored.jpg');" data-aos="fade-up"></div>
+                style="background-image: url('website/images/Valores.jpeg');" data-aos="fade-up"></div>
             <div class="col-md-6 pr-md-5 order-md-1">
                 <h2 class="display-3 line-height-xs text-black mb-4">Valores y Principios</h2>
                 <ul class="site-block-check">

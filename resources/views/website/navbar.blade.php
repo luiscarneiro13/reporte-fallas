@@ -1,3 +1,17 @@
+<style>
+    .site-menu > li > a {
+        font-size: 18px !important;   /* Ajusta el tamaño */
+        color: #000 !important;       /* Negro */
+    }
+
+    /* Si también quieres que los submenús (dropdown) sean negros */
+    .site-menu .dropdown li a {
+        font-size: 17px !important;
+        color: #000 !important;
+    }
+</style>
+
+
 <div class="site-navbar-wrap bg-white">
     <div class="site-navbar-top">
         <div class="container py-2">
@@ -28,32 +42,29 @@
             <div class="row align-items-center">
                 <div class="col-2">
                     <h2 class="mb-0 site-logo">
-                        <img height="60px" src="{{ asset('logo.webp') }}" alt="">
+                        <img height="100px" src="{{ asset('logo.webp') }}" alt="">
                     </h2>
                 </div>
                 <div class="col-10">
-                    <nav class="site-navigation text-right" role="navigation">
+                    <nav class="site-navigation text-right font-weight-bold" role="navigation">
                         <div class="container">
                             <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#"
-                                    class="site-menu-toggle js-menu-toggle text-black"><span
+                                    class="site-menu-toggle js-menu-toggle"><span
                                         class="icon-menu h3"></span></a></div>
 
-                            <ul class="site-menu js-clone-nav d-none d-lg-block">
+                            <ul class="site-menu js-clone-nav d-none d-lg-block text-black">
                                 <li><a href="#">Inicio</a></li>
-                                {{-- <li class="has-children">
-                                    <a href="#">Empresa</a>
-                                    <ul class="dropdown arrow-top">
-                                        <li><a href="#">Misión</a></li>
-                                        <li><a href="#">Visión</a></li>
-                                        <li><a href="#">Valores</a></li>
+                                <li class="has-children">
+                                    <a href="#">Nosotros</a>
+                                    <ul class="dropdown">
+                                        <li><a href="#mision">Misión</a></li>
+                                        <li><a href="#vision">Visión</a></li>
+                                        <li><a href="#valores">Valores</a></li>
                                     </ul>
-                                </li> --}}
-                                <li><a href="#mision">Misión</a></li>
-                                <li><a href="#vision">Visión</a></li>
-                                <li><a href="#valores">Valores</a></li>
+                                </li>
                                 <li><a href="#">Servicios</a></li>
                                 <li><a href="#">Contacto</a></li>
-                                <li><a href="{{ url("/login") }}">Usuario</a></li>
+                                <li><a href="{{ url('/login') }}">Usuario</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -65,10 +76,11 @@
 </div>
 
 <style>
-  .site-navbar-wrap {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 999; /* Asegura que esté por encima de otros elementos */
-  }
+    .site-navbar-wrap {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        /* Asegura que esté por encima de otros elementos */
+    }
 </style>

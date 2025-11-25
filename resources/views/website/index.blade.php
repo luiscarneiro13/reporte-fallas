@@ -62,13 +62,13 @@
         {{-- @include('website.our_video') --}}
 
 
-        <div class="promo py-5 bg-warning" data-aos="fade">
+        {{-- <div class="promo py-5 bg-warning" data-aos="fade">
             <div class="container text-center">
                 <h2 class="d-block mb-0 font-weight-light text-white">
                     <a href="#" class="text-black d-block">Contáctanos</a>
                 </h2>
             </div>
-        </div>
+        </div> --}}
 
         @include('website.footer')
     </div>

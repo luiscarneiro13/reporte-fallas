@@ -84,7 +84,7 @@ Route::get('/logout', function () {
 });
 
 Route::get('/', function () {
-    return view('website.index');
+    return redirect()->away('https://servicioscasmar.com/web', 301);
 });
 
 Route::middleware([

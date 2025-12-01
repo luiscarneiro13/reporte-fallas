@@ -56,7 +56,8 @@ class DashboardController extends Controller
         if (empty($fromInput) && empty($toInput)) {
 
             // Calculamos las fechas por defecto en el formato que el usuario ve (DD-MM-YYYY)
-            $default_from_date = Carbon::now()->subDays(7)->format('d-m-Y');
+            // $default_from_date = Carbon::now()->subDays(7)->format('d-m-Y');
+            $default_from_date = '01-10-2025';
             $default_to_date = Carbon::now()->format('d-m-Y');
 
             // Redirigimos a la misma ruta con los parámetros en la URL.

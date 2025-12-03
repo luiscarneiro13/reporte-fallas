@@ -95,47 +95,50 @@
             {{-- ... Resto de tu código de gráficos ... --}}
             <div class="row">
                 <div class="col-md-12">
-                    <x-chart minHeight="400px" title="Fallas por equipo" type="bar" :labels="$failuresByEquipment['labels']" :values="$failuresByEquipment['values']"
+                    <x-chart minHeight="400px" title="Fallas por equipo (Últimos 10)" type="bar" :labels="$failuresByEquipment['labels']" :values="$failuresByEquipment['values']"
                         :show-percentages="true" />
                 </div>
             </div>
 
             <div class="row">
                 {{-- ... Otros gráficos sin cambios ... --}}
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <x-chart title="Fallas por área de servicio" type="pie" :labels="$failuresByServiceArea['labels']" :values="$failuresByServiceArea['values']"
                         :show-percentages="true" />
                 </div>
                  {{-- ... Otros gráficos sin cambios ... --}}
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <x-chart title="Fallas por proyectos" type="pie" :labels="$failuresByProject['labels']" :values="$failuresByProject['values']"
                         :show-percentages="true" />
                 </div>
 
-                <div class="col-md-4">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
                     <x-chart title="Fallas por usuario" type="pie" :labels="$failuresByReporter['labels']" :values="$failuresByReporter['values']"
+                        :show-percentages="true" />
+                </div>
+                <div class="col-md-6">
+                    <x-chart title="Fallas por estatus" type="pie" :labels="$failuresByStatus['labels']" :values="$failuresByStatus['values']"
                         :show-percentages="true" />
                 </div>
             </div>
              {{-- ... Otros gráficos sin cambios ... --}}
             <div class="row">
-                <div class="col-md-4">
-                    <x-chart title="Fallas por estatus" type="pie" :labels="$failuresByStatus['labels']" :values="$failuresByStatus['values']"
-                        :show-percentages="true" />
-                </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <x-chart title="Fallas por status de repuestos" type="pie" :labels="$failuresBySparePartStatus['labels']" :values="$failuresBySparePartStatus['values']"
                         :show-percentages="true" />
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <x-chart title="Fallas abiertas y cerradas" type="pie" :labels="$faultsByStatus['labels']" :values="$faultsByStatus['values']"
                         :show-percentages="true" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <x-chart title="Fallas por división" type="pie" :labels="$failuresByDivision['labels']" :values="$failuresByDivision['values']"
                         :show-percentages="true" />
                 </div>

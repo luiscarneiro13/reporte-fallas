@@ -292,18 +292,36 @@ class FaultService
 
     static function failuresByReporter($from = null, $to = null)
     {
-        $query = DB::table('v_faults_base')
+        // Fallas activas (v_faults_base)
+        $activeFaults = DB::table('v_faults_base')
             ->select(DB::raw('COALESCE(reported_by_name, "Sin reportante") as reporter'), DB::raw('COUNT(*) as total'))
             ->where('branch_id', session('branch')->id)->whereNull('closed_at');
 
+        // Fallas cerradas (fault_history)
+        $closedFaults = DB::table('fault_history')
+            ->select(DB::raw('COALESCE(reported_by_name, "Sin reportante") as reporter'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id);
+
         // APLICAR FILTRO DE FECHAS
         if ($from && $to) {
-            $query->whereBetween('report_date', [$from, $to]);
+            $activeFaults->whereBetween('report_date', [$from, $to]);
+            $closedFaults->whereBetween('report_date', [$from, $to]);
         }
 
-        $failuresByReporter = $query->groupBy('reporter')
+        // 1. SOLUCIÓN DEL ERROR SQL: Aplicar GROUP BY a las consultas individuales.
+        // Debemos agrupar por la columna base 'reported_by_name'.
+        $activeFaults->groupBy('reported_by_name');
+        $closedFaults->groupBy('reported_by_name');
+
+        // 2. Unir y sumar. El resultado debe agruparse por el alias 'reporter'.
+        $failuresByReporter = $activeFaults->unionAll($closedFaults)
             ->get()
-            ->pluck('total', 'reporter');
+            // Agrupamos por el alias 'reporter' (la columna resultante del SELECT)
+            ->groupBy('reporter')
+            // Usamos map para sumar los totales por reportero
+            ->map(function ($items) {
+                return $items->sum('total');
+            });
 
         $labels = $failuresByReporter->keys()->toArray();
         $values = $failuresByReporter->values()->toArray();
@@ -316,18 +334,38 @@ class FaultService
 
     static function failuresByEquipment($from = null, $to = null)
     {
-        $query = DB::table('v_faults_base')
+        // Fallas activas (v_faults_base)
+        $activeFaults = DB::table('v_faults_base')
             ->select(DB::raw('COALESCE(equipment_name, "Sin equipo") as equipment'), DB::raw('COUNT(*) as total'))
             ->where('branch_id', session('branch')->id)->whereNull('closed_at');
 
+        // Fallas cerradas (fault_history)
+        $closedFaults = DB::table('fault_history')
+            ->select(DB::raw('COALESCE(equipment_name, "Sin equipo") as equipment'), DB::raw('COUNT(*) as total'))
+            ->where('branch_id', session('branch')->id);
+
         // APLICAR FILTRO DE FECHAS
         if ($from && $to) {
-            $query->whereBetween('report_date', [$from, $to]);
+            $activeFaults->whereBetween('report_date', [$from, $to]);
+            $closedFaults->whereBetween('report_date', [$from, $to]);
         }
 
-        $failuresByEquipment = $query->groupBy('equipment')
+        // Agrupar en las subconsultas para evitar el error ONLY_FULL_GROUP_BY
+        $activeFaults->groupBy('equipment_name');
+        $closedFaults->groupBy('equipment_name');
+
+        // Unir las consultas
+        $unionQuery = $activeFaults->unionAll($closedFaults);
+
+        // Obtener y agregar la lógica de AGRUPACIÓN, ORDENACIÓN Y LÍMITE
+        $failuresByEquipment = DB::table(DB::raw("({$unionQuery->toSql()}) as T"))
+            ->mergeBindings($unionQuery) // Importante para que los bindings (parámetros de whereBetween) funcionen
+            ->select('equipment', DB::raw('SUM(total) as total_failures'))
+            ->groupBy('equipment')
+            ->orderByDesc('total_failures') // Ordenar de mayor a menor total
+            ->limit(10)                     // Limitar a los 10 primeros
             ->get()
-            ->pluck('total', 'equipment');
+            ->pluck('total_failures', 'equipment'); // Pluckeamos para obtener el formato deseado
 
         $labels = $failuresByEquipment->keys()->toArray();
         $values = $failuresByEquipment->values()->toArray();
@@ -337,6 +375,30 @@ class FaultService
             'values' => $values,
         ];
     }
+
+    // static function failuresByEquipment($from = null, $to = null)
+    // {
+    //     $query = DB::table('v_faults_base')
+    //         ->select(DB::raw('COALESCE(equipment_name, "Sin equipo") as equipment'), DB::raw('COUNT(*) as total'))
+    //         ->where('branch_id', session('branch')->id)->whereNull('closed_at');
+
+    //     // APLICAR FILTRO DE FECHAS
+    //     if ($from && $to) {
+    //         $query->whereBetween('report_date', [$from, $to]);
+    //     }
+
+    //     $failuresByEquipment = $query->groupBy('equipment')
+    //         ->get()
+    //         ->pluck('total', 'equipment');
+
+    //     $labels = $failuresByEquipment->keys()->toArray();
+    //     $values = $failuresByEquipment->values()->toArray();
+
+    //     return [
+    //         'labels' => $labels,
+    //         'values' => $values,
+    //     ];
+    // }
 
     static function failuresByStatus($from = null, $to = null)
     {

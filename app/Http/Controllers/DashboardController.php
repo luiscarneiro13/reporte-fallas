@@ -94,6 +94,7 @@ class DashboardController extends Controller
         $totalClosedFaults = FaultService::totalClosedFaults($from, $to);
 
         $failuresByServiceArea = FaultService::failuresByServiceArea($from, $to);
+
         $failuresByProject = FaultService::failuresByProject($from, $to);
         $failuresByReporter = FaultService::failuresByReporter($from, $to);
         $failuresByEquipment = FaultService::failuresByEquipment($from, $to);

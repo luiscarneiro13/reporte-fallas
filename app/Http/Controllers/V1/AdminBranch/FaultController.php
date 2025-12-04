@@ -318,18 +318,19 @@ class FaultController extends Controller
             $validatedData = $this->transformDateFields($validatedData, $dateFields);
 
 
-            $extra = $this->getProjectsByEquipmentId($validatedData['equipment_id']);
+            // $extra = $this->getProjectsByEquipmentId($validatedData['equipment_id']);
 
-            $validatedData['division_id'] = $extra['division_id'];
-            $validatedData['division_name'] = $extra['division_name'];
-            $validatedData['project_id'] = $extra['project_id'];
-            $validatedData['project_name'] = $extra['project_name'];
+            // $validatedData['division_id'] = $extra['division_id'];
+            // $validatedData['division_name'] = $extra['division_name'];
+            // $validatedData['project_id'] = $extra['project_id'];
+            // $validatedData['project_name'] = $extra['project_name'];
 
             // 3. Asignación Masiva y Guardar en la tabla 'faults'.
             // Esto asignará el campo 'closed' con el valor de la fecha.
             $item->fill($validatedData);
             $item->branch_id = session('branch')->id;
             $item->save();
+
             $faultView = FaultView::find($item->id);
 
             // --- LÓGICA DE CIERRE Y MOVIMIENTO AL HISTÓRICO ---
@@ -361,7 +362,7 @@ class FaultController extends Controller
                 // para ver si los nombres desnormalizados (reported_by_name, equipment_name, etc.)
                 // están presentes después del save.
                 $historyData = $historyRecord->getAttributes();
-
+// dd($historyData);
                 // 4. Mapeo y Limpieza de datos antes de la inserción
 
                 // Mapear el ID original de la falla activa

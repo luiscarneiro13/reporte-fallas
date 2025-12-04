@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
 use App\Mail\ReportarFallaEmail;
 use App\Mail\CerrarFallaEmail;
+use App\Models\Division;
+use App\Models\Equipment;
 use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Services\FaultService;
@@ -315,6 +317,14 @@ class FaultController extends Controller
             $dateFields = ['report_date', 'scheduled_execution', 'completed_execution'];
             $validatedData = $this->transformDateFields($validatedData, $dateFields);
 
+
+            $extra = $this->getProjectsByEquipmentId($validatedData['equipment_id']);
+
+            $validatedData['division_id'] = $extra['division_id'];
+            $validatedData['division_name'] = $extra['division_name'];
+            $validatedData['project_id'] = $extra['project_id'];
+            $validatedData['project_name'] = $extra['project_name'];
+
             // 3. Asignación Masiva y Guardar en la tabla 'faults'.
             // Esto asignará el campo 'closed' con el valor de la fecha.
             $item->fill($validatedData);
@@ -348,7 +358,6 @@ class FaultController extends Controller
                     return $this->alertError(self::INDEX, 'Error al obtener datos de la vista para archivar.');
                 }
 
-                // Aquí deberías hacer un dd($historyRecord->getAttributes());
                 // para ver si los nombres desnormalizados (reported_by_name, equipment_name, etc.)
                 // están presentes después del save.
                 $historyData = $historyRecord->getAttributes();
@@ -432,5 +441,30 @@ class FaultController extends Controller
             info($th->getMessage());
             return $this->alertError(self::INDEX, 'Error al eliminar la falla: ' . $th->getMessage());
         }
+    }
+
+    public function getProjectsByEquipmentId($equipmentId)
+    {
+        $data = [
+            'project_id' => null,
+            'project_name' => null,
+            'division_id' => null,
+            'division_name' => null,
+        ];
+
+        $equipment = Equipment::find($equipmentId);
+        $lastProject = $equipment->lastProject;
+
+        // Si el equipo no existe o no tiene un project_id asociado (project es null).
+        if ($lastProject) {
+            $division = Division::find($lastProject->division_id);
+            $data = [
+                'project_id' => $lastProject->id,
+                'project_name' => $lastProject->name,
+                'division_id' => $lastProject->division_id,
+                'division_name' => $division->name,
+            ];
+        }
+        return $data;
     }
 }

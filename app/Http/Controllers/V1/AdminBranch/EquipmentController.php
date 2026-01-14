@@ -84,7 +84,7 @@ class EquipmentController extends Controller
         $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
         $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
         $modelYears = $this->getModelYears();
-        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name' ,'name');
+        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name', 'name');
         $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
         return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears', 'equipmentTypes'));
     }
@@ -112,6 +112,17 @@ class EquipmentController extends Controller
         return view('V1.AdminBranch.Equipment.imp', compact('back_url', 'equipment', 'history'));
     }
 
+    /**
+     * Exporta el listado de todos los equipos
+     */
+    public function impAll(Request $request)
+    {
+        $back_url = request()->back_url ?? null;
+        $equipment = Equipment::all();
+
+        return view('V1.AdminBranch.Equipment.impAll', compact('equipment'));
+    }
+
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
@@ -125,7 +136,7 @@ class EquipmentController extends Controller
                 },
             ])->first();
         $modelYears = $this->getModelYears();
-        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name' ,'name');
+        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name', 'name');
         $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
 
         return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment', 'modelYears', 'equipmentTypes'));

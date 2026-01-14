@@ -11,11 +11,11 @@
                                 <h4 class="mr-3">{{ $title }}</h4>
                                 @if (isset($urlBtnAdd))
                                     {{-- @if (isset($permissions)) --}}
-                                        {{-- @can($permissions) --}}
-                                            <a href="{{ $urlBtnAdd }}" style="margin-top:-6px">
-                                                <i class="fas fa-plus-circle"></i>
-                                            </a>
-                                        {{-- @endcan --}}
+                                    {{-- @can($permissions) --}}
+                                    <a href="{{ $urlBtnAdd }}" style="margin-top:-6px">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                    {{-- @endcan --}}
                                     {{-- @endif --}}
                                 @endif
 
@@ -30,14 +30,22 @@
                         <label>
                             {{-- d-flex fuerza que estén en la misma línea (searchInput y searchButton) --}}
                             <div class="d-flex">
-                                {{-- Quitamos style="width: 300px;" para que sea responsivo --}}
+                                @if (isset($titlePrint))
+                                    <button type="button" id="printButton" class="form-control form-control-sm btn-default"
+                                        title={{ $titlePrint }}>
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                @endif
                                 <x-adminlte-input name="searchInput" id="searchInput"
                                     style="margin-right: 5px; flex-grow: 1;" />
                                 <input type="submit" id="searchButton" class="form-control form-control-sm btn-primary"
                                     value="Filtrar">
+                                <div style="flex: 1;" class="ml-2">
+                                </div>
                             </div>
                         </label>
                     </div>
+
                 </div>
             </div>
 

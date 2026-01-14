@@ -143,6 +143,7 @@ Route::middleware([
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
         Route::resource('/tipo-equipo', EquipmentTypeController::class)->names('admin.sucursal.equipment.types');
+        Route::get('/equipos-imprimir', [EquipmentController::class, 'impAll'])->name('equipment.impAll');
     });
 });
 

@@ -101,22 +101,29 @@
     {{-- Datepicker Script --}}
     {{-- <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script> --}}
     <script>
-        $(function () {
+        $(function() {
             // Datepicker con fecha de hoy por defecto
-            $('.datepicker').not('.datepicker-optional').daterangepicker({
-                singleDatePicker: true,
-                showDropdowns: true,
-                autoUpdateInput: true,
-                startDate: moment(),
-                locale: {
-                    format: 'DD-MM-YYYY',
-                    applyLabel: 'Aplicar',
-                    cancelLabel: 'Cancelar',
-                    daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                    firstDay: 1
-                }
+            $('.datepicker').not('.datepicker-optional').each(function() {
+                // Obtenemos el valor actual del input si existe
+                var valorInicial = $(this).val();
+
+                $(this).daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: true,
+                    // Si hay valor, lo usamos; si no, usamos moment() (hoy)
+                    startDate: valorInicial ? moment(valorInicial, 'DD-MM-YYYY') : moment(),
+                    locale: {
+                        format: 'DD-MM-YYYY',
+                        applyLabel: 'Aplicar',
+                        cancelLabel: 'Cancelar',
+                        daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                        ],
+                        firstDay: 1
+                    }
+                });
             });
 
             // Datepicker opcional sin fecha inicial
@@ -130,17 +137,18 @@
                     cancelLabel: 'Cancelar',
                     daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
                     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                    ],
                     firstDay: 1
                 }
             });
 
             // Eventos para todos los datepicker
-            $('.datepicker, .datepicker-optional').on('apply.daterangepicker', function (ev, picker) {
+            $('.datepicker, .datepicker-optional').on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('DD-MM-YYYY'));
             });
 
-            $('.datepicker, .datepicker-optional').on('cancel.daterangepicker', function (ev, picker) {
+            $('.datepicker, .datepicker-optional').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
             });
 

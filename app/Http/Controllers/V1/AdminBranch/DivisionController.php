@@ -5,13 +5,16 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 
 class DivisionController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.divisions.index";
+    const SORTABLE_COLUMNS = ['name', 'description'];
 
     public function __construct()
     {
@@ -22,18 +25,21 @@ class DivisionController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $divisions = Division::query()
+        $divisionsQuery = Division::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('name', 'like', "%{$query}%");
                 });
-            })
-            ->orderBy('name', 'asc')
-            ->paginate(10);
-        return view('V1.AdminBranch.Divisions.index', compact('divisions'));
+            });
+
+        [$sortBy, $sortDir] = $this->applySort($divisionsQuery, $request, self::SORTABLE_COLUMNS, 'name', 'asc');
+
+        $divisions = $divisionsQuery->paginate(10);
+
+        return view('V1.AdminBranch.Divisions.index', compact('divisions', 'sortBy', 'sortDir'));
     }
 
     public function create()

@@ -10,14 +10,27 @@ use App\Models\EquipmentType;
 use App\Models\FaultHistory;
 use App\Models\Project;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class EquipmentController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.equipment.index";
+
+    const SORTABLE_COLUMNS = [
+        'id',
+        'internal_code',
+        'type',
+        'placa',
+        'brand_name',
+        'vehicle_model',
+        'model_year',
+        'color',
+    ];
 
     public function __construct()
     {
@@ -29,6 +42,20 @@ class EquipmentController extends Controller
     }
 
     public function index(Request $request)
+    {
+        // 1. Obtener la consulta de equipos ya filtrada
+        $result = $this->getFilteredEquipmentQuery($request);
+
+        // 2. Ejecutar la consulta con paginación
+        $equipment = $result['query']->paginate(10)->appends($request->query());
+        $sortBy = $result['sort_by'];
+        $sortDir = $result['sort_dir'];
+
+        // 3. Devolver la vista con los resultados
+        return view('V1.AdminBranch.Equipment.index', compact('equipment', 'sortBy', 'sortDir'));
+    }
+
+    private function getFilteredEquipmentQuery(Request $request): array
     {
         // 1. Capturar el ID de la sucursal de la sesión
         $branchId = session('branch')->id;
@@ -70,12 +97,19 @@ class EquipmentController extends Controller
             });
         }
 
-        $equipmentQuery->orderBy('equipment.id', 'desc');
-        // 5. Ejecutar la consulta con paginación
-        $equipment = $equipmentQuery->paginate(10);
+        [$sortBy, $sortDir] = $this->applySort(
+            $equipmentQuery,
+            $request,
+            self::SORTABLE_COLUMNS,
+            'id',
+            'desc'
+        );
 
-        // 6. Devolver la vista con los resultados
-        return view('V1.AdminBranch.Equipment.index', compact('equipment'));
+        return [
+            'query' => $equipmentQuery,
+            'sort_by' => $sortBy,
+            'sort_dir' => $sortDir,
+        ];
     }
 
     public function create()
@@ -118,9 +152,12 @@ class EquipmentController extends Controller
     public function impAll(Request $request)
     {
         $back_url = request()->back_url ?? null;
-        $equipment = Equipment::all();
 
-        return view('V1.AdminBranch.Equipment.impAll', compact('equipment'));
+        // Reutiliza los mismos filtros (sucursal, búsqueda) que el listado, sin paginación
+        $result = $this->getFilteredEquipmentQuery($request);
+        $equipment = $result['query']->get();
+
+        return view('V1.AdminBranch.Equipment.impAll', compact('back_url', 'equipment'));
     }
 
     public function edit(string $id)

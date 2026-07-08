@@ -9,11 +9,19 @@
 @section('content')
 
     @php
-        $headers = ['RIF', 'Nombre', 'Email', 'Teléfono', 'Dirección', ''];
+        $headers = [
+            ['label' => 'RIF', 'field' => 'rif'],
+            ['label' => 'Nombre', 'field' => 'name'],
+            ['label' => 'Email', 'field' => 'email'],
+            ['label' => 'Teléfono', 'field' => 'phone'],
+            ['label' => 'Dirección', 'field' => 'address'],
+            ['label' => '', 'field' => null],
+        ];
     @endphp
 
     <x-base-data-table-search title="Clientes" :items="$customers" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.customers.create') }}">
+        urlBtnAdd="{{ route('admin.sucursal.customers.create') }}"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($customers as $item)
                 <tr>

@@ -8,14 +8,23 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class ExecutorController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.executors.index";
+
+    const SORTABLE_COLUMNS = [
+        'external',
+        'identification_number',
+        'phone_number',
+        'address',
+    ];
 
     public function __construct()
     {
@@ -26,10 +35,10 @@ class ExecutorController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $executors = Employee::query()
+        $executorsQuery = Employee::query()
             ->with(['executorServiceAreas:service_areas.id,service_areas.name'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
@@ -43,11 +52,13 @@ class ExecutorController extends Controller
                 });
             })
             ->where('branch_id', session('branch')->id)
-            ->where('executor', 1)
-            ->orderBy('first_name', 'asc')
-            ->paginate(10);
+            ->where('executor', 1);
 
-        return view('V1.AdminBranch.Executors.index', compact('executors'));
+        [$sortBy, $sortDir] = $this->applySort($executorsQuery, $request, self::SORTABLE_COLUMNS, 'first_name', 'asc');
+
+        $executors = $executorsQuery->paginate(10);
+
+        return view('V1.AdminBranch.Executors.index', compact('executors', 'sortBy', 'sortDir'));
     }
 
     public function create()

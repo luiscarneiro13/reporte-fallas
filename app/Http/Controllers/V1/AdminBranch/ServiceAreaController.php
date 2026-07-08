@@ -7,14 +7,17 @@ use App\Http\Requests\V1\ServiceAreaEditRequest;
 use App\Http\Requests\V1\ServiceAreaRequest;
 use App\Models\ServiceArea;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class ServiceAreaController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.service.areas.index";
+    const SORTABLE_COLUMNS = ['name', 'description'];
 
     public function __construct()
     {
@@ -25,18 +28,21 @@ class ServiceAreaController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $serviceAreas = ServiceArea::query()
+        $serviceAreasQuery = ServiceArea::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('name', 'like', "%{$query}%");
                 });
-            })
-            ->orderBy('name', 'asc')
-            ->paginate(10);
-        return view('V1.AdminBranch.ServiceAreas.index', compact('serviceAreas'));
+            });
+
+        [$sortBy, $sortDir] = $this->applySort($serviceAreasQuery, $request, self::SORTABLE_COLUMNS, 'name', 'asc');
+
+        $serviceAreas = $serviceAreasQuery->paginate(10);
+
+        return view('V1.AdminBranch.ServiceAreas.index', compact('serviceAreas', 'sortBy', 'sortDir'));
     }
 
     public function create()

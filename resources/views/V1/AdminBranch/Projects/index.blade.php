@@ -8,11 +8,19 @@
 
 @section('content')
     @php
-        $headers = ['Cliente', 'Proyecto', 'División', 'Area geográfica', 'Nro. Contrato', ''];
+        $headers = [
+            ['label' => 'Cliente', 'field' => 'customer_name'],
+            ['label' => 'Proyecto', 'field' => 'project_name'],
+            ['label' => 'División', 'field' => 'division_name'],
+            ['label' => 'Area geográfica', 'field' => 'project_geographic_area'],
+            ['label' => 'Nro. Contrato', 'field' => 'project_contract_number'],
+            ['label' => '', 'field' => null],
+        ];
     @endphp
 
     <x-base-data-table-search title="Proyectos" :items="$projects" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.projects.create') }}">
+        urlBtnAdd="{{ route('admin.sucursal.projects.create') }}"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($projects as $item)
                 <tr>

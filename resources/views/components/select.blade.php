@@ -16,7 +16,7 @@
         btnAddModalTarget="{{ $btnAddModalTarget }}" />
 
     {{-- La clase 'is-invalid' se aplica correctamente aquí --}}
-    {{ Form::select($name, $items, $selected, ['class' => 'form-control ' . $classControl . ' ' . ($errors->has($name) ? ' is-invalid' : ''), 'id' => $id, 'disabled' => $disabled]) }}
+    {{ Form::select($name, $items, $selected, ['class' => 'form-control ' . $classControl . ' ' . ($errors->has($name) ? ' is-invalid' : ''), 'id' => $id, 'disabled' => $disabled, 'required' => $required]) }}
 
     @error($name)
         <div class="invalid-feedback">

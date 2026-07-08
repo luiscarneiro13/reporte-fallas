@@ -9,14 +9,24 @@ use App\Models\Customer;
 use App\Models\Division;
 use App\Models\Project;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
 class ProjectController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.projects.index";
+
+    const SORTABLE_COLUMNS = [
+        'customer_name',
+        'project_name',
+        'division_name',
+        'project_geographic_area',
+        'project_contract_number',
+    ];
 
     public function __construct()
     {
@@ -27,10 +37,10 @@ class ProjectController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $projects = Project::query()
+        $projectsQuery = Project::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('projects.name', 'like', "%{$query}%")
@@ -49,11 +59,13 @@ class ProjectController extends Controller
                 'divisions.name as division_name',
                 'projects.geographic_area as project_geographic_area',
                 'projects.contract_number as project_contract_number',
-            )
-            ->orderBy('projects.updated_at', 'desc')
-            ->paginate(10);
+            );
 
-        return view('V1.AdminBranch.Projects.index', compact('projects'));
+        [$sortBy, $sortDir] = $this->applySort($projectsQuery, $request, self::SORTABLE_COLUMNS, 'projects.updated_at', 'desc');
+
+        $projects = $projectsQuery->paginate(10);
+
+        return view('V1.AdminBranch.Projects.index', compact('projects', 'sortBy', 'sortDir'));
     }
 
     public function create()

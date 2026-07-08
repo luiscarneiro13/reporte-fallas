@@ -5,14 +5,17 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
 
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.customers.index";
+    const SORTABLE_COLUMNS = ['rif', 'name', 'email', 'phone', 'address'];
 
     public function __construct()
     {
@@ -23,10 +26,10 @@ class CustomerController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $customers = Customer::query()
+        $customersQuery = Customer::query()
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('name', 'like', "%{$query}%");
@@ -35,10 +38,13 @@ class CustomerController extends Controller
                     $subQuery->Orhere('phone', 'like', "%{$query}%");
                     $subQuery->Orhere('rif', 'like', "%{$query}%");
                 });
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(10);
-        return view('V1.AdminBranch.Customers.index', compact('customers'));
+            });
+
+        [$sortBy, $sortDir] = $this->applySort($customersQuery, $request, self::SORTABLE_COLUMNS, 'id', 'desc');
+
+        $customers = $customersQuery->paginate(10);
+
+        return view('V1.AdminBranch.Customers.index', compact('customers', 'sortBy', 'sortDir'));
     }
 
     public function create()

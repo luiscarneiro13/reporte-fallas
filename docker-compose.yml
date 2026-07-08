@@ -9,6 +9,8 @@ services:
     user: "${UID}:${GID}"
     ports:
       - 9000:80
+    depends_on:
+      - mysql
     networks:
       - reportefallas # red
 
@@ -25,6 +27,22 @@ services:
     networks:
       - reportefallas
 
+  mysql:
+    image: mysql:8.0
+    container_name: reportefallasbackend-mysql
+    environment:
+      MYSQL_DATABASE: reportefallas
+      MYSQL_ROOT_PASSWORD: Luis1984.
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3308:3306 # 3306 ocupado por MySQL nativo del host, 3307 por otro proyecto (vemitiendabackend-mysql)
+    networks:
+      - reportefallas
+
 
 networks:
   reportefallas:
+
+volumes:
+  mysql_data:

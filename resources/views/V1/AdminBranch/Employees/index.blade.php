@@ -8,11 +8,21 @@
 
 @section('content')
     @php
-        $headers = ['Cédula', 'Nombre', 'Teléfono', 'Cargo', 'Dirección', 'Usuario de sistema', 'Rol de sistema', ''];
+        $headers = [
+            ['label' => 'Cédula', 'field' => 'identification_number'],
+            ['label' => 'Nombre', 'field' => null],
+            ['label' => 'Teléfono', 'field' => 'phone_number'],
+            ['label' => 'Cargo', 'field' => 'position'],
+            ['label' => 'Dirección', 'field' => 'address'],
+            ['label' => 'Usuario de sistema', 'field' => null],
+            ['label' => 'Rol de sistema', 'field' => null],
+            ['label' => '', 'field' => null],
+        ];
     @endphp
 
     <x-base-data-table-search title="Empleados" :items="$employees" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.employees.create') }}">
+        urlBtnAdd="{{ route('admin.sucursal.employees.create') }}"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($employees as $item)
                 <tr>

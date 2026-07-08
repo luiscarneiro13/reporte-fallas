@@ -4,6 +4,7 @@
     'value' => '',
     'label' => '',
     'required' => false,
+    'disabled' => false,
     'class' => '',
     'help' => '',
     'type' => 'text', // Aseguramos que sea 'text' por defecto
@@ -36,10 +37,15 @@
         'id' => $id,
         'placeholder' => 'dd-mm-yyyy',
         'type' => $type,
-        'required' => $required
+        'required' => $required,
+        'disabled' => $disabled,
     ]) !!}
 
-
+    {{-- Los campos 'disabled' no se envían en el POST del navegador: se replica el valor
+         en un input oculto para que el backend siga recibiendo la fecha automática. --}}
+    @if ($disabled)
+        <input type="hidden" name="{{ $name }}" value="{{ $value }}">
+    @endif
 
     @if ($help)
         <small class="form-text text-muted">

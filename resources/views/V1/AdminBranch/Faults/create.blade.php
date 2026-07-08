@@ -40,9 +40,9 @@
                                 class="col-md-4" classControl="select2 form-control" />
 
                             <x-select required label="Status de la falla" name="fault_status_id" :items="$faultStatus"
-                                class="col-md-5" classControl="select2 form-control" />
+                                :selected="$selectedFaultStatusId ?? null" class="col-md-5" classControl="select2 form-control" />
 
-                            <x-select required label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
+                            <x-select :required="!($isOperator ?? false)" label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
                                 class="col-md-3" classControl="select2 form-control" />
 
                             <x-textarea-custom required name="description" label="Descripción de la falla" placeholder=""
@@ -53,7 +53,8 @@
                         <div class="row">
 
                             <x-input-date-custom required name="report_date" label="Fecha del reporte" placeholder=""
-                                class="col-md-3" />
+                                class="col-md-3" value="{{ ($isOperator ?? false) ? $reportDateValue : old('report_date') }}"
+                                :disabled="$isOperator ?? false" />
 
 
                             <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""

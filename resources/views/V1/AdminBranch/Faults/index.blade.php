@@ -10,20 +10,21 @@
 
     @php
         $headers = [
-            'ID',
-            'Código interno',
-            'Equipo',
-            'Descripción',
-            'Status de falla',
-            'Status de repuesto',
-            'Area de servicio',
-            'Tiempo en espera',
-            '',
+            ['label' => 'ID', 'field' => 'id'],
+            ['label' => 'Código interno', 'field' => 'internal_code'],
+            ['label' => 'Equipo', 'field' => 'equipment_name'],
+            ['label' => 'Descripción', 'field' => 'description'],
+            ['label' => 'Status de falla', 'field' => 'fault_status_name'],
+            ['label' => 'Status de repuesto', 'field' => 'spare_part_status_name'],
+            ['label' => 'Area de servicio', 'field' => 'service_area_name'],
+            ['label' => 'Tiempo en espera', 'field' => 'duration_days'],
+            ['label' => '', 'field' => null], // columna de acciones, no ordenable
         ];
     @endphp
 
     <x-faults-resume title="Resumen de fallas" :items="$faults" :headers="$headers" :equipment="$equipment" :serviceArea="$serviceArea"
-        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses"  :projects="$projects" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId">
+        :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses"  :projects="$projects" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($faults as $item)
                 <tr>

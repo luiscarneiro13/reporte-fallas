@@ -10,9 +10,11 @@ use App\Models\Division;
 use App\Models\Equipment;
 use App\Models\Fault;
 use App\Models\FaultHistory;
+use App\Models\FaultStatus;
 use App\Services\FaultService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
+use App\Traits\Sortable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\FaultView;
@@ -23,8 +25,20 @@ class FaultController extends Controller
 {
     use AlertResponser;
     use DateTransformerTrait;
+    use Sortable;
 
     const INDEX = "admin.sucursal.faults.index";
+
+    const SORTABLE_COLUMNS = [
+        'id',
+        'internal_code',
+        'equipment_name',
+        'description',
+        'fault_status_name',
+        'spare_part_status_name',
+        'service_area_name',
+        'duration_days',
+    ];
 
     public function __construct()
     {
@@ -64,14 +78,18 @@ class FaultController extends Controller
         $projects = $faultData['projects']->prepend('Todos', '0');
 
         // --- 2. Obtener la consulta de fallas ya filtrada ---
-        $faultsQuery = $this->getFilteredFaultsQuery($request);
+        $result = $this->getFilteredFaultsQuery($request);
 
         // --- 3. Ejecutar la consulta con paginación ---
-        $faults = $faultsQuery->paginate(10)->appends($request->query());
+        $faults = $result['query']->paginate(10)->appends($request->query());
+        $sortBy = $result['sort_by'];
+        $sortDir = $result['sort_dir'];
 
         // --- 4. Devolver la vista con los resultados y parámetros de filtro ---
         return view('V1.AdminBranch.Faults.index', compact(
             'faults',
+            'sortBy',
+            'sortDir',
             // Parámetros de filtro re-definidos para compact()
             'searchName',
             'query',
@@ -101,15 +119,15 @@ class FaultController extends Controller
     public function imp(Request $request)
     {
         // --- 1. Obtener la consulta de fallas ya filtrada ---
-        $faultsQuery = $this->getFilteredFaultsQuery($request);
+        $result = $this->getFilteredFaultsQuery($request);
 
         // --- 2. Ejecutar la consulta sin paginación ---
-        $faults = $faultsQuery->get();
+        $faults = $result['query']->get();
 
         return view('V1.AdminBranch.Faults.imp', compact('faults'));
     }
 
-    private function getFilteredFaultsQuery(Request $request)
+    private function getFilteredFaultsQuery(Request $request): array
     {
         // El branch ID es un filtro base para ambas funciones.
         $branchId = session('branch')->id ?? 1; // Usar un default por si acaso no hay sesión
@@ -221,10 +239,20 @@ class FaultController extends Controller
             });
         }
 
-        // 12. Aplicar ordenamiento
-        $faultsQuery->orderBy('duration_days', 'desc');
+        // 12. Aplicar ordenamiento dinámico
+        [$sortBy, $sortDir] = $this->applySort(
+            $faultsQuery,
+            $request,
+            self::SORTABLE_COLUMNS,
+            'duration_days',
+            'desc'
+        );
 
-        return $faultsQuery;
+        return [
+            'query' => $faultsQuery,
+            'sort_by' => $sortBy,
+            'sort_dir' => $sortDir,
+        ];
     }
 
     public function create()
@@ -235,11 +263,28 @@ class FaultController extends Controller
 
         $equipment = $faultData['equipment']->prepend('Seleccione', '0');
         $serviceArea = $faultData['serviceArea']->prepend('Seleccione', '0');
-        $faultStatus = $faultData['faultStatus']->prepend('Seleccione', '0');
         $sparePartStatuses = $faultData['sparePartStatuses']->prepend('Seleccione', '0');
 
         $employeeReported = FaultService::employeeReported()->prepend('Seleccione', '0');
         $executors = FaultService::executors();
+
+        $isOperator = $this->isOperator() && session('branch');
+
+        $selectedFaultStatusId = null;
+        $reportDateValue = null;
+
+        if ($isOperator) {
+            // El Operador solo puede reportar fallas con el estatus fijo "por programación interna".
+            $internalStatus = session('branch')->faultStatus()->firstOrCreate(
+                ['name' => FaultStatus::OPERATOR_STATUS_NAME]
+            );
+
+            $faultStatus = collect([$internalStatus->id => $internalStatus->name]);
+            $selectedFaultStatusId = $internalStatus->id;
+            $reportDateValue = Carbon::now()->toDateString();
+        } else {
+            $faultStatus = $faultData['faultStatus']->prepend('Seleccione', '0');
+        }
 
         return view(
             'V1.AdminBranch.Faults.create',
@@ -250,7 +295,25 @@ class FaultController extends Controller
                 + compact('faultStatus')
                 + compact('sparePartStatuses')
                 + compact('executors')
+                + compact('isOperator')
+                + compact('selectedFaultStatusId')
+                + compact('reportDateValue')
         );
+    }
+
+    /**
+     * Determina si el usuario autenticado tiene el rol Operador,
+     * cuyo flujo de reporte de fallas está restringido (ver v1/admin/fallas/create).
+     */
+    private function isOperator(): bool
+    {
+        $user = auth()->user();
+
+        // hasRole() no depende del orden de model_has_roles, a diferencia de
+        // getRoleNames()->first(): un usuario con varios roles (p. ej. Operador +
+        // Supervisor, asignados desde el panel de SuperAdmin) igual debe quedar
+        // restringido si Operador es uno de ellos.
+        return $user ? $user->hasRole('Operador') : false;
     }
 
     public function edit(string $id)

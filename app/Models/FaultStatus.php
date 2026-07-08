@@ -9,6 +9,12 @@ class FaultStatus extends Model
 {
     use HasFactory;
 
+    /**
+     * Nombre del estatus fijo que se asigna automáticamente a las fallas
+     * reportadas por usuarios con rol Operador.
+     */
+    const OPERATOR_STATUS_NAME = 'Por programación interna';
+
     protected $table = "fault_statuses";
 
     protected $fillable = ['name'];

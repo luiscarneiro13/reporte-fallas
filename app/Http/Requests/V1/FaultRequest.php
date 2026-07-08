@@ -5,6 +5,7 @@ namespace App\Http\Requests\V1;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon; // Mantenemos Carbon para obtener la fecha
+use App\Models\FaultStatus;
 
 class FaultRequest extends FormRequest
 {
@@ -37,6 +38,33 @@ class FaultRequest extends FormRequest
                 'closed' => Carbon::now()->toDateString(),
             ]);
         }
+
+        // 3. El Operador reporta la falla con la fecha del día, deshabilitada en el frontend.
+        // Se fuerza también en backend para no depender de que el campo llegue intacto.
+        if (!$this->has('closed') && $this->isOperator()) {
+            $this->merge([
+                'report_date' => Carbon::now()->format('d-m-Y'),
+            ]);
+        }
+    }
+
+    /**
+     * Determina si el usuario autenticado tiene el rol Operador,
+     * cuyo flujo de reporte de fallas (v1/admin/fallas/create) está restringido.
+     *
+     * Exige también que exista una sucursal en sesión, porque las reglas del
+     * Operador dependen de session('branch') para buscar/crear el estatus fijo;
+     * sin ella se prefiere no aplicar la restricción antes que fallar con error.
+     */
+    private function isOperator(): bool
+    {
+        $user = $this->user();
+
+        // hasRole() no depende del orden de model_has_roles, a diferencia de
+        // getRoleNames()->first(): un usuario con varios roles (p. ej. Operador +
+        // Supervisor, asignados desde el panel de SuperAdmin) igual debe quedar
+        // restringido si Operador es uno de ellos.
+        return $user && $user->hasRole('Operador') && session('branch');
     }
 
     /**
@@ -106,6 +134,27 @@ class FaultRequest extends FormRequest
             ];
 
             $rules = array_merge($rules, $requiredRules);
+        } elseif ($this->isOperator()) {
+            // 3. Lógica Condicional para el OPERADOR (reporte de falla, no cierre).
+            // Esta rama también corre en update() porque store() y update() comparten
+            // este FormRequest. Hoy no hay riesgo de que un Operador edite una falla
+            // existente y le pise report_date/fault_status_id, porque el permiso
+            // "Fallas Editar" (ver app/Helpers/Permisos.php) no se le concede y el
+            // middleware del controller bloquea edit()/update() antes de llegar aquí.
+            // Si esa matriz de permisos cambia, revisar esta rama.
+
+            // El estatus de repuestos no es requerido para el Operador.
+            $rules['spare_part_status_id'] = ['nullable', 'integer', 'exists:spare_part_statuses,id'];
+
+            // El estatus de la falla queda fijo al valor "por programación interna" de su sucursal.
+            // Se usa firstOrCreate (no solo where) para no depender de que el usuario haya
+            // visitado antes la vista create() que normalmente lo crea: así la restricción
+            // se cumple aunque el POST llegue directo con un fault_status_id manipulado.
+            $internalStatusId = session('branch')->faultStatus()
+                ->firstOrCreate(['name' => FaultStatus::OPERATOR_STATUS_NAME])
+                ->id;
+
+            $rules['fault_status_id'] = ['required', Rule::in([$internalStatusId])];
         }
 
         return $rules;
@@ -165,6 +214,7 @@ class FaultRequest extends FormRequest
 
             'fault_status_id.integer' => 'El ID del estatus de la falla debe ser un número entero.',
             'fault_status_id.exists' => 'El estatus de la falla seleccionado no es válido.',
+            'fault_status_id.in' => 'El estatus de la falla no es válido para su rol.',
 
             'spare_part_status_id.integer' => 'El ID del estatus del repuesto debe ser un número entero.',
             'spare_part_status_id.exists' => 'El estatus del repuesto seleccionado no es válido.',

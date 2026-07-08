@@ -8,11 +8,23 @@
 
 @section('content')
     @php
-        $headers = ['ID', 'Código interno', 'Tipo', 'Placa', 'Marca', 'Modelo', 'Año', 'Color', 'Proyecto', ''];
+        $headers = [
+            ['label' => 'ID', 'field' => 'id'],
+            ['label' => 'Código interno', 'field' => 'internal_code'],
+            ['label' => 'Tipo', 'field' => 'type'],
+            ['label' => 'Placa', 'field' => 'placa'],
+            ['label' => 'Marca', 'field' => 'brand_name'],
+            ['label' => 'Modelo', 'field' => 'vehicle_model'],
+            ['label' => 'Año', 'field' => 'model_year'],
+            ['label' => 'Color', 'field' => 'color'],
+            ['label' => 'Proyecto', 'field' => null],
+            ['label' => '', 'field' => null],
+        ];
     @endphp
 
     <x-base-data-table-search title="Equipos" :items="$equipment" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.equipment.create') }}" titlePrint="Listado de equipos">
+        urlBtnAdd="{{ route('admin.sucursal.equipment.create') }}" titlePrint="Listado de equipos"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($equipment as $item)
                 <tr>

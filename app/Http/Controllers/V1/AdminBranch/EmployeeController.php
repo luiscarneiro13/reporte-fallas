@@ -8,14 +8,23 @@ use App\Models\Employee;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
+use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
     use AlertResponser;
+    use Sortable;
 
     const INDEX = "admin.sucursal.employees.index";
+
+    const SORTABLE_COLUMNS = [
+        'identification_number',
+        'phone_number',
+        'position',
+        'address',
+    ];
 
     public function __construct()
     {
@@ -26,10 +35,10 @@ class EmployeeController extends Controller
         $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = request('query');
-        $employees = Employee::with(['users.roles'])
+        $employeesQuery = Employee::with(['users.roles'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -43,11 +52,13 @@ class EmployeeController extends Controller
                 });
             })
             ->where('branch_id', session('branch')->id)
-            ->where('external', 0)
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->where('external', 0);
 
-        return view('V1.AdminBranch.Employees.index', compact('employees'));
+        [$sortBy, $sortDir] = $this->applySort($employeesQuery, $request, self::SORTABLE_COLUMNS, 'id', 'desc');
+
+        $employees = $employeesQuery->paginate(10);
+
+        return view('V1.AdminBranch.Employees.index', compact('employees', 'sortBy', 'sortDir'));
     }
 
     public function create()

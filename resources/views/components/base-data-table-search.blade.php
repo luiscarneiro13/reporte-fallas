@@ -58,7 +58,12 @@
                             <thead class="thead-dark">
                                 <tr role="row">
                                     @foreach ($headers as $item)
-                                        <th>{{ $item }}</th>
+                                        @if (is_array($item))
+                                            <x-sortable-th :label="$item['label']" :field="$item['field'] ?? null"
+                                                :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'" />
+                                        @else
+                                            <th>{{ $item }}</th>
+                                        @endif
                                     @endforeach
                                 </tr>
                             </thead>

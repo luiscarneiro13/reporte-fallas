@@ -9,11 +9,20 @@
 @section('content')
     @php
         // Encabezados de la tabla
-        $headers = ['Tipo', 'Cédula', 'Nombre', 'Teléfono', 'Dirección', 'Áreas de servicio', ''];
+        $headers = [
+            ['label' => 'Tipo', 'field' => 'external'],
+            ['label' => 'Cédula', 'field' => 'identification_number'],
+            ['label' => 'Nombre', 'field' => null],
+            ['label' => 'Teléfono', 'field' => 'phone_number'],
+            ['label' => 'Dirección', 'field' => 'address'],
+            ['label' => 'Áreas de servicio', 'field' => null],
+            ['label' => '', 'field' => null],
+        ];
     @endphp
 
     <x-base-data-table-search title="Ejecutores" :items="$executors" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.executors.create') }}">
+        urlBtnAdd="{{ route('admin.sucursal.executors.create') }}"
+        :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
 
         <x-slot name="body">
             @forelse ($executors as $item)

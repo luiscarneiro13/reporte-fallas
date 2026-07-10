@@ -41,6 +41,9 @@ class EmployeeRequest extends FormRequest
             // Asumo que 'position' y 'executor' también deberían ir aquí:
             'position' => 'nullable|string|max:255',
             'executor' => 'nullable|integer',
+            'project_id' => 'nullable',
+            'hire_date' => 'nullable|date',
+            'contract_type_id' => 'nullable|integer|exists:contract_types,id',
 
             // --- USUARIO DE SISTEMA (Condicionales) ---
             'email' => [

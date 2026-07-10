@@ -12,11 +12,16 @@ class Employee extends Model
 
     protected $table = "employees";
 
-    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external', 'position'];
+    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external', 'position', 'hire_date', 'contract_type_id'];
 
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function contractType()
+    {
+        return $this->belongsTo(ContractType::class);
     }
 
     public function users()
@@ -24,9 +29,19 @@ class Employee extends Model
         return $this->belongsToMany(User::class, 'employee_users')->withTimestamps();
     }
 
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class)->withTimestamps();
+    }
+
     public function reportedFaults()
     {
         return $this->hasMany(Fault::class, 'employee_reported_id');
+    }
+
+    public function incidents()
+    {
+        return $this->hasMany(EmployeeIncident::class);
     }
 
     public function executorServiceAreas()

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\V1\AdminBranch;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EmployeeRequest;
+use App\Models\ContractType;
 use App\Models\Employee;
+use App\Models\Project;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
+use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -16,6 +19,7 @@ class EmployeeController extends Controller
 {
     use AlertResponser;
     use Sortable;
+    use DateTransformerTrait;
 
     const INDEX = "admin.sucursal.employees.index";
 
@@ -37,7 +41,32 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $query = request('query');
+        $result = $this->getFilteredEmployeesQuery($request);
+
+        $employees = $result['query']->paginate(10)->appends($request->query());
+        $sortBy = $result['sort_by'];
+        $sortDir = $result['sort_dir'];
+
+        return view('V1.AdminBranch.Employees.index', compact('employees', 'sortBy', 'sortDir'));
+    }
+
+    /**
+     * Exporta el listado de todos los empleados
+     */
+    public function impAll(Request $request)
+    {
+        $back_url = request()->back_url ?? null;
+
+        // Reutiliza los mismos filtros (sucursal, búsqueda) que el listado, sin paginación
+        $result = $this->getFilteredEmployeesQuery($request);
+        $employees = $result['query']->get();
+
+        return view('V1.AdminBranch.Employees.impAll', compact('back_url', 'employees'));
+    }
+
+    private function getFilteredEmployeesQuery(Request $request): array
+    {
+        $query = $request->query('query');
         $employeesQuery = Employee::with(['users.roles'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
@@ -56,9 +85,11 @@ class EmployeeController extends Controller
 
         [$sortBy, $sortDir] = $this->applySort($employeesQuery, $request, self::SORTABLE_COLUMNS, 'id', 'desc');
 
-        $employees = $employeesQuery->paginate(10);
-
-        return view('V1.AdminBranch.Employees.index', compact('employees', 'sortBy', 'sortDir'));
+        return [
+            'query' => $employeesQuery,
+            'sort_by' => $sortBy,
+            'sort_dir' => $sortDir,
+        ];
     }
 
     public function create()
@@ -66,17 +97,25 @@ class EmployeeController extends Controller
         $back_url = request()->back_url ?? null;
         $rolesCollection = Role::where('name', '!=', 'Super Admin')->get()->pluck('name', 'id');
         $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
-        return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles'));
+        $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $projects = $projectsCollection->prepend('Sin proyecto', '0');
+        $contractTypesCollection = ContractType::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $contractTypes = $contractTypesCollection->prepend('Sin tipo de contrato', '0');
+        return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles', 'projects', 'contractTypes'));
     }
 
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $employee = Employee::with('users.roles')->find($id);
+        $employee = Employee::with(['users.roles', 'projects'])->find($id);
         $rolesCollection = Role::where('name', '!=', 'Super Admin')->get()->pluck('name', 'id');
         $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
         $userSystem = $employee->users->first() ?? null;
-        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem'));
+        $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $projects = $projectsCollection->prepend('Sin proyecto', '0');
+        $contractTypesCollection = ContractType::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $contractTypes = $contractTypesCollection->prepend('Sin tipo de contrato', '0');
+        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem', 'projects', 'contractTypes'));
     }
 
     public function store(EmployeeRequest $request)
@@ -104,7 +143,19 @@ class EmployeeController extends Controller
             $item->executor = $request->input('executor');
             $item->position = $request->input('position');
             $item->branch_id = session('branch')->id;
+
+            $dateData = $this->transformDateFields($request->only('hire_date'), ['hire_date']);
+            $item->hire_date = $dateData['hire_date'];
+            $item->contract_type_id = $request->input('contract_type_id') ?: null;
+
             $item->save();
+
+            // Sincronizar la relación Muchos a Muchos con proyectos (mismo patrón que Equipment)
+            $projectIds = $request->input('project_id');
+            if (!is_array($projectIds)) {
+                $projectIds = $projectIds ? [$projectIds] : [];
+            }
+            $item->projects()->sync($projectIds);
 
             // Datos de usuario
             $roleId = $request->input('role_id');
@@ -170,6 +221,14 @@ class EmployeeController extends Controller
             info($th->getMessage());
             return $this->alertError(self::INDEX, "Error al {$action} el empleado: " . $th->getMessage());
         }
+    }
+
+    public function incidents(Employee $employee)
+    {
+        $employee->load(['projects', 'contractType', 'users.roles']);
+        $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->paginate(10);
+
+        return view('V1.AdminBranch.Employees.incidents', compact('employee', 'incidents'));
     }
 
     public function destroy(string $id)

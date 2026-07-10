@@ -164,6 +164,18 @@
                 newParams.append('query', searchQuery);
             }
 
+            // C. Añadir parámetros de ORDENAMIENTO (mismos que usa la tabla) para que la
+            // impresión respete el orden de columna aplicado, no solo la búsqueda.
+            const urlParams = new URLSearchParams(window.location.search);
+            const sortBy = urlParams.get('sort_by');
+            const sortDir = urlParams.get('sort_dir');
+            if (sortBy) {
+                newParams.append('sort_by', sortBy);
+            }
+            if (sortDir) {
+                newParams.append('sort_dir', sortDir);
+            }
+
             return newParams.toString();
         }
     </script>

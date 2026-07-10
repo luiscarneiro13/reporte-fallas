@@ -275,6 +275,17 @@
                     newParams.append('query', searchQuery);
                 }
 
+                // D. Añadir parámetros de ORDENAMIENTO (mismos que usa la tabla) para que la
+                // impresión respete el orden de columna aplicado, no solo los filtros.
+                const sortBy = getQueryParam('sort_by');
+                const sortDir = getQueryParam('sort_dir');
+                if (sortBy) {
+                    newParams.append('sort_by', sortBy);
+                }
+                if (sortDir) {
+                    newParams.append('sort_dir', sortDir);
+                }
+
                 return newParams.toString();
             }
 

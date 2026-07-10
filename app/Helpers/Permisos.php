@@ -73,6 +73,12 @@ class Permisos
         'Areas de Servicio Editar' => [0, 1, 2],
         'Areas de Servicio Eliminar' => [0, 1, 2],
 
+        //Tipos de contrato ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Tipos de Contrato Ver' => [0, 1, 2],
+        'Tipos de Contrato Crear' => [0, 1],
+        'Tipos de Contrato Editar' => [0, 1],
+        'Tipos de Contrato Eliminar' => [0, 1],
+
         //Clientes ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
         'Clientes Ver' => [0, 1],
         'Clientes Crear' => [0, 1],
@@ -90,6 +96,12 @@ class Permisos
         'Empleados Crear' => [0, 1, 2],
         'Empleados Editar' => [0, 1, 2],
         'Empleados Eliminar' => [0, 1, 2],
+
+        //Incidencias de Empleados ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Incidencias de Empleados Ver' => [0, 1, 2],
+        'Incidencias de Empleados Crear' => [0, 1, 2],
+        'Incidencias de Empleados Editar' => [0, 1, 2],
+        'Incidencias de Empleados Eliminar' => [0, 1, 2],
 
         //Ejecutores ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
         'Ejecutores Ver' => [0, 1, 2],

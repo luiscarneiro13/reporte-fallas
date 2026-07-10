@@ -1,4 +1,7 @@
 @extends('adminlte::page')
+@section('adminlte_css')
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.css') }}">
+@stop
 
 @section('title', 'Empleados')
 
@@ -41,6 +44,19 @@
 
                     <x-input-custom name="position" label="Cargo" placeholder="" class="col-md-4"
                         value="{{ old('position') }}" />
+
+                    <div class="col-md-4">
+                        <x-label value="Proyecto" />
+                        {{ Form::select('project_id', $projects, null, ['class' => 'select2 form-control']) }}
+                    </div>
+
+                    <x-input-date-custom name="hire_date" label="Fecha de ingreso" placeholder="" class="col-md-2"
+                        value="{{ old('hire_date') }}" />
+
+                    <div class="col-md-4">
+                        <x-label value="Tipo de contrato" />
+                        {{ Form::select('contract_type_id', $contractTypes, null, ['class' => 'select2 form-control']) }}
+                    </div>
 
                     <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-12"
                         value="{{ old('address') }}" />

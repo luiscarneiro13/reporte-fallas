@@ -25,7 +25,7 @@
 @endphp
 
 <div class="{{ $class }}">
-    <label for="{{ $name }}">
+    <label class="mt-3" for="{{ $name }}">
         {{ $label }}
         @if ($required)
             <span class="text-danger">*</span>

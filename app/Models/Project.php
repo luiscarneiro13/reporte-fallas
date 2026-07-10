@@ -32,4 +32,9 @@ class Project extends Model
     {
         return $this->hasMany(Equipment::class);
     }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class)->withTimestamps();
+    }
 }

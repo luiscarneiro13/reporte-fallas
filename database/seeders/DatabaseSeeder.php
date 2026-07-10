@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EquipmentSeeder::class);
         $this->call(FaultStatusSeeder::class);
         $this->call(SparePartStatusSeeder::class);
+        $this->call(ContractTypeSeeder::class);
 
         $this->call(FaultSeeder::class);
         // $this->call(ServiceSeeder::class);

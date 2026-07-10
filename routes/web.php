@@ -28,9 +28,11 @@ use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMetho
 use App\Http\Controllers\AdminBranch\OperatorController;
 use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\V1\AdminBranch\ContractTypeController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\EmployeeController;
+use App\Http\Controllers\V1\AdminBranch\EmployeeIncidentController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentTypeController;
 use App\Http\Controllers\V1\AdminBranch\ExecutorController;
@@ -138,12 +140,16 @@ Route::middleware([
         Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
+        Route::get('/empleados/{employee}/incidencias', [EmployeeController::class, 'incidents'])->name('admin.sucursal.employees.incidents');
+        Route::resource('/incidencias-empleados', EmployeeIncidentController::class)->names('admin.sucursal.employee.incidents');
         Route::resource('/ejecutores', ExecutorController::class)->names('admin.sucursal.executors');
         Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
         Route::resource('/tipo-equipo', EquipmentTypeController::class)->names('admin.sucursal.equipment.types');
+        Route::resource('/tipos-contrato', ContractTypeController::class)->names('admin.sucursal.contract.types');
         Route::get('/equipos-imprimir', [EquipmentController::class, 'impAll'])->name('equipment.impAll');
+        Route::get('/empleados-imprimir', [EmployeeController::class, 'impAll'])->name('employees.impAll');
     });
 });
 

@@ -77,4 +77,9 @@ class Branch extends Model
     {
         return $this->hasMany(SparePartStatus::class);
     }
+
+    public function contractTypes()
+    {
+        return $this->hasMany(ContractType::class);
+    }
 }

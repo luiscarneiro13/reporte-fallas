@@ -342,6 +342,13 @@ return [
             'route'  => 'admin.sucursal.employees.index',
             'can' => ['Empleados Ver'],
         ],
+        [
+            'text' => 'Incidencias de Empleados',
+            'icon' => 'fas fa-exclamation-triangle',
+            'active' => ['v1/admin/incidencias-empleados*'],
+            'route'  => 'admin.sucursal.employee.incidents.index',
+            'can' => ['Incidencias de Empleados Ver'],
+        ],
 
         // --- Administración General ---
         [
@@ -390,6 +397,13 @@ return [
                     'active' => ['v1/admin/areas-de-servicio*'],
                     'route' => 'admin.sucursal.service.areas.index',
                     'can'  => ['Areas de Servicio Ver'],
+                ],
+                [
+                    'text' => 'Tipos de Contrato',
+                    'icon' => 'fas fa-file-contract',
+                    'active' => ['v1/admin/tipos-contrato*'],
+                    'route' => 'admin.sucursal.contract.types.index',
+                    'can'  => ['Tipos de Contrato Ver'],
                 ],
                 [
                     'text' => 'Conf. Admin',

@@ -64,7 +64,7 @@ class Employee extends Model
     {
         // El 'set' se ejecuta justo antes de guardar o actualizar el modelo.
         return Attribute::make(
-            set: fn(string $value) => strtolower($value),
+            set: fn(?string $value) => $value !== null ? strtolower($value) : null,
         );
     }
 }

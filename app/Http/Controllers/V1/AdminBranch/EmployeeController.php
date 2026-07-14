@@ -226,7 +226,7 @@ class EmployeeController extends Controller
     public function incidents(Employee $employee)
     {
         $employee->load(['projects', 'contractType', 'users.roles']);
-        $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->paginate(10);
+        $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10);
 
         return view('V1.AdminBranch.Employees.incidents', compact('employee', 'incidents'));
     }

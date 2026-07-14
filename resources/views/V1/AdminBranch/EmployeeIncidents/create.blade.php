@@ -20,7 +20,11 @@
                 @endif
                 <div class="row">
                     <x-select required label="Empleado" name="employee_id" :items="$employees"
-                        :selected="$selectedEmployeeId" class="col-md-4" classControl="select2 form-control" />
+                        :selected="$selectedEmployeeId" :disabled="(bool) $selectedEmployeeId" class="col-md-4"
+                        classControl="select2 form-control" />
+                    @if ($selectedEmployeeId)
+                        <input type="hidden" name="employee_id" value="{{ $selectedEmployeeId }}">
+                    @endif
 
                     <x-input-date-custom required name="date" label="Fecha" placeholder="" class="col-md-3" />
                 </div>

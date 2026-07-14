@@ -47,7 +47,7 @@
     @endphp
 
     <x-base-data-table-search title="Incidencias" :items="$incidents" :headers="$headers"
-        urlBtnAdd="{{ route('admin.sucursal.employee.incidents.create', ['employee_id' => $employee->id, 'back_url' => route('admin.sucursal.employees.incidents', $employee)]) }}">
+        :urlBtnAdd="route('admin.sucursal.employee.incidents.create', ['employee_id' => $employee->id, 'back_url' => route('admin.sucursal.employees.incidents', $employee)])">
         <x-slot name="body">
             @forelse ($incidents as $item)
                 <tr>

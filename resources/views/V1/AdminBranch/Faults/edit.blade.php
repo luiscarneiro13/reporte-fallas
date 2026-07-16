@@ -71,7 +71,7 @@
 
                     {{-- FECHAS --}}
 
-                    <x-input-date-custom required name="report_date" label="Fecha del reporte" placeholder=""
+                    <x-input-date-custom name="report_date" label="Fecha del reporte" placeholder=""
                         class="col-md-3" :value="$fault->report_date" />
 
                     <x-input-date-custom name="scheduled_execution" label="Ejecución planificada" placeholder=""

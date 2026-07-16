@@ -52,7 +52,7 @@
                         </div>
                         <div class="row">
 
-                            <x-input-date-custom required name="report_date" label="Fecha del reporte" placeholder=""
+                            <x-input-date-custom name="report_date" label="Fecha del reporte" placeholder=""
                                 class="col-md-3" value="{{ ($isOperator ?? false) ? $reportDateValue : old('report_date') }}"
                                 :disabled="$isOperator ?? false" />
 

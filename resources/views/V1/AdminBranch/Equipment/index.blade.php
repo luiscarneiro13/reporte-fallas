@@ -24,6 +24,7 @@
 
     <x-base-data-table-search title="Equipos" :items="$equipment" :headers="$headers"
         urlBtnAdd="{{ route('admin.sucursal.equipment.create') }}" titlePrint="Listado de equipos"
+        urlExcel="{{ route('equipment.excel') }}" titleExcel="Exportar a Excel"
         :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($equipment as $item)

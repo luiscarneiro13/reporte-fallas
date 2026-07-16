@@ -30,12 +30,6 @@
                         <label>
                             {{-- d-flex fuerza que estén en la misma línea (searchInput y searchButton) --}}
                             <div class="d-flex">
-                                @if (isset($titlePrint))
-                                    <button type="button" id="printButton" class="form-control form-control-sm btn-default"
-                                        title={{ $titlePrint }}>
-                                        <i class="fas fa-print"></i>
-                                    </button>
-                                @endif
                                 <x-adminlte-input name="searchInput" id="searchInput"
                                     style="margin-right: 5px; flex-grow: 1;" />
                                 <input type="submit" id="searchButton" class="form-control form-control-sm btn-primary"
@@ -48,6 +42,25 @@
 
                 </div>
             </div>
+
+            @if (isset($titlePrint) || isset($urlExcel))
+                <div class="row mb-2">
+                    <div class="col-12 d-flex justify-content-start">
+                        @if (isset($titlePrint))
+                            <button type="button" id="printButton" class="btn btn-default" title="{{ $titlePrint }}">
+                                <i class="fas fa-print"></i>
+                            </button>
+                        @endif
+
+                        @if (isset($urlExcel))
+                            <button type="button" id="excelButton" class="btn btn-success ml-2"
+                                title="{{ $titleExcel ?? 'Exportar a Excel' }}">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @endif
 
             {{-- C A M B I O C L A V E: table-responsive ahora envuelve a la tabla --}}
             <div class="row">
@@ -123,6 +136,30 @@
                     document.getElementById('searchButton').click();
                 }
             });
+
+            @if (isset($urlExcel))
+                document.getElementById('excelButton').addEventListener('click', function() {
+                    var params = new URLSearchParams();
+
+                    var query = document.getElementById('searchInput').value.trim();
+                    if (query !== '') {
+                        params.append('query', query);
+                    }
+
+                    var sortBy = getQueryParam('sort_by');
+                    var sortDir = getQueryParam('sort_dir');
+                    if (sortBy) {
+                        params.append('sort_by', sortBy);
+                    }
+                    if (sortDir) {
+                        params.append('sort_dir', sortDir);
+                    }
+
+                    var excelUrl = "{{ $urlExcel }}";
+                    var queryString = params.toString();
+                    window.location.href = queryString ? (excelUrl + '?' + queryString) : excelUrl;
+                });
+            @endif
         });
     </script>
 @stop

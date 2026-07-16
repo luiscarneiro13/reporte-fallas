@@ -145,10 +145,12 @@ Route::middleware([
         Route::resource('/ejecutores', ExecutorController::class)->names('admin.sucursal.executors');
         Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
+        Route::get('/fallas-excel', [FaultController::class, 'excel'])->name('faults.excel');
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
         Route::resource('/tipo-equipo', EquipmentTypeController::class)->names('admin.sucursal.equipment.types');
         Route::resource('/tipos-contrato', ContractTypeController::class)->names('admin.sucursal.contract.types');
         Route::get('/equipos-imprimir', [EquipmentController::class, 'impAll'])->name('equipment.impAll');
+        Route::get('/equipos-excel', [EquipmentController::class, 'excel'])->name('equipment.excel');
         Route::get('/empleados-imprimir', [EmployeeController::class, 'impAll'])->name('employees.impAll');
     });
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\AdminBranch;
 
+use App\Exports\FaultsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
 use App\Mail\ReportarFallaEmail;
@@ -20,6 +21,7 @@ use Illuminate\Http\Request;
 use App\Models\FaultView;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FaultController extends Controller
 {
@@ -125,6 +127,14 @@ class FaultController extends Controller
         $faults = $result['query']->get();
 
         return view('V1.AdminBranch.Faults.imp', compact('faults'));
+    }
+
+    public function excel(Request $request)
+    {
+        $result = $this->getFilteredFaultsQuery($request);
+        $faults = $result['query']->get();
+
+        return Excel::download(new FaultsExport($faults), 'fallas.xlsx');
     }
 
     private function getFilteredFaultsQuery(Request $request): array

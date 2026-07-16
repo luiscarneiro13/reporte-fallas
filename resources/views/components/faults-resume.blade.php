@@ -54,14 +54,22 @@
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-12 d-flex justify-content-start">
 
-                    {{-- Botón Imprimir (MODIFICADO) --}}
-                    <div style="flex: 1;" class="ml-2">
-                        <button type="button" id="printButton" class="btn btn-default btn-block h-100"
-                            title="Imprimir Reporte con Filtros">
-                            <i class="fas fa-print"></i>
-                        </button>
-                    </div>
+                    {{-- Botón Imprimir --}}
+                    <button type="button" id="printButton" class="btn btn-default"
+                        title="Imprimir Reporte con Filtros">
+                        <i class="fas fa-print"></i>
+                    </button>
+
+                    {{-- Botón Excel --}}
+                    <button type="button" id="excelButton" class="btn btn-success ml-2"
+                        title="Exportar a Excel con Filtros">
+                        <i class="fas fa-file-excel"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -111,6 +119,7 @@
     <script>
         // VARIABLE GLOBAL DE LA RUTA BASE DE IMPRESIÓN (establecida desde PHP)
         const BASE_PRINT_URL = "{{ route('faults.imp') }}";
+        const BASE_EXCEL_URL = "{{ route('faults.excel') }}";
 
         $(document).ready(function() {
 
@@ -357,6 +366,27 @@
 
                 // 3. Llama a la función de impresión
                 abrirEImprimir(printUrl);
+            });
+
+
+            // ------------------------------------------
+            // --- LÓGICA DEL BOTÓN DE EXCEL (NUEVO) ---
+            // ------------------------------------------
+
+            document.getElementById('excelButton').addEventListener('click', function() {
+                const queryString = getFilterQueryString(true);
+
+                if (queryString === null) {
+                    $('#searchInput').focus();
+                    return;
+                }
+
+                let excelUrl = BASE_EXCEL_URL;
+                if (queryString) {
+                    excelUrl += '?' + queryString;
+                }
+
+                window.location.href = excelUrl;
             });
 
 

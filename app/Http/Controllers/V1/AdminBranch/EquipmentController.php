@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\AdminBranch;
 
+use App\Exports\EquipmentExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EquipmentEditRequest;
 use App\Http\Requests\V1\EquipmentRequest;
@@ -13,6 +14,7 @@ use App\Traits\AlertResponser;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EquipmentController extends Controller
 {
@@ -158,6 +160,14 @@ class EquipmentController extends Controller
         $equipment = $result['query']->get();
 
         return view('V1.AdminBranch.Equipment.impAll', compact('back_url', 'equipment'));
+    }
+
+    public function excel(Request $request)
+    {
+        $result = $this->getFilteredEquipmentQuery($request);
+        $equipment = $result['query']->get();
+
+        return Excel::download(new EquipmentExport($equipment), 'equipos.xlsx');
     }
 
     public function edit(string $id)

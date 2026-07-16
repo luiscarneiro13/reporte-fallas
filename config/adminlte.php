@@ -434,13 +434,6 @@ return [
                     'can'  => ['Estatus de repuestos Ver'],
                 ],
                 [
-                    'text' => 'Áreas de Servicio',
-                    'icon' => 'fas fa-map-marked-alt',
-                    'active' => ['v1/admin/areas-de-servicio*'],
-                    'route' => 'admin.sucursal.service.areas.index',
-                    'can'  => ['Areas de Servicio Ver'],
-                ],
-                [
                     'text' => 'Conf. Admin',
                     'icon' => 'fas fa-sliders-h',
                 ],

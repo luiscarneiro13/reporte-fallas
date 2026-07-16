@@ -115,6 +115,12 @@ class Permisos
         'Equipos Editar' => [0, 1, 2],
         'Equipos Eliminar' => [0, 1, 2],
 
+        //Tipos de equipo ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
+        'Tipos de equipo Ver' => [0, 1, 2],
+        'Tipos de equipo Crear' => [0, 1, 2],
+        'Tipos de equipo Editar' => [0, 1, 2],
+        'Tipos de equipo Eliminar' => [0, 1, 2],
+
         //Fallas ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3]
         'Fallas Ver' => [0, 1, 2, 3],
         'Fallas Crear' => [0, 1, 2, 3],

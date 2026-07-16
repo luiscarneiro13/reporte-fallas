@@ -309,51 +309,99 @@ return [
         // --- Menús Principales ---
         [
             'text' => 'Inicio',
-            'icon' => 'fas fa-tachometer-alt',
+            'icon' => '',
             'route'  => 'dashboard',
-            'can'  => 'Dashboard menu Ver',
+            'submenu' => [
+                [
+                    'text' => 'Indicadores',
+                    'icon' => 'fas fa-tachometer-alt',
+                    'active' => ['dashboard'],
+                    'route' => 'dashboard',
+                    'can'  => 'Dashboard menu Ver',
+                ]
+            ]
         ],
         [
-            'text' => 'Resumen de fallas',
-            'icon' => 'fas fa-list-alt',
-            'route'  => 'admin.sucursal.faults.index',
+            'text' => 'Mantenimiento',
+            'icon' => '',
+            'route'  => '',
             'can'  => 'Fallas Ver',
+            'submenu' => [
+                [
+                    'text' => 'Resumen de fallas',
+                    'icon' => 'fas fa-list-alt',
+                    'route'  => 'admin.sucursal.faults.index',
+                    'can'  => 'Fallas Ver',
+                ],
+                [
+                    'text' => 'Reportar falla',
+                    'icon' => 'fas fa-bug',
+                    'route'  => 'admin.sucursal.faults.create',
+                    'can'  => ['Fallas Crear', 'Fallas Editar'],
+                ],
+                [
+                    'text' => 'Equipos',
+                    'icon' => 'fas fa-truck',
+                    'route'  => 'admin.sucursal.equipment.index',
+                    'can'  => ['Equipos Ver'],
+                ],
+                [
+                    'text' => 'Tipos de equipo',
+                    'icon' => 'fas fa-wrench',
+                    'active' => ['v1/admin/tipo-equipo*'],
+                    'route' => 'admin.sucursal.equipment.types.index',
+                    'can'  => ['Tipos de equipo Ver'],
+                ],
+                [
+                    'text' => 'Áreas de Servicio',
+                    'icon' => 'fas fa-map-marked-alt',
+                    'active' => ['v1/admin/areas-de-servicio*'],
+                    'route' => 'admin.sucursal.service.areas.index',
+                    'can'  => ['Areas de Servicio Ver'],
+                ],
+            ]
         ],
         [
-            'text' => 'Reportar falla',
-            'icon' => 'fas fa-bug',
-            'route'  => 'admin.sucursal.faults.create',
-            'can'  => ['Fallas Crear', 'Fallas Editar'],
+            'text' => 'Recursos Humanos',
+            'icon' => '',
+            'route'  => '',
+            'can' => ['Empleados Ver'],
+            'submenu' => [
+                [
+                    'text' => 'Empleados',
+                    'icon' => 'fas fa-users',
+                    'route'  => 'admin.sucursal.employees.index',
+                    'can' => ['Empleados Ver'],
+                ],
+                [
+                    'text' => 'Incidencias de Empleados',
+                    'icon' => 'fas fa-exclamation-triangle',
+                    'active' => ['v1/admin/incidencias-empleados*'],
+                    'route'  => 'admin.sucursal.employee.incidents.index',
+                    'can' => ['Incidencias de Empleados Ver'],
+                ],
+                [
+                    'text' => 'Tipos de Contrato',
+                    'icon' => 'fas fa-file-contract',
+                    'active' => ['v1/admin/tipos-contrato*'],
+                    'route' => 'admin.sucursal.contract.types.index',
+                    'can'  => ['Tipos de Contrato Ver'],
+                ],
+            ]
         ],
+
         // [
         //     'text' => 'Histórico de fallas',
         //     'icon' => 'fas fa-history',
         //     'route'  => 'admin.sucursal.fault.history.index',
         // ],
-        [
-            'text' => 'Equipos',
-            'icon' => 'fas fa-truck',
-            'route'  => 'admin.sucursal.equipment.index',
-            'can'  => ['Equipos Ver'],
-        ],
-        [
-            'text' => 'Empleados',
-            'icon' => 'fas fa-users',
-            'route'  => 'admin.sucursal.employees.index',
-            'can' => ['Empleados Ver'],
-        ],
-        [
-            'text' => 'Incidencias de Empleados',
-            'icon' => 'fas fa-exclamation-triangle',
-            'active' => ['v1/admin/incidencias-empleados*'],
-            'route'  => 'admin.sucursal.employee.incidents.index',
-            'can' => ['Incidencias de Empleados Ver'],
-        ],
+
+
 
         // --- Administración General ---
         [
             'text' => 'Administración',
-            'icon' => 'fas fa-cogs',
+            'icon' => '',
             'can' => 'Menu Conf Admin',
             'submenu' => [
                 [
@@ -377,13 +425,7 @@ return [
                     'route' => 'admin.sucursal.fault.statuses.index',
                     'can'  => ['Estatus de fallas Ver'],
                 ],
-                [
-                    'text' => 'Tipos de equipo',
-                    'icon' => 'fas fa-wrench',
-                    'active' => ['v1/admin/tipo-equipo*'],
-                    'route' => 'admin.sucursal.equipment.types.index',
-                    'can'  => ['Tipos de equipo Ver'],
-                ],
+
                 [
                     'text' => 'Status de repuestos',
                     'icon' => 'fas fa-boxes',
@@ -397,13 +439,6 @@ return [
                     'active' => ['v1/admin/areas-de-servicio*'],
                     'route' => 'admin.sucursal.service.areas.index',
                     'can'  => ['Areas de Servicio Ver'],
-                ],
-                [
-                    'text' => 'Tipos de Contrato',
-                    'icon' => 'fas fa-file-contract',
-                    'active' => ['v1/admin/tipos-contrato*'],
-                    'route' => 'admin.sucursal.contract.types.index',
-                    'can'  => ['Tipos de Contrato Ver'],
                 ],
                 [
                     'text' => 'Conf. Admin',

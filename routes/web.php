@@ -79,6 +79,10 @@ Route::get('/sitioweb', function () {
     return view('website.index');
 });
 
+Route::get('/sitioweb-v2', function () {
+    return view('v2.website.index');
+});
+
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 
 Route::get('/logout', function () {

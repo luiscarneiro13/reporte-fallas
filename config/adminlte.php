@@ -400,7 +400,7 @@ return [
 
         // --- Administración General ---
         [
-            'text' => 'Administración',
+            'text' => 'Configuración',
             'icon' => '',
             'can' => 'Menu Conf Admin',
             'submenu' => [

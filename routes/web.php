@@ -90,7 +90,7 @@ Route::get('/logout', function () {
 });
 
 Route::get('/', function () {
-    return redirect()->away('https://servicioscasmar.com/web', 301);
+    return redirect()->away('https://servicioscasmar.com/sitioweb-v2', 301);
 });
 
 Route::middleware([

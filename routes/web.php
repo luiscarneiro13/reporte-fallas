@@ -90,9 +90,13 @@ Route::get('/logout', function () {
 });
 
 Route::get('/', function () {
+    // return view('v2.website.index');
     return redirect()->away('https://servicioscasmar.com/sitioweb-v2', 302)
         ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
         ->header('Pragma', 'no-cache');
+    // return redirect()->away('https://servicioscasmar.com/web', 302)
+    //     ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+    //     ->header('Pragma', 'no-cache');
 });
 
 Route::middleware([

@@ -1,0 +1,381 @@
+.sydney-pattern-library-modal {
+  --border-color: #0000001a;
+  --border-color-hover: #0000004d;
+  --color-heading: #1D2327;
+}
+
+.sydney-pattern-library-modal > div > div {
+  height: 100%;
+}
+
+.sydney-pattern-library-modal .components-base-control__field {
+  margin: 0;
+}
+
+.sydney-pattern-library-modal .components-modal__content {
+  padding: 0;
+}
+
+/* Modal layout */
+.sydney-pattern-library-modal-container {
+  height: 100%;
+}
+
+.sydney-pattern-library-modal-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100%;
+}
+
+.sydney-pattern-library-modal-content {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border-color);
+}
+
+.sydney-pattern-library-modal-content h4 {
+  color: var(--color-heading);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0;
+}
+
+.sydney-pattern-library-modal-content button[role="combobox"] {
+  border-color: #C3C4C7 !important;
+  border-radius: 4px;
+  padding: 8px 10px;
+  height: 36px !important;
+  min-width: 120px !important;
+}
+
+.sydney-pattern-library-modal-content button[role="combobox"][aria-expanded="true"] ~ span svg {
+  transform: rotate(180deg);
+}
+
+.sydney-pattern-library-modal-content .components-custom-select-control .components-input-control__backdrop,
+.sydney-pattern-library-modal-content .components-custom-select-control .components-flex {
+  border-color: #C3C4C7 !important;
+  border-radius: 4px;
+}
+
+.sydney-pattern-library-modal-content .components-base-control__label {
+  display: none;
+}
+
+.sydney-pattern-library-modal-content [data-dialog] {
+  border: none !important;
+}
+.sydney-pattern-library-modal-content[data-dialog] .components-custom-select-control__item {
+  padding: 16px;
+  line-height: 1.1;
+}
+.sydney-pattern-library-modal-content [data-dialog] [data-active-item] {
+  background-color: #F5F5F5;
+}
+
+.sydney-pattern-library-modal-content .components-custom-select-control svg {
+  stroke: #A7AAAD;
+  transition: transform 0.3s ease;
+}
+
+.sydney-pattern-library-modal-header {
+  padding: 0 28px 0 28px;
+  position: sticky;
+  height: 80px;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+  border-bottom: 1px solid var(--border-color);
+}
+.sydney-pattern-library-modal-title-container {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 28px;
+  width: 100%;
+}
+.sydney-pattern-library-modal-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sydney-pattern-library-modal-title svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sydney-pattern-library-modal-sidebar-content {
+  padding: 28px;
+  width: 100%;
+}
+
+.sydney-pattern-library-modal-sidebar-content .sydney-pattern-library-modal-search,
+.sydney-pattern-library-modal-sidebar-content .components-search-control {
+  margin-bottom: 28px;
+}
+/* Grid container — must be position:relative so the overlay can fill it */
+.sydney-pattern-library-modal-grid-container {
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Full-area loading overlay — mirrors Extendify's ModalContent pattern */
+.sydney-pattern-library-loading-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Spinner — CSS-only, no external dependencies */
+.sydney-pattern-library-spinner {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ddd;
+  border-top-color: #007cba;
+  border-radius: 50%;
+  animation: sydney-pattern-library-spin 0.7s linear infinite;
+}
+
+@keyframes sydney-pattern-library-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sydney-pattern-library-no-patterns {
+  padding: 40px;
+}
+
+.sydney-pattern-library-pattern-grid {
+  position: relative;
+  column-count: 2;
+  column-gap: 28px;
+  padding: 28px;
+  background-color: #fff;
+  min-height: 100%;
+}
+.sydney-pattern-library-pattern-item {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff;
+  transition: box-shadow 0.15s ease;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  break-inside: avoid;
+  margin-bottom: 28px;
+  transition: all 0.3s ease;
+}
+.sydney-pattern-library-pattern-item:hover {
+  border-color: var(--border-color-hover);
+  outline: none;
+}
+.sydney-pattern-library-pattern-item:focus-within {
+  box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  outline: none;
+}
+.sydney-pattern-library-pattern-item__action {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.sydney-pattern-library-pattern-item__action:focus {
+  outline: none;
+}
+.sydney-pattern-library-pro-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #1d2327;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Heart toggle in top-left of each pattern card.
+   Hidden until the card is hovered/focused; always visible when favorited
+   so users can find their favorites to un-heart them. */
+.sydney-pattern-library-favorite-toggle {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 11;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  color: #1d2327;
+  cursor: pointer;
+  line-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.sydney-pattern-library-pattern-item:hover .sydney-pattern-library-favorite-toggle,
+.sydney-pattern-library-pattern-item:focus-within .sydney-pattern-library-favorite-toggle,
+.sydney-pattern-library-favorite-toggle.is-favorited,
+.sydney-pattern-library-favorite-toggle:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.sydney-pattern-library-favorite-toggle:hover {
+  background: #fff;
+  transform: scale(1.08);
+}
+.sydney-pattern-library-favorite-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #007cba;
+}
+.sydney-pattern-library-favorite-toggle.is-favorited {
+  color: #e0245e;
+}
+.sydney-pattern-library-favorite-toggle svg {
+  display: block;
+  pointer-events: none;
+}
+
+/* Top-bar Favorites toggle (modal header strip).
+   Plain <button> styled as a compact text link so it aligns vertically
+   with the icon-only close button to its right. Hover/active states use
+   the WP admin theme color so the toggle visually matches whatever
+   accent the user has configured in their profile. */
+.sydney-pattern-library-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sydney-pattern-library-recently-used-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  margin: 0;
+  font: inherit;
+  color: var(--color-heading);
+  cursor: pointer;
+  border-radius: 2px;
+}
+.sydney-pattern-library-recently-used-filter svg {
+  flex-shrink: 0;
+}
+.sydney-pattern-library-recently-used-filter:hover,
+.sydney-pattern-library-recently-used-filter.is-active {
+  color: var(--wp-admin-theme-color, #3858e9);
+}
+.sydney-pattern-library-recently-used-filter:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #3858e9);
+}
+.sydney-pattern-library-favorites-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  margin: 0;
+  font: inherit;
+  color: var(--color-heading);
+  cursor: pointer;
+  border-radius: 2px;
+}
+.sydney-pattern-library-favorites-filter svg {
+  flex-shrink: 0;
+}
+.sydney-pattern-library-favorites-filter:hover,
+.sydney-pattern-library-favorites-filter.is-active {
+  color: var(--wp-admin-theme-color, #3858e9);
+}
+.sydney-pattern-library-favorites-filter:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #3858e9);
+}
+/* Per-card skeleton shown while the BlockPreview iframe is loading */
+.sydney-pattern-library-pattern-item {
+  min-height: 180px;
+}
+.sydney-pattern-library-pattern-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e4e4e4 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: sydney-pattern-library-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes sydney-pattern-library-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.sydney-pattern-library-toolbar-btn {
+  cursor: pointer;
+  height: 36px !important;
+  min-width: 36px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+.sydney-pattern-library-toolbar-btn-text {
+  margin-left: 8px;
+}
+@media (max-width: 1200px) {
+  .sydney-pattern-library-pattern-grid {
+    column-count: 2;
+  }
+}
+@media (max-width: 782px) {
+  .sydney-pattern-library-pattern-grid {
+    column-count: 1;
+  }
+}
+@media (max-width: 960px) {
+  .sydney-pattern-library-toolbar-btn-text {
+    display: none;
+  }
+}

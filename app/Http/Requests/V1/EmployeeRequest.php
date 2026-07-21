@@ -58,6 +58,8 @@ class EmployeeRequest extends FormRequest
             'hire_date' => 'nullable|date',
             'contract_type_id' => 'nullable|integer|exists:contract_types,id',
             'cargo_id' => 'nullable|integer|exists:cargos,id',
+            'service_area_id' => 'nullable|array',
+            'service_area_id.*' => 'integer|exists:service_areas,id',
 
             // --- FICHA DE INGRESO ---
             'photo' => 'nullable|image|max:4096',

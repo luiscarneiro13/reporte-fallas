@@ -41,6 +41,11 @@
 
                     <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-6"
                         value="{{ old('address') }}" />
+
+                    <div class="col-md-6">
+                        <x-label value="Áreas de servicio" />
+                        {{ Form::select('service_area_id[]', $serviceAreas, old('service_area_id', []), ['class' => 'select2 form-control', 'multiple' => 'multiple']) }}
+                    </div>
                 </div>
 
                 <div class="row mt-5">

@@ -41,6 +41,11 @@
 
                     <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-6"
                         value="{{ $executor->address }}" />
+
+                    <div class="col-md-6">
+                        <x-label value="Áreas de servicio" />
+                        {{ Form::select('service_area_id[]', $serviceAreas, $selectedServiceAreaIds, ['class' => 'select2 form-control', 'multiple' => 'multiple']) }}
+                    </div>
                 </div>
 
                 <div class="row mt-5">

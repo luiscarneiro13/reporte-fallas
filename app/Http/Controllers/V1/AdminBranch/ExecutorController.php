@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EmployeeRequest;
 use App\Models\Employee;
+use App\Models\ServiceArea;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
@@ -39,7 +40,7 @@ class ExecutorController extends Controller
     {
         $query = request('query');
         $executorsQuery = Employee::query()
-            ->with(['executorServiceAreas:service_areas.id,service_areas.name'])
+            ->with(['serviceAreas:service_areas.id,service_areas.name'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -48,6 +49,9 @@ class ExecutorController extends Controller
                         ->orWhere('email', 'like', "%{$query}%")
                         ->orWhere('phone_number', 'like', "%{$query}%")
                         ->orWhere('address', 'like', "%{$query}%")
+                        ->orWhereHas('serviceAreas', function ($serviceAreaQuery) use ($query) {
+                            $serviceAreaQuery->where('name', 'like', "%{$query}%");
+                        })
                     ;
                 });
             })
@@ -64,14 +68,17 @@ class ExecutorController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        return view('V1.AdminBranch.Executors.create', compact('back_url'));
+        $serviceAreas = ServiceArea::where('branch_id', session('branch')->id)->orderBy('name')->pluck('name', 'id');
+        return view('V1.AdminBranch.Executors.create', compact('back_url', 'serviceAreas'));
     }
 
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $executor = Employee::find($id);
-        return view('V1.AdminBranch.Executors.edit', compact('back_url', 'executor'));
+        $executor = Employee::with('serviceAreas')->find($id);
+        $serviceAreas = ServiceArea::where('branch_id', session('branch')->id)->orderBy('name')->pluck('name', 'id');
+        $selectedServiceAreaIds = $executor->serviceAreas->pluck('id')->toArray();
+        return view('V1.AdminBranch.Executors.edit', compact('back_url', 'executor', 'serviceAreas', 'selectedServiceAreaIds'));
     }
 
     public function store(EmployeeRequest $request)
@@ -100,6 +107,10 @@ class ExecutorController extends Controller
             $item->executor = 1;
             $item->branch_id = session('branch')->id;
             $item->save();
+
+            // Sincronizar la relación Muchos a Muchos con áreas de servicio
+            $serviceAreaIds = $request->input('service_area_id', []);
+            $item->serviceAreas()->sync($serviceAreaIds);
 
             // Respuesta AJAX
             if ($request->ajax()) {

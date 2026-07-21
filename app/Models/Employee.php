@@ -69,6 +69,11 @@ class Employee extends Model
         return $this->employmentPeriods()->whereNull('end_date')->exists();
     }
 
+    public function serviceAreas()
+    {
+        return $this->belongsToMany(ServiceArea::class, 'employee_service_area')->withTimestamps();
+    }
+
     public function executorServiceAreas()
     {
         // Sintaxis:

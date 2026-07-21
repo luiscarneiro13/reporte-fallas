@@ -22,4 +22,9 @@ class ServiceArea extends Model
     {
         return $this->hasMany(Fault::class);
     }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'employee_service_area')->withTimestamps();
+    }
 }

@@ -33,7 +33,7 @@
                     <td>{{ $item->last_name . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
                     <td>{{ $item->address }}</td>
-                    <td>{{ $item->executorServiceAreas?->pluck('name')?->implode(', ') ?? '' }}</td>
+                    <td>{{ $item->serviceAreas?->pluck('name')?->implode(', ') ?? '' }}</td>
 
                     {{-- Acciones --}}
                     <td>

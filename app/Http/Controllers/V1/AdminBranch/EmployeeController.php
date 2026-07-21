@@ -12,12 +12,14 @@ use App\Models\Cargo;
 use App\Models\ContractType;
 use App\Models\Employee;
 use App\Models\Project;
+use App\Models\ServiceArea;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
@@ -47,13 +49,56 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
+        $cargoId = $request->query('cargo_id');
+        $employeeId = $request->query('employee_id');
+        $projectId = $request->query('project_id');
+        $serviceAreaId = $request->query('service_area_id');
+        $identificationNumber = $request->query('identification_number');
+        $name = $request->query('name');
+
+        $filterData = $this->getFilterSelectData();
+        $cargos = $filterData['cargos']->prepend('Todos', '0');
+        $employeesForSelect = $filterData['employees']->prepend('Todos', '0');
+        $projects = $filterData['projects']->prepend('Todos', '0');
+        $serviceAreas = $filterData['serviceAreas']->prepend('Todos', '0');
+
         $result = $this->getFilteredEmployeesQuery($request);
 
         $employees = $result['query']->paginate(10)->appends($request->query());
         $sortBy = $result['sort_by'];
         $sortDir = $result['sort_dir'];
 
-        return view('V1.AdminBranch.Employees.index', compact('employees', 'sortBy', 'sortDir'));
+        return view('V1.AdminBranch.Employees.index', compact(
+            'employees',
+            'sortBy',
+            'sortDir',
+            'cargoId',
+            'employeeId',
+            'projectId',
+            'serviceAreaId',
+            'identificationNumber',
+            'name',
+            'cargos',
+            'employeesForSelect',
+            'projects',
+            'serviceAreas'
+        ));
+    }
+
+    private function getFilterSelectData(): array
+    {
+        $branchId = session('branch')->id;
+
+        return [
+            'cargos' => Cargo::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
+            'projects' => Project::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
+            'serviceAreas' => ServiceArea::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
+            'employees' => Employee::where('branch_id', $branchId)
+                ->where('external', 0)
+                ->orderBy('last_name')
+                ->select('id', DB::raw("CONCAT(identification_number, ' - ', last_name, ' ', first_name) AS full_name"))
+                ->pluck('full_name', 'id'),
+        ];
     }
 
     /**
@@ -83,18 +128,37 @@ class EmployeeController extends Controller
 
     private function getFilteredEmployeesQuery(Request $request): array
     {
-        $query = $request->query('query');
+        $cargoId = $request->query('cargo_id');
+        $employeeId = $request->query('employee_id');
+        $projectId = $request->query('project_id');
+        $serviceAreaId = $request->query('service_area_id');
+        $identificationNumber = $request->query('identification_number');
+        $name = $request->query('name');
+
         $employeesQuery = Employee::with(['users.roles', 'cargo'])
-            ->when($query, function ($q) use ($query) {
-                $q->where(function ($subQuery) use ($query) {
-                    $subQuery->where('identification_number', 'like', "%{$query}%")
-                        ->orWhere('first_name', 'like', "%{$query}%")
-                        ->orWhere('last_name', 'like', "%{$query}%")
-                        ->orWhere('email', 'like', "%{$query}%")
-                        ->orWhere('phone_number', 'like', "%{$query}%")
-                        ->orWhere('address', 'like', "%{$query}%")
-                        ->orWhere('position', 'like', "%{$query}%")
-                    ;
+            ->when(!empty($cargoId) && $cargoId != '0', function ($q) use ($cargoId) {
+                $q->where('cargo_id', $cargoId);
+            })
+            ->when(!empty($employeeId) && $employeeId != '0', function ($q) use ($employeeId) {
+                $q->where('id', $employeeId);
+            })
+            ->when(!empty($projectId) && $projectId != '0', function ($q) use ($projectId) {
+                $q->whereHas('projects', function ($subQuery) use ($projectId) {
+                    $subQuery->where('projects.id', $projectId);
+                });
+            })
+            ->when(!empty($serviceAreaId) && $serviceAreaId != '0', function ($q) use ($serviceAreaId) {
+                $q->whereHas('executorServiceAreas', function ($subQuery) use ($serviceAreaId) {
+                    $subQuery->where('service_areas.id', $serviceAreaId);
+                });
+            })
+            ->when($identificationNumber, function ($q) use ($identificationNumber) {
+                $q->where('identification_number', 'like', "%{$identificationNumber}%");
+            })
+            ->when($name, function ($q) use ($name) {
+                $q->where(function ($subQuery) use ($name) {
+                    $subQuery->where('first_name', 'like', "%{$name}%")
+                        ->orWhere('last_name', 'like', "%{$name}%");
                 });
             })
             ->where('branch_id', session('branch')->id)

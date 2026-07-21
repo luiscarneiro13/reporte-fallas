@@ -16,7 +16,7 @@
             <div class="row">
                 <x-label-value-horizontal class="col-md-4" label="Cédula" :value="$employee->identification_number" />
                 <x-label-value-horizontal class="col-md-4" label="Teléfono" :value="$employee->phone_number" />
-                <x-label-value-horizontal class="col-md-4" label="Cargo" :value="$employee->position" />
+                <x-label-value-horizontal class="col-md-4" label="Cargo" :value="$employee->cargo?->name" />
 
                 <x-label-value-horizontal class="col-md-4" label="Fecha de ingreso"
                     :value="$employee->hire_date ? \Carbon\Carbon::parse($employee->hire_date)->format('d-m-Y') : ''" />

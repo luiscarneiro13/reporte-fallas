@@ -65,7 +65,7 @@
                                             <td>{{ $item->identification_number }}</td>
                                             <td>{{ $item->last_name . ' ' . $item->first_name }}</td>
                                             <td>{{ $item->phone_number }}</td>
-                                            <td>{{ $item->position }}</td>
+                                            <td>{{ $item->cargo->name ?? '' }}</td>
                                             <td>{{ $item->address }}</td>
                                             <td>{{ $item->users->first()?->email ?? '' }}</td>
                                             <td>{{ $item->users->first()?->roles->first()?->name ?? '' }}</td>

@@ -15,6 +15,20 @@ class EmployeeRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Los selects de "Sin cargo" / "Sin proyecto" / "Sin tipo de contrato" envían "0"
+     * como valor por defecto. Se normaliza a null antes de validar, porque "0" no es
+     * un id válido en las tablas relacionadas y rompería la regla 'exists'.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'cargo_id' => $this->input('cargo_id') ?: null,
+            'contract_type_id' => $this->input('contract_type_id') ?: null,
+            'project_id' => $this->input('project_id') ?: null,
+        ]);
+    }
+
     public function rules(): array
     {
         // Obtiene el ID del empleado para ignorarlo en la validación 'unique' (en caso de edición)
@@ -38,12 +52,28 @@ class EmployeeRequest extends FormRequest
             'phone_number' => 'required|string|max:20',
             'address' => 'nullable|string',
 
-            // Asumo que 'position' y 'executor' también deberían ir aquí:
-            'position' => 'nullable|string|max:255',
+            // Asumo que 'executor' también debería ir aquí:
             'executor' => 'nullable|integer',
             'project_id' => 'nullable',
             'hire_date' => 'nullable|date',
             'contract_type_id' => 'nullable|integer|exists:contract_types,id',
+            'cargo_id' => 'nullable|integer|exists:cargos,id',
+
+            // --- FICHA DE INGRESO ---
+            'photo' => 'nullable|image|max:4096',
+            'birth_date' => 'nullable|date',
+            'nationality' => 'nullable|string|max:90',
+            'has_driver_license' => 'nullable|boolean',
+            'driver_license_grade' => 'nullable|in:2do,3ero,4to,5to',
+            'account_number' => 'nullable|string|max:40',
+            'account_type' => 'nullable|in:ahorro,corriente',
+            'bank' => 'nullable|string|max:90',
+            'has_occupational_certificate' => 'nullable|boolean',
+            'shirt_size' => 'nullable|string|max:10',
+            'coverall_size' => 'nullable|string|max:10',
+            'shoe_size' => 'nullable|string|max:10',
+            'emergency_contact_name' => 'nullable|string|max:150',
+            'emergency_contact_phone' => 'nullable|string|max:20',
 
             // --- USUARIO DE SISTEMA (Condicionales) ---
             'email' => [

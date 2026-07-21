@@ -12,7 +12,7 @@
             ['label' => 'Cédula', 'field' => 'identification_number'],
             ['label' => 'Nombre', 'field' => null],
             ['label' => 'Teléfono', 'field' => 'phone_number'],
-            ['label' => 'Cargo', 'field' => 'position'],
+            ['label' => 'Cargo', 'field' => 'cargo_id'],
             ['label' => 'Dirección', 'field' => 'address'],
             ['label' => 'Usuario de sistema', 'field' => null],
             ['label' => 'Rol de sistema', 'field' => null],
@@ -29,7 +29,7 @@
                     <td>{{ $item->identification_number }}</td>
                     <td>{{ $item->last_name . ' ' . $item->first_name }}</td>
                     <td>{{ $item->phone_number }}</td>
-                    <td>{{ $item->position }}</td>
+                    <td>{{ $item->cargo->name ?? '' }}</td>
                     <td>{{ $item->address }}</td>
                     <td>{{ $item->users->first()?->email ?? '' }}</td>
                     <td>{{ $item->users->first()?->roles->first()?->name ?? '' }}</td>
@@ -45,10 +45,10 @@
                                         Editar
                                     </a>
 
-                                    <a class="dropdown-item" href="{{ route('admin.sucursal.employees.incidents', $item) }}">
+                                    {{-- <a class="dropdown-item" href="{{ route('admin.sucursal.employees.incidents', $item) }}">
                                         <i class="fa fa-exclamation-triangle">&nbsp;</i>
                                         Incidencias
-                                    </a>
+                                    </a> --}}
 
                                     <div class="dropdown-divider"></div>
                                     <form class="formEliminar"

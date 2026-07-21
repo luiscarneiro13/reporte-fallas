@@ -330,6 +330,7 @@ return [
                 [
                     'text' => 'Resumen de fallas',
                     'icon' => 'fas fa-list-alt',
+                    'active' => ['v1/admin/fallas', 'v1/admin/fallas/*/edit'],
                     'route'  => 'admin.sucursal.faults.index',
                     'can'  => 'Fallas Ver',
                 ],
@@ -342,6 +343,7 @@ return [
                 [
                     'text' => 'Equipos',
                     'icon' => 'fas fa-truck',
+                    'active' => ['v1/admin/equipos*'],
                     'route'  => 'admin.sucursal.equipment.index',
                     'can'  => ['Equipos Ver'],
                 ],
@@ -370,6 +372,7 @@ return [
                 [
                     'text' => 'Empleados',
                     'icon' => 'fas fa-users',
+                    'active' => ['v1/admin/empleados*'],
                     'route'  => 'admin.sucursal.employees.index',
                     'can' => ['Empleados Ver'],
                 ],
@@ -402,7 +405,7 @@ return [
         [
             'text' => 'Configuración',
             'icon' => '',
-            'can' => 'Menu Conf Admin',
+            'can' => ['Menu Conf Admin', 'Cargos Ver'],
             'submenu' => [
                 [
                     'text' => 'Editar mi Empresa',
@@ -434,6 +437,13 @@ return [
                     'can'  => ['Estatus de repuestos Ver'],
                 ],
                 [
+                    'text' => 'Cargos',
+                    'icon' => 'fas fa-id-badge',
+                    'active' => ['v1/admin/cargos*'],
+                    'route' => 'admin.sucursal.cargos.index',
+                    'can'  => ['Cargos Ver'],
+                ],
+                [
                     'text' => 'Conf. Admin',
                     'icon' => 'fas fa-sliders-h',
                 ],
@@ -454,6 +464,7 @@ return [
                 [
                     'text' => 'Ejecutores',
                     'icon' => 'fas fa-users',
+                    'active' => ['v1/admin/ejecutores*'],
                     'route'  => 'admin.sucursal.executors.index',
                     'can'  => ['Ejecutores Ver'],
                 ],

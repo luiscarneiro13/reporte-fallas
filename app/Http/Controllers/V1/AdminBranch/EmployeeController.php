@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\V1\AdminBranch;
 
+use App\Helpers\Images;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EmployeeRequest;
+use App\Models\Cargo;
 use App\Models\ContractType;
 use App\Models\Employee;
 use App\Models\Project;
@@ -26,7 +28,7 @@ class EmployeeController extends Controller
     const SORTABLE_COLUMNS = [
         'identification_number',
         'phone_number',
-        'position',
+        'cargo_id',
         'address',
     ];
 
@@ -67,7 +69,7 @@ class EmployeeController extends Controller
     private function getFilteredEmployeesQuery(Request $request): array
     {
         $query = $request->query('query');
-        $employeesQuery = Employee::with(['users.roles'])
+        $employeesQuery = Employee::with(['users.roles', 'cargo'])
             ->when($query, function ($q) use ($query) {
                 $q->where(function ($subQuery) use ($query) {
                     $subQuery->where('identification_number', 'like', "%{$query}%")
@@ -101,13 +103,15 @@ class EmployeeController extends Controller
         $projects = $projectsCollection->prepend('Sin proyecto', '0');
         $contractTypesCollection = ContractType::where('branch_id', session('branch')->id)->pluck('name', 'id');
         $contractTypes = $contractTypesCollection->prepend('Sin tipo de contrato', '0');
-        return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles', 'projects', 'contractTypes'));
+        $cargosCollection = Cargo::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $cargos = $cargosCollection->prepend('Sin cargo', '0');
+        return view('V1.AdminBranch.Employees.create', compact('back_url', 'roles', 'projects', 'contractTypes', 'cargos'));
     }
 
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $employee = Employee::with(['users.roles', 'projects'])->find($id);
+        $employee = Employee::with(['users.roles', 'projects', 'fichaIngreso'])->find($id);
         $rolesCollection = Role::where('name', '!=', 'Super Admin')->get()->pluck('name', 'id');
         $roles = $rolesCollection->prepend('Sin usuario de sistema', '0');
         $userSystem = $employee->users->first() ?? null;
@@ -115,7 +119,10 @@ class EmployeeController extends Controller
         $projects = $projectsCollection->prepend('Sin proyecto', '0');
         $contractTypesCollection = ContractType::where('branch_id', session('branch')->id)->pluck('name', 'id');
         $contractTypes = $contractTypesCollection->prepend('Sin tipo de contrato', '0');
-        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem', 'projects', 'contractTypes'));
+        $cargosCollection = Cargo::where('branch_id', session('branch')->id)->pluck('name', 'id');
+        $cargos = $cargosCollection->prepend('Sin cargo', '0');
+        $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10);
+        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem', 'projects', 'contractTypes', 'cargos', 'incidents'));
     }
 
     public function store(EmployeeRequest $request)
@@ -141,7 +148,7 @@ class EmployeeController extends Controller
             $item->phone_number = $request->input('phone_number');
             $item->address = $request->input('address');
             $item->executor = $request->input('executor');
-            $item->position = $request->input('position');
+            $item->cargo_id = $request->input('cargo_id') ?: null;
             $item->branch_id = session('branch')->id;
 
             $dateData = $this->transformDateFields($request->only('hire_date'), ['hire_date']);
@@ -156,6 +163,31 @@ class EmployeeController extends Controller
                 $projectIds = $projectIds ? [$projectIds] : [];
             }
             $item->projects()->sync($projectIds);
+
+            // Ficha de ingreso (relación 1 a 1)
+            $fichaData = $this->transformDateFields($request->only('birth_date'), ['birth_date']);
+            $fichaData = [
+                'birth_date' => $fichaData['birth_date'],
+                'nationality' => $request->input('nationality'),
+                'has_driver_license' => $request->boolean('has_driver_license'),
+                'driver_license_grade' => $request->input('driver_license_grade'),
+                'account_number' => $request->input('account_number'),
+                'account_type' => $request->input('account_type'),
+                'bank' => $request->input('bank'),
+                'has_occupational_certificate' => $request->boolean('has_occupational_certificate'),
+                'shirt_size' => $request->input('shirt_size'),
+                'coverall_size' => $request->input('coverall_size'),
+                'shoe_size' => $request->input('shoe_size'),
+                'emergency_contact_name' => $request->input('emergency_contact_name'),
+                'emergency_contact_phone' => $request->input('emergency_contact_phone'),
+            ];
+
+            if ($request->hasFile('photo')) {
+                $images = new Images();
+                $fichaData['photo'] = $images->uploadImage($request->file('photo'), 'employees');
+            }
+
+            $item->fichaIngreso()->updateOrCreate(['employee_id' => $item->id], $fichaData);
 
             // Datos de usuario
             $roleId = $request->input('role_id');
@@ -225,7 +257,7 @@ class EmployeeController extends Controller
 
     public function incidents(Employee $employee)
     {
-        $employee->load(['projects', 'contractType', 'users.roles']);
+        $employee->load(['projects', 'contractType', 'users.roles', 'cargo']);
         $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10);
 
         return view('V1.AdminBranch.Employees.incidents', compact('employee', 'incidents'));

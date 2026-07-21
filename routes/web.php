@@ -28,6 +28,7 @@ use App\Http\Controllers\AdminBranch\MethodPaymentController as AdminBranchMetho
 use App\Http\Controllers\AdminBranch\OperatorController;
 use App\Http\Controllers\AdminBranch\SupervisorController;
 use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\V1\AdminBranch\CargoController;
 use App\Http\Controllers\V1\AdminBranch\ContractTypeController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
@@ -159,6 +160,7 @@ Route::middleware([
         Route::resource('/historico-fallas', FaultHistoryController::class)->names('admin.sucursal.fault.history');
         Route::resource('/tipo-equipo', EquipmentTypeController::class)->names('admin.sucursal.equipment.types');
         Route::resource('/tipos-contrato', ContractTypeController::class)->names('admin.sucursal.contract.types');
+        Route::resource('/cargos', CargoController::class)->names('admin.sucursal.cargos');
         Route::get('/equipos-imprimir', [EquipmentController::class, 'impAll'])->name('equipment.impAll');
         Route::get('/equipos-excel', [EquipmentController::class, 'excel'])->name('equipment.excel');
         Route::get('/empleados-imprimir', [EmployeeController::class, 'impAll'])->name('employees.impAll');

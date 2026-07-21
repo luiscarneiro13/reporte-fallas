@@ -82,4 +82,9 @@ class Branch extends Model
     {
         return $this->hasMany(ContractType::class);
     }
+
+    public function cargos()
+    {
+        return $this->hasMany(Cargo::class);
+    }
 }

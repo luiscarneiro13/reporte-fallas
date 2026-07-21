@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers\V1\AdminBranch;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\CargoEditRequest;
+use App\Http\Requests\V1\CargoRequest;
+use App\Models\Cargo;
+use App\Traits\AlertResponser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+
+class CargoController extends Controller
+{
+    use AlertResponser;
+
+    const INDEX = "admin.sucursal.cargos.index";
+
+    public function __construct()
+    {
+        $basePermission = "Cargos";
+        $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
+        $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
+        $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
+    public function index()
+    {
+        $query = request('query');
+        $cargos = Cargo::query()
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($subQuery) use ($query) {
+                    $subQuery->where('name', 'like', "%{$query}%");
+                });
+            })
+            ->orderBy('name', 'asc')
+            ->paginate(10);
+        return view('V1.AdminBranch.Cargos.index', compact('cargos'));
+    }
+
+    public function create()
+    {
+        $back_url = request()->back_url ?? null;
+        return view('V1.AdminBranch.Cargos.create', compact('back_url'));
+    }
+
+    public function edit(string $id)
+    {
+        $back_url = request()->back_url ?? null;
+        $cargo = Cargo::find($id);
+        return view('V1.AdminBranch.Cargos.edit', compact('cargo', 'back_url'));
+    }
+
+    public function store(CargoRequest $request)
+    {
+        return $this->saveOrUpdate($request);
+    }
+
+    public function update(CargoEditRequest $request, string $id)
+    {
+        return $this->saveOrUpdate($request, $id);
+    }
+
+    private function saveOrUpdate(Request $request, string $id = null)
+    {
+        try {
+
+            $item = $id ? Cargo::find($id) : new Cargo();
+
+            $item->name = $request->input('name');
+            $item->branch_id = session('branch')->id;
+            $item->save();
+
+            // Elimina la instancia 'fault_data' del contenedor. Esto es para que se recarguen los selects globales
+            // Se creará nuevamente en la próxima solicitud y estará disponible en toda la app
+            App::forgetInstance('fault_data');
+
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'data' => $item]);
+            }
+
+            if (request()->back_url) {
+                return redirect(request()->back_url);
+            }
+
+            $action_msg = $id ? 'actualizado' : 'creado';
+            $message = "Cargo {$action_msg}: " . $item->name;
+            return $this->alertSuccess(self::INDEX, $message);
+        } catch (\Throwable $th) {
+            // Manejo de errores
+            $action = $id ? 'actualizar' : 'crear';
+            info($th->getMessage()); // Se recomienda logear el error
+            return $this->alertError(self::INDEX, "Error al {$action} el cargo: " . $th->getMessage());
+        }
+    }
+
+    public function destroy(string $id)
+    {
+        try {
+            $item = Cargo::find($id);
+            $item->delete();
+            return $this->alertSuccess(self::INDEX, 'Cargo eliminado: ' . $item->name);
+        } catch (\Throwable $th) {
+            return $this->alertError(self::INDEX);
+        }
+    }
+}

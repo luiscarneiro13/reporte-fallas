@@ -12,7 +12,7 @@ class Employee extends Model
 
     protected $table = "employees";
 
-    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external', 'position', 'hire_date', 'contract_type_id'];
+    protected $fillable = ['branch_id', 'identification_number', 'first_name', 'last_name', 'phone_number', 'address', 'executor', 'external', 'position', 'cargo_id', 'hire_date', 'contract_type_id'];
 
     public function branch()
     {
@@ -22,6 +22,16 @@ class Employee extends Model
     public function contractType()
     {
         return $this->belongsTo(ContractType::class);
+    }
+
+    public function cargo()
+    {
+        return $this->belongsTo(Cargo::class);
+    }
+
+    public function fichaIngreso()
+    {
+        return $this->hasOne(FichaIngreso::class);
     }
 
     public function users()

@@ -121,6 +121,11 @@ class EmployeeIncidentController extends Controller
         try {
             $item = EmployeeIncident::find($id);
             $item->delete();
+
+            if (request()->back_url) {
+                return redirect(request()->back_url)->with(['state' => 'success', 'message' => 'Incidencia de empleado eliminada.']);
+            }
+
             return $this->alertSuccess(self::INDEX, 'Incidencia de empleado eliminada.');
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);

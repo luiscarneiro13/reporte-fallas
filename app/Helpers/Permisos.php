@@ -109,6 +109,12 @@ class Permisos
         'Incidencias de Empleados Editar' => [0, 1, 2, 4],
         'Incidencias de Empleados Eliminar' => [0, 1, 2, 4],
 
+        //Períodos de Empleados ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
+        'Periodos de Empleados Ver' => [0, 1, 2, 4],
+        'Periodos de Empleados Crear' => [0, 1, 2, 4],
+        'Periodos de Empleados Editar' => [0, 1, 2, 4],
+        'Periodos de Empleados Eliminar' => [0, 1, 2, 4],
+
         //Ejecutores ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
         'Ejecutores Ver' => [0, 1, 2, 4],
         'Ejecutores Crear' => [0, 1, 2, 4],

@@ -33,6 +33,7 @@ use App\Http\Controllers\V1\AdminBranch\ContractTypeController;
 use App\Http\Controllers\V1\AdminBranch\CustomerController;
 use App\Http\Controllers\V1\AdminBranch\DivisionController;
 use App\Http\Controllers\V1\AdminBranch\EmployeeController;
+use App\Http\Controllers\V1\AdminBranch\EmployeeEmploymentPeriodController;
 use App\Http\Controllers\V1\AdminBranch\EmployeeIncidentController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentController;
 use App\Http\Controllers\V1\AdminBranch\EquipmentTypeController;
@@ -152,7 +153,10 @@ Route::middleware([
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
         Route::get('/empleados/{employee}/incidencias', [EmployeeController::class, 'incidents'])->name('admin.sucursal.employees.incidents');
+        Route::get('/empleados/{employee}/excel', [EmployeeController::class, 'exportData'])->name('admin.sucursal.employees.excel');
+        Route::get('/empleados/{employee}/incidencias-excel', [EmployeeController::class, 'exportIncidents'])->name('admin.sucursal.employees.incidents.excel');
         Route::resource('/incidencias-empleados', EmployeeIncidentController::class)->names('admin.sucursal.employee.incidents');
+        Route::resource('/periodos-empleados', EmployeeEmploymentPeriodController::class)->names('admin.sucursal.employee.periods')->except(['index', 'show']);
         Route::resource('/ejecutores', ExecutorController::class)->names('admin.sucursal.executors');
         Route::resource('/fallas', FaultController::class)->names('admin.sucursal.faults');
         Route::get('/fallas-imprimir', [FaultController::class, 'imp'])->name('faults.imp');
@@ -164,6 +168,7 @@ Route::middleware([
         Route::get('/equipos-imprimir', [EquipmentController::class, 'impAll'])->name('equipment.impAll');
         Route::get('/equipos-excel', [EquipmentController::class, 'excel'])->name('equipment.excel');
         Route::get('/empleados-imprimir', [EmployeeController::class, 'impAll'])->name('employees.impAll');
+        Route::get('/empleados-excel', [EmployeeController::class, 'excel'])->name('employees.excel');
     });
 });
 

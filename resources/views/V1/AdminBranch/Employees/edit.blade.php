@@ -29,12 +29,20 @@
 
                     {{-- Foto de perfil --}}
                     <div class="emp-photo-section">
-                        <div class="emp-photo-preview" id="photoPreviewBox">
-                            @if ($ficha?->photo)
-                                <img src="{{ asset('storage/' . $ficha->photo) }}" alt="Foto de perfil">
-                            @else
-                                <span class="material-symbols-outlined" style="font-size:48px;">person</span>
-                            @endif
+                        <div class="emp-photo-col">
+                            <div class="emp-photo-preview" id="photoPreviewBox">
+                                @if ($ficha?->photo)
+                                    <img src="{{ asset('storage/' . $ficha->photo) }}" alt="Foto de perfil">
+                                @else
+                                    <span class="material-symbols-outlined" style="font-size:48px;">person</span>
+                                @endif
+                            </div>
+                            <a href="{{ $ficha?->photo ? asset('storage/' . $ficha->photo) : '#' }}" target="_blank"
+                                rel="noopener" id="viewPhotoBtn" class="emp-btn-outline emp-btn-block"
+                                style="{{ $ficha?->photo ? '' : 'display:none;' }}">
+                                <span class="material-symbols-outlined" style="font-size:18px;">visibility</span>
+                                Ver foto
+                            </a>
                         </div>
                         <div class="emp-photo-info">
                             <h3>Foto de perfil</h3>
@@ -47,6 +55,12 @@
                             @error('photo')
                                 <div class="text-danger mt-2">{{ $message }}</div>
                             @enderror
+                        </div>
+                        <div class="emp-photo-actions">
+                            <a href="{{ route('admin.sucursal.employees.excel', $employee) }}" class="btn btn-success" title="Exportar datos del empleado a Excel">
+                                <i class="fas fa-file-excel">&nbsp;</i>
+                                Exportar datos
+                            </a>
                         </div>
                     </div>
 
@@ -196,6 +210,97 @@
 
         <div style="max-width:1024px;margin:1.5rem auto 0;">
             <div class="emp-section-title">
+                <span class="material-symbols-outlined">work_history</span>
+                <h4 class="m-0">Períodos de empleo</h4>
+            </div>
+
+            <p class="text-muted" style="margin-top:-0.5rem;">
+                Registra cada ingreso y egreso del empleado en la empresa (permite reingresos).
+            </p>
+
+            <div class="emp-incidents-table">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-end mb-2">
+                            <a href="{{ route('admin.sucursal.employee.periods.create', ['employee_id' => $employee->id, 'back_url' => route('admin.sucursal.employees.edit', $employee)]) }}"
+                                class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus">&nbsp;</i>
+                                Nuevo período
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Ingreso</th>
+                                        <th>Egreso</th>
+                                        <th>Estado</th>
+                                        <th>Cargo</th>
+                                        <th>Tipo de contrato</th>
+                                        <th>Motivo de egreso</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($employmentPeriods as $item)
+                                        <tr>
+                                            <td>{{ \Carbon\Carbon::parse($item->start_date)->format('d-m-Y') }}</td>
+                                            <td>{{ $item->end_date ? \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') : '-' }}</td>
+                                            <td>
+                                                @if ($item->end_date)
+                                                    <span class="badge badge-secondary">Finalizado</span>
+                                                @else
+                                                    <span class="badge badge-success">Activo</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $item->cargo?->name }}</td>
+                                            <td>{{ $item->contractType?->name }}</td>
+                                            <td>{{ $item->termination_reason }}</td>
+                                            <td>
+                                                <div class="input-group" style="cursor:pointer;">
+                                                    <div>
+                                                        <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
+                                                        <div class="dropdown-menu">
+
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('admin.sucursal.employee.periods.edit', [$item, 'back_url' => route('admin.sucursal.employees.edit', $employee)]) }}">
+                                                                <i class="fa fa-edit">&nbsp;</i>
+                                                                Editar
+                                                            </a>
+
+                                                            <div class="dropdown-divider"></div>
+                                                            <form class="formEliminar"
+                                                                action="{{ route('admin.sucursal.employee.periods.destroy', $item) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <input type="hidden" name="back_url" value="{{ route('admin.sucursal.employees.edit', $employee) }}">
+                                                                <button class="dropdown-item" type="submit">
+                                                                    <i class="fa fa-trash">&nbsp;</i>
+                                                                    Eliminar
+                                                                </button>
+                                                            </form>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted">Sin períodos registrados.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="max-width:1024px;margin:1.5rem auto 0;">
+            <div class="emp-section-title">
                 <span class="material-symbols-outlined">warning</span>
                 <h4 class="m-0">Incidencias</h4>
             </div>
@@ -211,7 +316,8 @@
 
             <div class="emp-incidents-table">
             <x-base-data-table-search title="Incidencias" :items="$incidents" :headers="$incidentHeaders"
-                :urlBtnAdd="route('admin.sucursal.employee.incidents.create', ['employee_id' => $employee->id, 'back_url' => route('admin.sucursal.employees.edit', $employee)])">
+                :urlBtnAdd="route('admin.sucursal.employee.incidents.create', ['employee_id' => $employee->id, 'back_url' => route('admin.sucursal.employees.edit', $employee)])"
+                :urlExcel="route('admin.sucursal.employees.incidents.excel', $employee)" titleExcel="Exportar incidencias a Excel">
                 <x-slot name="body">
                     @forelse ($incidents as $item)
                         <tr>
@@ -236,6 +342,7 @@
                                                 method="post">
                                                 @csrf
                                                 @method('delete')
+                                                <input type="hidden" name="back_url" value="{{ route('admin.sucursal.employees.edit', $employee) }}">
                                                 <button class="dropdown-item" type="submit">
                                                     <i class="fa fa-trash">&nbsp;</i>
                                                     Eliminar
@@ -265,12 +372,18 @@
         const photoInput = document.getElementById('photo-upload');
         const photoPreviewBox = document.getElementById('photoPreviewBox');
 
+        const viewPhotoBtn = document.getElementById('viewPhotoBtn');
+
         photoInput?.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 photoPreviewBox.innerHTML = '<img src="' + ev.target.result + '" alt="Foto de perfil">';
+                if (viewPhotoBtn) {
+                    viewPhotoBtn.href = ev.target.result;
+                    viewPhotoBtn.style.display = '';
+                }
             };
             reader.readAsDataURL(file);
         });

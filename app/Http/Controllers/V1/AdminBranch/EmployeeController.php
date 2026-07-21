@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\V1\AdminBranch;
 
+use App\Exports\EmployeeDataExport;
+use App\Exports\EmployeeIncidentsExport;
+use App\Exports\EmployeesExport;
 use App\Helpers\Images;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EmployeeRequest;
@@ -15,6 +18,7 @@ use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
@@ -64,6 +68,17 @@ class EmployeeController extends Controller
         $employees = $result['query']->get();
 
         return view('V1.AdminBranch.Employees.impAll', compact('back_url', 'employees'));
+    }
+
+    /**
+     * Exporta el listado de todos los empleados a un excel
+     */
+    public function excel(Request $request)
+    {
+        $result = $this->getFilteredEmployeesQuery($request);
+        $employees = $result['query']->with(['fichaIngreso', 'projects', 'contractType'])->get();
+
+        return Excel::download(new EmployeesExport($employees), 'empleados.xlsx');
     }
 
     private function getFilteredEmployeesQuery(Request $request): array
@@ -122,7 +137,8 @@ class EmployeeController extends Controller
         $cargosCollection = Cargo::where('branch_id', session('branch')->id)->pluck('name', 'id');
         $cargos = $cargosCollection->prepend('Sin cargo', '0');
         $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10);
-        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem', 'projects', 'contractTypes', 'cargos', 'incidents'));
+        $employmentPeriods = $employee->employmentPeriods()->with(['contractType', 'cargo'])->get();
+        return view('V1.AdminBranch.Employees.edit', compact('back_url', 'employee', 'roles', 'userSystem', 'projects', 'contractTypes', 'cargos', 'incidents', 'employmentPeriods'));
     }
 
     public function store(EmployeeRequest $request)
@@ -261,6 +277,26 @@ class EmployeeController extends Controller
         $incidents = $employee->incidents()->with('reportedBy')->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10);
 
         return view('V1.AdminBranch.Employees.incidents', compact('employee', 'incidents'));
+    }
+
+    /**
+     * Exporta todos los datos del empleado a un excel
+     */
+    public function exportData(Employee $employee)
+    {
+        $employee->load(['fichaIngreso', 'cargo', 'projects', 'contractType', 'users.roles']);
+
+        return Excel::download(new EmployeeDataExport($employee), 'empleado-' . $employee->identification_number . '.xlsx');
+    }
+
+    /**
+     * Exporta todas las incidencias del empleado a un excel
+     */
+    public function exportIncidents(Employee $employee)
+    {
+        $incidents = $employee->incidents()->with(['employee', 'reportedBy'])->orderBy('date', 'desc')->orderBy('id', 'desc')->get();
+
+        return Excel::download(new EmployeeIncidentsExport($incidents), 'incidencias-' . $employee->identification_number . '.xlsx');
     }
 
     public function destroy(string $id)

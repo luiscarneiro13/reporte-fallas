@@ -54,6 +54,21 @@ class Employee extends Model
         return $this->hasMany(EmployeeIncident::class);
     }
 
+    public function employmentPeriods()
+    {
+        return $this->hasMany(EmployeeEmploymentPeriod::class)->orderByDesc('start_date');
+    }
+
+    public function currentEmploymentPeriod()
+    {
+        return $this->hasOne(EmployeeEmploymentPeriod::class)->whereNull('end_date')->latestOfMany('start_date');
+    }
+
+    public function isCurrentlyActive(): bool
+    {
+        return $this->employmentPeriods()->whereNull('end_date')->exists();
+    }
+
     public function executorServiceAreas()
     {
         // Sintaxis:

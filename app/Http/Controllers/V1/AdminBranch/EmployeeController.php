@@ -207,6 +207,20 @@ class EmployeeController extends Controller
     private function saveOrUpdate(EmployeeRequest $request, string $id = null)
     {
         try {
+            // Sincronizar la relación Muchos a Muchos con proyectos (mismo patrón que Equipment)
+            $projectIds = $request->input('project_id');
+            if (!is_array($projectIds)) {
+                $projectIds = $projectIds ? [$projectIds] : [];
+            }
+
+            // El campo "Ejecutor de servicio" ya no se captura desde el frontend: se infiere
+            // según si alguno de los proyectos asignados pertenece a la división "Mantenimiento y Logística".
+            $isMaintenanceLogistics = Project::whereIn('id', $projectIds)
+                ->whereHas('division', function ($q) {
+                    $q->where('name', 'Mantenimiento y Logística');
+                })
+                ->exists();
+
             // Crear o actualizar empleado
             $item = $id ? Employee::find($id) : new Employee();
             $item->identification_number = $request->input('identification_number');
@@ -215,7 +229,7 @@ class EmployeeController extends Controller
             $item->email = $request->input('email');
             $item->phone_number = $request->input('phone_number');
             $item->address = $request->input('address');
-            $item->executor = $request->input('executor');
+            $item->executor = $isMaintenanceLogistics ? 1 : 0;
             $item->cargo_id = $request->input('cargo_id') ?: null;
             $item->branch_id = session('branch')->id;
 
@@ -225,11 +239,6 @@ class EmployeeController extends Controller
 
             $item->save();
 
-            // Sincronizar la relación Muchos a Muchos con proyectos (mismo patrón que Equipment)
-            $projectIds = $request->input('project_id');
-            if (!is_array($projectIds)) {
-                $projectIds = $projectIds ? [$projectIds] : [];
-            }
             $item->projects()->sync($projectIds);
 
             // Ficha de ingreso (relación 1 a 1)

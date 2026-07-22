@@ -309,7 +309,7 @@ return [
         // --- Menús Principales ---
         [
             'text' => 'Inicio',
-            'icon' => '',
+            'icon' => 'fas fa-home',
             'route'  => 'dashboard',
             'submenu' => [
                 [
@@ -323,7 +323,7 @@ return [
         ],
         [
             'text' => 'Mantenimiento',
-            'icon' => '',
+            'icon' => 'fas fa-tools',
             'route'  => '',
             'can'  => 'Fallas Ver',
             'submenu' => [
@@ -365,7 +365,7 @@ return [
         ],
         [
             'text' => 'Recursos Humanos',
-            'icon' => '',
+            'icon' => 'fas fa-users-cog',
             'route'  => '',
             'can' => ['Empleados Ver'],
             'submenu' => [
@@ -404,7 +404,7 @@ return [
         // --- Administración General ---
         [
             'text' => 'Configuración',
-            'icon' => '',
+            'icon' => 'fas fa-cogs',
             'can' => ['Menu Conf Admin', 'Cargos Ver'],
             'submenu' => [
                 [

@@ -82,11 +82,6 @@
                                 value="{{ $employee->phone_number }}" />
 
                             <div>
-                                <x-label value="Ejecutor de servicio" />
-                                {{ Form::select('executor', [0 => 'No', 1 => 'Si'], $employee->executor, ['class' => 'form-control']) }}
-                            </div>
-
-                            <div>
                                 <x-label value="Cargo" />
                                 {{ Form::select('cargo_id', $cargos, $employee->cargo_id ?? '0', ['class' => 'select2 form-control']) }}
                             </div>

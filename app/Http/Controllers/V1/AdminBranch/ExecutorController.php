@@ -29,7 +29,7 @@ class ExecutorController extends Controller
 
     public function __construct()
     {
-        $basePermission = "Ejecutores";
+        $basePermission = "Proveedores";
         $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
         $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
         $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
@@ -123,12 +123,12 @@ class ExecutorController extends Controller
             }
 
             $action_msg = $id ? 'actualizado' : 'creado';
-            $message = "Ejecutor {$action_msg}: " . $item->first_name;
+            $message = "Proveedor {$action_msg}: " . $item->first_name;
             return $this->alertSuccess(self::INDEX, $message);
         } catch (\Throwable $th) {
             $action = $id ? 'actualizar' : 'crear';
             info($th->getMessage());
-            return $this->alertError(self::INDEX, "Error al {$action} el ejecutor: " . $th->getMessage());
+            return $this->alertError(self::INDEX, "Error al {$action} el proveedor: " . $th->getMessage());
         }
     }
 
@@ -137,7 +137,7 @@ class ExecutorController extends Controller
         try {
             $item = Employee::find($id);
             $item->delete();
-            return $this->alertSuccess(self::INDEX, 'Ejecutor eliminado: ' . $item->first_name . ' ' . $item->last_name);
+            return $this->alertSuccess(self::INDEX, 'Proveedor eliminado: ' . $item->first_name . ' ' . $item->last_name);
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }

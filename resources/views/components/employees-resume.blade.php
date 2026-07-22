@@ -25,9 +25,6 @@
 
                 <x-select label="Proyecto" name="project_id" :items="$projects" class="col-md-3"
                     classControl="select2 form-control" />
-
-                <x-select label="Area de servicio" name="service_area_id" :items="$serviceAreas" class="col-md-3"
-                    classControl="select2 form-control" />
             </div>
 
             <div class="row mb-2 align-items-end">
@@ -42,7 +39,6 @@
                             (request()->has('cargo_id') && request('cargo_id') != '0') ||
                             (request()->has('employee_id') && request('employee_id') != '0') ||
                             (request()->has('project_id') && request('project_id') != '0') ||
-                            (request()->has('service_area_id') && request('service_area_id') != '0') ||
                             request()->filled('identification_number') ||
                             request()->filled('name');
                     @endphp
@@ -135,7 +131,7 @@
                 return urlParams.get(param);
             }
 
-            const selectParams = ['cargo_id', 'employee_id', 'project_id', 'service_area_id'];
+            const selectParams = ['cargo_id', 'employee_id', 'project_id'];
             const textParams = ['identification_number', 'name'];
 
             function getFilterQueryString() {

@@ -23,7 +23,7 @@
     <x-employees-resume title="Empleados" :items="$employees" :headers="$headers"
         :urlBtnAdd="route('admin.sucursal.employees.create')" titlePrint="Listado de empleados"
         :urlPrint="route('employees.impAll')" :urlExcel="route('employees.excel')" titleExcel="Exportar empleados a Excel"
-        :cargos="$cargos" :employeesForSelect="$employeesForSelect" :projects="$projects" :serviceAreas="$serviceAreas"
+        :cargos="$cargos" :employeesForSelect="$employeesForSelect" :projects="$projects"
         :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
             @forelse ($employees as $item)

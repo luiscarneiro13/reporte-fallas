@@ -115,11 +115,11 @@ class Permisos
         'Periodos de Empleados Editar' => [0, 1, 2, 4],
         'Periodos de Empleados Eliminar' => [0, 1, 2, 4],
 
-        //Ejecutores ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
-        'Ejecutores Ver' => [0, 1, 2, 4],
-        'Ejecutores Crear' => [0, 1, 2, 4],
-        'Ejecutores Editar' => [0, 1, 2, 4],
-        'Ejecutores Eliminar' => [0, 1, 2, 4],
+        //Proveedores ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
+        'Proveedores Ver' => [0, 1, 2, 4],
+        'Proveedores Crear' => [0, 1, 2, 4],
+        'Proveedores Editar' => [0, 1, 2, 4],
+        'Proveedores Eliminar' => [0, 1, 2, 4],
 
         //Equipos ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
         'Equipos Ver' => [0, 1, 2, 4],

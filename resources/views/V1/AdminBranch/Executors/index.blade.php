@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Ejecutores')
+@section('title', 'Proveedores')
 
 @section('content_header')
     {{-- <h1>Proyectos</h1> --}}
@@ -20,7 +20,7 @@
         ];
     @endphp
 
-    <x-base-data-table-search title="Ejecutores" :items="$executors" :headers="$headers"
+    <x-base-data-table-search title="Proveedores" :items="$executors" :headers="$headers"
         urlBtnAdd="{{ route('admin.sucursal.executors.create') }}"
         :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
 

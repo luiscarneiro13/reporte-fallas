@@ -12,7 +12,6 @@ use App\Models\Cargo;
 use App\Models\ContractType;
 use App\Models\Employee;
 use App\Models\Project;
-use App\Models\ServiceArea;
 use App\Models\User;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
@@ -52,7 +51,6 @@ class EmployeeController extends Controller
         $cargoId = $request->query('cargo_id');
         $employeeId = $request->query('employee_id');
         $projectId = $request->query('project_id');
-        $serviceAreaId = $request->query('service_area_id');
         $identificationNumber = $request->query('identification_number');
         $name = $request->query('name');
 
@@ -60,7 +58,6 @@ class EmployeeController extends Controller
         $cargos = $filterData['cargos']->prepend('Todos', '0');
         $employeesForSelect = $filterData['employees']->prepend('Todos', '0');
         $projects = $filterData['projects']->prepend('Todos', '0');
-        $serviceAreas = $filterData['serviceAreas']->prepend('Todos', '0');
 
         $result = $this->getFilteredEmployeesQuery($request);
 
@@ -75,13 +72,11 @@ class EmployeeController extends Controller
             'cargoId',
             'employeeId',
             'projectId',
-            'serviceAreaId',
             'identificationNumber',
             'name',
             'cargos',
             'employeesForSelect',
-            'projects',
-            'serviceAreas'
+            'projects'
         ));
     }
 
@@ -92,7 +87,6 @@ class EmployeeController extends Controller
         return [
             'cargos' => Cargo::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
             'projects' => Project::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
-            'serviceAreas' => ServiceArea::where('branch_id', $branchId)->orderBy('name')->pluck('name', 'id'),
             'employees' => Employee::where('branch_id', $branchId)
                 ->where('external', 0)
                 ->orderBy('last_name')
@@ -131,7 +125,6 @@ class EmployeeController extends Controller
         $cargoId = $request->query('cargo_id');
         $employeeId = $request->query('employee_id');
         $projectId = $request->query('project_id');
-        $serviceAreaId = $request->query('service_area_id');
         $identificationNumber = $request->query('identification_number');
         $name = $request->query('name');
 
@@ -145,11 +138,6 @@ class EmployeeController extends Controller
             ->when(!empty($projectId) && $projectId != '0', function ($q) use ($projectId) {
                 $q->whereHas('projects', function ($subQuery) use ($projectId) {
                     $subQuery->where('projects.id', $projectId);
-                });
-            })
-            ->when(!empty($serviceAreaId) && $serviceAreaId != '0', function ($q) use ($serviceAreaId) {
-                $q->whereHas('executorServiceAreas', function ($subQuery) use ($serviceAreaId) {
-                    $subQuery->where('service_areas.id', $serviceAreaId);
                 });
             })
             ->when($identificationNumber, function ($q) use ($identificationNumber) {

@@ -462,11 +462,11 @@ return [
                     'can' => ['Proyectos Ver'],
                 ],
                 [
-                    'text' => 'Ejecutores',
+                    'text' => 'Proveedores',
                     'icon' => 'fas fa-users',
                     'active' => ['v1/admin/ejecutores*'],
                     'route'  => 'admin.sucursal.executors.index',
-                    'can'  => ['Ejecutores Ver'],
+                    'can'  => ['Proveedores Ver'],
                 ],
 
             ]

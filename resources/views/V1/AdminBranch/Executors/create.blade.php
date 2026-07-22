@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Ejecutores')
+@section('title', 'Proveedores')
 
 @section('content_header')
-    <h1>Crear ejecutor</h1>
+    <h1>Crear proveedor</h1>
 @stop
 
 @section('content')
@@ -36,7 +36,8 @@
 
                     <div class="col-md-2">
                         <x-label value="Tipo" />
-                        {{ Form::select('external', [0 => 'Interno', 1 => 'Externo'], null, ['class' => 'form-control']) }}
+                        {{ Form::select('external', [0 => 'Interno', 1 => 'Externo'], 1, ['class' => 'form-control', 'disabled' => 'disabled']) }}
+                        <input type="hidden" name="external" value="1">
                     </div>
 
                     <x-input-custom name="address" label="Dirección (opcional)" placeholder="" class="col-md-6"

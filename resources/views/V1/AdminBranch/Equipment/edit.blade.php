@@ -22,12 +22,23 @@
                         value="{{ $equipment->internal_code }}" />
 
                     <div class="col-md-5">
-                        <x-label value="Proyecto" />
-                        {{ Form::select('project_id', $projects, null, ['class' => 'select2 form-control']) }}
+                        <x-label value="Proyecto"
+                            btnAddUrl="{{ route('admin.sucursal.projects.create', ['back_url' => url()->full()]) }}" />
+                        {{ Form::select('project_id', $projects, old('project_id', $equipment->lastProject->id ?? '0'), ['class' => 'select2 form-control']) }}
                     </div>
 
                     <x-select required label="Tipo" name="type" :items="$equipmentTypes" class="col-md-2"
-                        classControl="select2 form-control" :selected="$equipment->type ?? '0'" />
+                        classControl="select2 form-control" :selected="$equipment->type ?? '0'"
+                        btnAddUrl="{{ route('admin.sucursal.equipment.types.create', ['back_url' => url()->full()]) }}" />
+
+                    <div class="col-md-2">
+                        <x-label value="Activo" />
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="active" name="active"
+                                value="1" {{ $equipment->active ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="active">Equipo activo</label>
+                        </div>
+                    </div>
                 </div>
 
                 <hr>

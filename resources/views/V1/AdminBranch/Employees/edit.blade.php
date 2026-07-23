@@ -82,12 +82,14 @@
                                 value="{{ $employee->phone_number }}" />
 
                             <div>
-                                <x-label value="Cargo" />
+                                <x-label value="Cargo"
+                                    btnAddUrl="{{ route('admin.sucursal.cargos.create', ['back_url' => url()->full()]) }}" />
                                 {{ Form::select('cargo_id', $cargos, $employee->cargo_id ?? '0', ['class' => 'select2 form-control']) }}
                             </div>
 
                             <div>
-                                <x-label value="Proyecto" />
+                                <x-label value="Proyecto"
+                                    btnAddUrl="{{ route('admin.sucursal.projects.create', ['back_url' => url()->full()]) }}" />
                                 {{ Form::select('project_id', $projects, $employee->projects->first()->id ?? '0', ['class' => 'select2 form-control']) }}
                             </div>
 
@@ -95,7 +97,8 @@
                                 value="{{ $employee->hire_date }}" />
 
                             <div>
-                                <x-label value="Tipo de contrato" />
+                                <x-label value="Tipo de contrato"
+                                    btnAddUrl="{{ route('admin.sucursal.contract.types.create', ['back_url' => url()->full()]) }}" />
                                 {{ Form::select('contract_type_id', $contractTypes, $employee->contract_type_id ?? '0', ['class' => 'select2 form-control']) }}
                             </div>
                         </div>
@@ -119,17 +122,29 @@
 
                             <div class="emp-span-2">
                                 <x-label value="¿Posee certificado ocupacional vigente?" />
-                                {{ Form::select('has_occupational_certificate', [0 => 'No', 1 => 'Si'], (int) ($ficha?->has_occupational_certificate ?? 0), ['class' => 'form-control']) }}
+                                {{ Form::select('has_occupational_certificate', [0 => 'No', 1 => 'Si'], (int) ($ficha?->has_occupational_certificate ?? 0), ['class' => 'form-control', 'id' => 'has_occupational_certificate_select']) }}
+                            </div>
+
+                            <div id="occupationalCertificateExpirationField">
+                                <x-input-date-custom name="occupational_certificate_expiration_date"
+                                    label="Vencimiento del certificado" placeholder="" no-margin-top
+                                    value="{{ old('occupational_certificate_expiration_date', $ficha?->occupational_certificate_expiration_date) }}" />
                             </div>
 
                             <div>
                                 <x-label value="¿Posee licencia de conducir?" />
-                                {{ Form::select('has_driver_license', [0 => 'No', 1 => 'Si'], (int) ($ficha?->has_driver_license ?? 0), ['class' => 'form-control']) }}
+                                {{ Form::select('has_driver_license', [0 => 'No', 1 => 'Si'], (int) ($ficha?->has_driver_license ?? 0), ['class' => 'form-control', 'id' => 'has_driver_license_select']) }}
                             </div>
 
-                            <div>
+                            <div id="driverLicenseGradeField">
                                 <x-label value="Grado de licencia" />
                                 {{ Form::select('driver_license_grade', ['' => 'Seleccione...', '2do' => '2do', '3ero' => '3ero', '4to' => '4to', '5to' => '5to'], old('driver_license_grade', $ficha?->driver_license_grade), ['class' => 'form-control']) }}
+                            </div>
+
+                            <div id="driverLicenseExpirationField">
+                                <x-input-date-custom name="driver_license_expiration_date" label="Vencimiento de licencia"
+                                    placeholder="" no-margin-top
+                                    value="{{ old('driver_license_expiration_date', $ficha?->driver_license_expiration_date) }}" />
                             </div>
                         </div>
 
@@ -382,5 +397,32 @@
             };
             reader.readAsDataURL(file);
         });
+
+        function toggleField(selectEl, fieldEl) {
+            if (!selectEl || !fieldEl) return;
+            fieldEl.style.display = selectEl.value === '1' ? '' : 'none';
+        }
+
+        const hasDriverLicenseSelect = document.getElementById('has_driver_license_select');
+        const driverLicenseGradeField = document.getElementById('driverLicenseGradeField');
+        const driverLicenseExpirationField = document.getElementById('driverLicenseExpirationField');
+
+        const hasOccupationalCertificateSelect = document.getElementById('has_occupational_certificate_select');
+        const occupationalCertificateExpirationField = document.getElementById('occupationalCertificateExpirationField');
+
+        function toggleDriverLicenseFields() {
+            toggleField(hasDriverLicenseSelect, driverLicenseGradeField);
+            toggleField(hasDriverLicenseSelect, driverLicenseExpirationField);
+        }
+
+        function toggleOccupationalCertificateFields() {
+            toggleField(hasOccupationalCertificateSelect, occupationalCertificateExpirationField);
+        }
+
+        hasDriverLicenseSelect?.addEventListener('change', toggleDriverLicenseFields);
+        hasOccupationalCertificateSelect?.addEventListener('change', toggleOccupationalCertificateFields);
+
+        toggleDriverLicenseFields();
+        toggleOccupationalCertificateFields();
     </script>
 @stop

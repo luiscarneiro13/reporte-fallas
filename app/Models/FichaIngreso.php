@@ -18,10 +18,12 @@ class FichaIngreso extends Model
         'nationality',
         'has_driver_license',
         'driver_license_grade',
+        'driver_license_expiration_date',
         'account_number',
         'account_type',
         'bank',
         'has_occupational_certificate',
+        'occupational_certificate_expiration_date',
         'shirt_size',
         'coverall_size',
         'shoe_size',
@@ -31,8 +33,10 @@ class FichaIngreso extends Model
 
     protected $casts = [
         'birth_date' => 'date',
+        'driver_license_expiration_date' => 'date',
         'has_driver_license' => 'boolean',
         'has_occupational_certificate' => 'boolean',
+        'occupational_certificate_expiration_date' => 'date',
     ];
 
     public function employee()

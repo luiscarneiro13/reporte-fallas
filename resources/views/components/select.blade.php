@@ -9,11 +9,12 @@
     'required' => false,
     'disabled' => false,
     'btnAddModalTarget' => '',
+    'btnAddUrl' => '',
 ])
 
 <div class="{{ $class }}">
     <x-label required="{{ $required ? true : false }}" value="{{ $label }}"
-        btnAddModalTarget="{{ $btnAddModalTarget }}" />
+        btnAddModalTarget="{{ $btnAddModalTarget }}" btnAddUrl="{{ $btnAddUrl }}" />
 
     {{-- La clase 'is-invalid' se aplica correctamente aquí --}}
     {{ Form::select($name, $items, $selected, ['class' => 'form-control ' . $classControl . ' ' . ($errors->has($name) ? ' is-invalid' : ''), 'id' => $id, 'disabled' => $disabled, 'required' => $required]) }}

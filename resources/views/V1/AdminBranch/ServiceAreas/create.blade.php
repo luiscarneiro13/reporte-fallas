@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="row mt-5">
-                    <a href="{{ route('admin.sucursal.service.areas.index') }}" class="btn-sm mr-3 btn-default" type="submit"
+                    <a href="{{ request()->back_url ?? route('admin.sucursal.service.areas.index') }}" class="btn-sm mr-3 btn-default" type="submit"
                         icon="fas fa-lg fa-save">Cancelar</a>
                     <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />

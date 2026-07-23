@@ -31,19 +31,24 @@
                         <div class="row">
 
                             <x-select required label="Reportado por" name="employee_reported_id" :items="$employeeReported"
-                                class="col-md-4" classControl="select2 form-control" />
+                                class="col-md-4" classControl="select2 form-control"
+                                btnAddUrl="{{ route('admin.sucursal.employees.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select required label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
-                                classControl="select2 form-control" />
+                                classControl="select2 form-control"
+                                btnAddUrl="{{ route('admin.sucursal.equipment.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select required label="Area de servicio" name="service_area_id" :items="$serviceArea"
-                                class="col-md-4" classControl="select2 form-control" />
+                                class="col-md-4" classControl="select2 form-control"
+                                btnAddUrl="{{ route('admin.sucursal.service.areas.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select required label="Status de la falla" name="fault_status_id" :items="$faultStatus"
-                                :selected="$selectedFaultStatusId ?? null" class="col-md-5" classControl="select2 form-control" />
+                                :selected="$selectedFaultStatusId ?? null" class="col-md-5" classControl="select2 form-control"
+                                btnAddUrl="{{ route('admin.sucursal.fault.statuses.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select :required="!($isOperator ?? false)" label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
-                                class="col-md-3" classControl="select2 form-control" />
+                                class="col-md-3" classControl="select2 form-control"
+                                btnAddUrl="{{ route('admin.sucursal.spare.part.statuses.create', ['back_url' => url()->full()]) }}" />
 
                             <x-textarea-custom required name="description" label="Descripción de la falla" placeholder=""
                                 class="col-md-12 mt-3" value="{{ old('description') }}" />

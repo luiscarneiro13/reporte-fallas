@@ -53,8 +53,11 @@ class EquipmentController extends Controller
         $sortBy = $result['sort_by'];
         $sortDir = $result['sort_dir'];
 
-        // 3. Devolver la vista con los resultados
-        return view('V1.AdminBranch.Equipment.index', compact('equipment', 'sortBy', 'sortDir'));
+        // 3. Datos para el select de filtro por proyecto
+        $projects = Project::where('branch_id', session('branch')->id)->orderBy('name')->pluck('name', 'id')->prepend('Todos', '0');
+
+        // 4. Devolver la vista con los resultados
+        return view('V1.AdminBranch.Equipment.index', compact('equipment', 'sortBy', 'sortDir', 'projects'));
     }
 
     private function getFilteredEquipmentQuery(Request $request): array
@@ -64,6 +67,9 @@ class EquipmentController extends Controller
 
         // 2. Capturar el parámetro de búsqueda
         $query = $request->query('query');
+        $internalCode = $request->query('internal_code');
+        $projectId = $request->query('project_id');
+        $active = $request->query('active');
 
         // 3. Iniciar la consulta con Carga Ansiosa (Eager Loading)
         $equipmentQuery = Equipment::query()
@@ -97,6 +103,23 @@ class EquipmentController extends Controller
                     $projectQuery->where('name', 'like', "%{$query}%");
                 });
             });
+        }
+
+        // 5. Aplicar filtro por Código interno
+        if (!empty($internalCode)) {
+            $equipmentQuery->where('internal_code', 'like', "%{$internalCode}%");
+        }
+
+        // 6. Aplicar filtro por Proyecto
+        if (!empty($projectId) && $projectId != '0') {
+            $equipmentQuery->whereHas('projects', function ($projectQuery) use ($projectId) {
+                $projectQuery->where('projects.id', $projectId);
+            });
+        }
+
+        // 7. Aplicar filtro por Activo/Inactivo
+        if ($active !== null && $active !== '') {
+            $equipmentQuery->where('active', (bool) $active);
         }
 
         [$sortBy, $sortDir] = $this->applySort(
@@ -236,6 +259,7 @@ class EquipmentController extends Controller
             $item->color = $request->input('color');
             $item->origin = $request->input('origin');
             $item->type = $request->input('type');
+            $item->active = $request->boolean('active');
 
             // Atributo de sucursal
             $item->branch_id = session('branch')->id; // Asignación de la sucursal actual

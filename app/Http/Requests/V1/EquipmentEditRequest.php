@@ -58,6 +58,7 @@ class EquipmentEditRequest extends FormRequest
             'internal_code' => ['nullable', 'string', 'max:20', 'min:3'],
             'color' => ['nullable', 'string', 'max:20', 'min:3'],
             'origin' => ['nullable', 'string', 'max:255', 'min:3'],
+            'active' => ['sometimes', 'boolean'],
         ];
     }
 

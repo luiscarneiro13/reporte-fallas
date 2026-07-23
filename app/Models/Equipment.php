@@ -31,7 +31,8 @@ class Equipment extends Model
         'model_year',
         'color',
         'origin',
-        'racda'
+        'racda',
+        'active'
     ];
 
     protected function fullEquipmentName(): Attribute

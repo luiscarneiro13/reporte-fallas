@@ -242,16 +242,21 @@ class EmployeeController extends Controller
             $item->projects()->sync($projectIds);
 
             // Ficha de ingreso (relación 1 a 1)
-            $fichaData = $this->transformDateFields($request->only('birth_date'), ['birth_date']);
+            $fichaDates = $this->transformDateFields(
+                $request->only('birth_date', 'driver_license_expiration_date', 'occupational_certificate_expiration_date'),
+                ['birth_date', 'driver_license_expiration_date', 'occupational_certificate_expiration_date']
+            );
             $fichaData = [
-                'birth_date' => $fichaData['birth_date'],
+                'birth_date' => $fichaDates['birth_date'],
                 'nationality' => $request->input('nationality'),
                 'has_driver_license' => $request->boolean('has_driver_license'),
                 'driver_license_grade' => $request->input('driver_license_grade'),
+                'driver_license_expiration_date' => $fichaDates['driver_license_expiration_date'],
                 'account_number' => $request->input('account_number'),
                 'account_type' => $request->input('account_type'),
                 'bank' => $request->input('bank'),
                 'has_occupational_certificate' => $request->boolean('has_occupational_certificate'),
+                'occupational_certificate_expiration_date' => $fichaDates['occupational_certificate_expiration_date'],
                 'shirt_size' => $request->input('shirt_size'),
                 'coverall_size' => $request->input('coverall_size'),
                 'shoe_size' => $request->input('shoe_size'),

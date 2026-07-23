@@ -40,24 +40,29 @@
                     {{-- CAMPOS DE REPORTE Y ASIGNACIÓN (NORMALMENTE DEBEN SER DESHABILITADOS AL CERRAR) --}}
 
                     <x-select required="{{ $isClosing ? 'required' : '' }}" :selected="$fault->employee_reported_id" label="Reportado por"
-                        name="employee_reported_id" :items="$employeeReported" class="col-md-4" />
+                        name="employee_reported_id" :items="$employeeReported" class="col-md-4"
+                        btnAddUrl="{{ route('admin.sucursal.employees.create', ['back_url' => url()->full()]) }}" />
 
                     <x-select required="{{ $isClosing ? 'required' : '' }}" :selected="$fault->equipment_id" label="Equipo"
-                        name="equipment_id" :items="$equipment" class="col-md-4" classControl="select2 form-control" />
+                        name="equipment_id" :items="$equipment" class="col-md-4" classControl="select2 form-control"
+                        btnAddUrl="{{ route('admin.sucursal.equipment.create', ['back_url' => url()->full()]) }}" />
 
                     <x-select required="{{ $isClosing ? 'required' : '' }}" :selected="$fault->service_area_id" label="Area de servicio"
-                        name="service_area_id" :items="$serviceArea" class="col-md-4" classControl="select2 form-control" />
+                        name="service_area_id" :items="$serviceArea" class="col-md-4" classControl="select2 form-control"
+                        btnAddUrl="{{ route('admin.sucursal.service.areas.create', ['back_url' => url()->full()]) }}" />
 
                     {{-- CAMPOS DE ESTADO Y DESCRIPCIÓN --}}
 
                     {{-- El estado de la falla debe ser requerido y no deshabilitado --}}
                     <x-select :selected="$fault->fault_status_id" label="Status de la falla" name="fault_status_id" :items="$faultStatus"
-                        class="col-md-5" required="{{ $isClosing ? 'required' : '' }}" />
+                        class="col-md-5" required="{{ $isClosing ? 'required' : '' }}"
+                        btnAddUrl="{{ route('admin.sucursal.fault.statuses.create', ['back_url' => url()->full()]) }}" />
 
                     {{-- El estado de repuestos debe ser requerido y no deshabilitado --}}
                     <x-select :selected="$fault->spare_part_status_id" label="Status de repuestos" name="spare_part_status_id" :items="$sparePartStatuses"
                         class="col-md-3" classControl="select2 form-control"
-                        required="{{ $isClosing ? 'required' : '' }}" />
+                        required="{{ $isClosing ? 'required' : '' }}"
+                        btnAddUrl="{{ route('admin.sucursal.spare.part.statuses.create', ['back_url' => url()->full()]) }}" />
 
                     {{-- La descripción puede ser deshabilitada si no se permite edición --}}
                     <x-textarea-custom required="{{ $isClosing ? 'required' : '' }}" name="description"

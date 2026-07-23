@@ -68,10 +68,19 @@ class FaultService
 
     static function executors()
     {
-        $initValue = collect(["0" => "Seleccione"]);
+        return self::executorsByExternalFlag(0);
+    }
 
+    static function externalExecutors()
+    {
+        return self::executorsByExternalFlag(1);
+    }
+
+    private static function executorsByExternalFlag(bool $external)
+    {
         $employees = Employee::where('branch_id', session('branch')->id)
             ->where('executor', 1)
+            ->where('external', $external)
             ->select(
                 'id',
                 DB::raw("CONCAT(identification_number, ' - ', last_name, ' ', first_name) AS full_name")

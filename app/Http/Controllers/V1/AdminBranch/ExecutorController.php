@@ -56,7 +56,8 @@ class ExecutorController extends Controller
                 });
             })
             ->where('branch_id', session('branch')->id)
-            ->where('executor', 1);
+            ->where('executor', 1)
+            ->where('external', 1);
 
         [$sortBy, $sortDir] = $this->applySort($executorsQuery, $request, self::SORTABLE_COLUMNS, 'first_name', 'asc');
 

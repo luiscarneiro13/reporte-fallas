@@ -95,9 +95,11 @@
                     {{-- LOG DE MANTENIMIENTO --}}
 
                     @if ($isClosing)
-                        <x-select label="Actividad realizada por" name="executor_id" :items="$executors" class="col-md-4"
-                            classControl="select2 form-control" :selected="$fault->executor_id"
-                            required="{{ $isClosing ? 'required' : '' }}" />
+                        <x-select label="Ejecutor interno" name="executor_id" :items="$executors" class="col-md-4"
+                            classControl="select2 form-control" :selected="$fault->executor_id" />
+
+                        <x-select label="Ejecutor externo" name="executor_external_id" :items="$externalExecutors" class="col-md-4"
+                            classControl="select2 form-control" :selected="$fault->executor_external_id" />
 
                         {{-- El log de mantenimiento debe ser requerido --}}
                         <x-textarea-custom name="equipment_maintenance_log" label="Actividades realizadas al equipo"

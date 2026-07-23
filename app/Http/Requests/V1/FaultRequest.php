@@ -29,6 +29,12 @@ class FaultRequest extends FormRequest
             ]);
         }
 
+        if ($this->has('executor_external_id') && $this->input('executor_external_id') === '0') {
+            $this->merge([
+                'executor_external_id' => 0,
+            ]);
+        }
+
         // 2. ⭐ Lógica para el campo de FECHA de cierre (closed)
         // Si el campo 'closed' existe (bandera enviada como "true"),
         // lo reemplazamos con la FECHA actual en formato 'Y-m-d'.
@@ -109,6 +115,14 @@ class FaultRequest extends FormRequest
                     }
                 },
             ],
+            'executor_external_id' => [
+                'nullable', 'integer',
+                function ($attribute, $value, $fail) {
+                    if ($value !== 0 && !\DB::table('employees')->where('id', $value)->exists()) {
+                        $fail('El ejecutor externo seleccionado no es válido.');
+                    }
+                },
+            ],
             'equipment_maintenance_log' => ['nullable', 'string'],
         ];
 
@@ -127,9 +141,6 @@ class FaultRequest extends FormRequest
                 'scheduled_execution' => ['required', 'date'],
                 'completed_execution' => ['required', 'date'],
 
-                'executor_id' => [
-                    'required', 'integer', 'min:1',
-                ],
                 'equipment_maintenance_log' => ['required', 'string'],
             ];
 
@@ -179,9 +190,6 @@ class FaultRequest extends FormRequest
             'scheduled_execution.required' => 'La Ejecución planificada es obligatoria al cerrar la falla.',
             'completed_execution.required' => 'La Ejecución completada es obligatoria al cerrar la falla.',
 
-            'executor_id.required' => 'El campo Actividad realizada por es obligatorio al cerrar la falla.',
-            'executor_id.min' => 'Debe seleccionar un ejecutor válido al cerrar la falla.',
-
             'equipment_maintenance_log.required' => 'El registro de mantenimiento es obligatorio al cerrar la falla.',
         ];
 
@@ -220,6 +228,7 @@ class FaultRequest extends FormRequest
             'spare_part_status_id.exists' => 'El estatus del repuesto seleccionado no es válido.',
 
             'executor_id.integer' => 'El ID del ejecutor debe ser un número entero.',
+            'executor_external_id.integer' => 'El ID del ejecutor externo debe ser un número entero.',
 
             // Fechas
             'report_date.date' => 'La fecha de reporte debe ser una fecha válida.',

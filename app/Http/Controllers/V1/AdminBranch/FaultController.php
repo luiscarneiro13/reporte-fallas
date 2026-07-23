@@ -346,6 +346,7 @@ class FaultController extends Controller
 
         $employeeReported = FaultService::employeeReported();
         $executors = FaultService::executors();
+        $externalExecutors = FaultService::externalExecutors();
 
         return view(
             'V1.AdminBranch.Faults.edit',
@@ -356,6 +357,7 @@ class FaultController extends Controller
                 + compact('faultStatus')
                 + compact('sparePartStatuses')
                 + compact('executors')
+                + compact('externalExecutors')
         );
     }
 

@@ -27,7 +27,8 @@ class Fault extends Model
         'report_date', // Fecha del reporte
         'scheduled_execution', // Ejecución planificada
         'completed_execution', // Ejecución completada
-        'executor_id', // Actividad realizada por
+        'executor_id', // Ejecutor interno
+        'executor_external_id', // Ejecutor externo
 
         'equipment_maintenance_log', // Actividades realizadas al equipo
         'closed'
@@ -40,6 +41,7 @@ class Fault extends Model
         'fault_status_id' => 'integer',
         'spare_part_status_id' => 'integer',
         'executor_id' => 'integer',
+        'executor_external_id' => 'integer',
     ];
 
     protected $appends = ['days_since_report'];
@@ -49,6 +51,17 @@ class Fault extends Model
      * Esto limpia el controlador.
      */
     protected function executorId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(?string $value) => ($value == 0 || $value === '0') ? null : $value,
+        );
+    }
+
+    /**
+     * Mutator: Convierte 0 o "0" a NULL para la base de datos en el campo executor_external_id.
+     * Misma limpieza que executorId, para el select "Seleccione" del ejecutor externo.
+     */
+    protected function executorExternalId(): Attribute
     {
         return Attribute::make(
             set: fn(?string $value) => ($value == 0 || $value === '0') ? null : $value,
@@ -122,5 +135,10 @@ class Fault extends Model
     public function executor()
     {
         return $this->belongsTo(Employee::class, 'executor_id');
+    }
+
+    public function executorExternal()
+    {
+        return $this->belongsTo(Employee::class, 'executor_external_id');
     }
 }

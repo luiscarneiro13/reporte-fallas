@@ -100,7 +100,7 @@
 
                             <div class="emp-span-2">
                                 <x-label value="¿Posee certificado ocupacional vigente?" />
-                                {{ Form::select('has_occupational_certificate', [0 => 'No', 1 => 'Si'], old('has_occupational_certificate', 0), ['class' => 'form-control', 'id' => 'has_occupational_certificate_select']) }}
+                                {{ Form::select('has_occupational_certificate', [2 => 'N/A', 0 => 'No', 1 => 'Si'], old('has_occupational_certificate', 0), ['class' => 'form-control', 'id' => 'has_occupational_certificate_select']) }}
                             </div>
 
                             <div id="occupationalCertificateExpirationField">
@@ -111,7 +111,7 @@
 
                             <div>
                                 <x-label value="¿Posee licencia de conducir?" />
-                                {{ Form::select('has_driver_license', [0 => 'No', 1 => 'Si'], old('has_driver_license', 0), ['class' => 'form-control', 'id' => 'has_driver_license_select']) }}
+                                {{ Form::select('has_driver_license', [2 => 'N/A', 0 => 'No', 1 => 'Si'], old('has_driver_license', 0), ['class' => 'form-control', 'id' => 'has_driver_license_select']) }}
                             </div>
 
                             <div id="driverLicenseGradeField">

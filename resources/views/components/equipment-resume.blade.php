@@ -108,6 +108,10 @@
             }
 
             const selectParams = ['project_id', 'active'];
+            const selectEmptyValues = {
+                project_id: '0',
+                active: ''
+            };
             const textParams = ['internal_code', 'query'];
 
             function getFilterQueryString() {
@@ -115,7 +119,8 @@
 
                 selectParams.forEach(function(paramName) {
                     const selectedValue = $(`select[name="${paramName}"]`).val();
-                    if (selectedValue !== '0' && selectedValue !== '' && selectedValue !== null) {
+                    const emptyValue = selectEmptyValues[paramName];
+                    if (selectedValue !== emptyValue && selectedValue !== null) {
                         newParams.append(paramName, selectedValue);
                     }
                 });

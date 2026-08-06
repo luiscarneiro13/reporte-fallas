@@ -238,6 +238,21 @@ class FaultService
         return $query->count();
     }
 
+    static function totalActiveEmployees()
+    {
+        return Employee::where('branch_id', session('branch')->id)
+            ->where('external', 0)
+            ->whereHas('currentEmploymentPeriod')
+            ->count();
+    }
+
+    static function totalActiveEquipment()
+    {
+        return Equipment::where('branch_id', session('branch')->id)
+            ->where('active', true)
+            ->count();
+    }
+
     static function failuresByServiceArea($from = null, $to = null)
     {
         // Fallas activas

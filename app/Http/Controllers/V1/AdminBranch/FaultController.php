@@ -238,14 +238,15 @@ class FaultController extends Controller
             $faultsQuery->where('executor_id', $searchExecutorId);
         }
 
-        // 11. Aplicar filtro de búsqueda genérico (ID/Descripción/Internal ID/Internal Code)
+        // 11. Aplicar filtro de búsqueda genérico (ID/Descripción/Internal ID/Internal Code/Equipo)
         if ($query) {
             $faultsQuery->where(function ($q) use ($query) {
                 // ltrim para eliminar ceros a la izquierda si busca por ID (e.g., '00123' -> '123')
                 $q->where('id', ltrim($query, '0'))
                     ->orWhere('description', 'like', "%{$query}%")
                     ->orWhere('internal_id', 'like', "%{$query}%")
-                    ->orWhere('internal_code', 'like', "%{$query}%");
+                    ->orWhere('internal_code', 'like', "%{$query}%")
+                    ->orWhere('equipment_name', 'like', "%{$query}%");
             });
         }
 

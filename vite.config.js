@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/addBrand.js',
                 'resources/js/addCustomer.js',
                 'resources/js/addDivision.js',
+                'resources/js/charts/dashboard.js',
             ],
             refresh: true,
 

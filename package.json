@@ -18,6 +18,8 @@
         "vue": "^3.4.21"
     },
     "dependencies": {
+        "chart.js": "^4.5.1",
+        "chartjs-plugin-datalabels": "^2.2.0",
         "daterangepicker": "^3.1.0",
         "lodash": "^4.17.21",
         "sweetalert2": "^11.11.1",

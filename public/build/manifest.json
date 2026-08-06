@@ -16,7 +16,7 @@
     "name": "bootstrap"
   },
   "resources/css/app.css": {
-    "file": "assets/app-YnSHWLH0.css",
+    "file": "assets/app-Dcjm9cvR.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -53,7 +53,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-GSwQtyEg.js",
+    "file": "assets/app-DuuqMKRf.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -61,7 +61,13 @@
       "_bootstrap-BkjzROZU.js"
     ],
     "css": [
-      "assets/app-YnSHWLH0.css"
+      "assets/app-Dcjm9cvR.css"
     ]
+  },
+  "resources/js/charts/dashboard.js": {
+    "file": "assets/dashboard-DGFye1jw.js",
+    "name": "dashboard",
+    "src": "resources/js/charts/dashboard.js",
+    "isEntry": true
   }
 }

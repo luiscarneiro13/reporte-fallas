@@ -32,28 +32,6 @@ function resolveColors(labels, colors) {
     return labels.map((_, i) => DEFAULT_COLORS[i % DEFAULT_COLORS.length]);
 }
 
-// Plugin propio (no requiere dependencia externa): dibuja el total en el
-// hueco central de los gráficos doughnut. No dibuja nada en type: 'pie'.
-const centerTotalPlugin = {
-    id: 'centerTotal',
-    afterDraw(chart) {
-        if (chart.config.type !== 'doughnut') return;
-
-        const total = chart.data.datasets[0].data.reduce((sum, value) => sum + value, 0);
-        const { ctx, chartArea } = chart;
-        const centerX = (chartArea.left + chartArea.right) / 2;
-        const centerY = (chartArea.top + chartArea.bottom) / 2;
-
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = 'bold 24px sans-serif';
-        ctx.fillStyle = '#212529';
-        ctx.fillText(total, centerX, centerY);
-        ctx.restore();
-    },
-};
-
 /**
  * Crea un gráfico de torta (pie o doughnut) dentro del <canvas> indicado.
  *
@@ -102,7 +80,6 @@ export function createDoughnutChart(elementId, labels, values, options = {}) {
                 },
             ],
         },
-        plugins: [centerTotalPlugin],
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -131,8 +108,9 @@ export function createDoughnutChart(elementId, labels, values, options = {}) {
                 // chartjs-plugin-datalabels: escribe el valor/porcentaje directamente sobre el segmento.
                 datalabels: {
                     color: '#fff',
-                    font: { weight: 'bold', size: 12 },
+                    font: { weight: 'bold', size: 11 },
                     textAlign: 'center',
+                    clamp: true,
                     formatter(value) {
                         if (!total) return '';
                         const percent = ((value / total) * 100).toFixed(1) + '%';
@@ -142,10 +120,10 @@ export function createDoughnutChart(elementId, labels, values, options = {}) {
                         if (showPercent) return percent;
                         return '';
                     },
-                    display(ctx) {
-                        // Oculta la etiqueta en segmentos muy pequeños para no saturar el gráfico.
-                        const value = ctx.dataset.data[ctx.dataIndex];
-                        return (showValues || showPercent) && total > 0 && value / total > 0.03;
+                    display() {
+                        // Siempre visible: no se oculta en segmentos chicos, para que
+                        // ningún gajo de la dona se quede sin su número.
+                        return (showValues || showPercent) && total > 0;
                     },
                 },
             },

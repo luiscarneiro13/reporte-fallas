@@ -15,6 +15,7 @@ class ContractTypeController extends Controller
     use AlertResponser;
 
     const INDEX = "admin.sucursal.contract.types.index";
+    const PROTECTED_NAME = "Personal fijo";
 
     public function __construct()
     {
@@ -47,8 +48,11 @@ class ContractTypeController extends Controller
 
     public function edit(string $id)
     {
-        $back_url = request()->back_url ?? null;
         $contractType = ContractType::find($id);
+        if ($contractType && $contractType->name === self::PROTECTED_NAME) {
+            return $this->alertError(self::INDEX, 'El tipo de contrato "' . self::PROTECTED_NAME . '" no puede editarse.');
+        }
+        $back_url = request()->back_url ?? null;
         return view('V1.AdminBranch.ContractTypes.edit', compact('contractType', 'back_url'));
     }
 
@@ -59,6 +63,10 @@ class ContractTypeController extends Controller
 
     public function update(ContractTypeEditRequest $request, string $id)
     {
+        $contractType = ContractType::find($id);
+        if ($contractType && $contractType->name === self::PROTECTED_NAME) {
+            return $this->alertError(self::INDEX, 'El tipo de contrato "' . self::PROTECTED_NAME . '" no puede editarse.');
+        }
         return $this->saveOrUpdate($request, $id);
     }
 
@@ -99,6 +107,9 @@ class ContractTypeController extends Controller
     {
         try {
             $item = ContractType::find($id);
+            if ($item && $item->name === self::PROTECTED_NAME) {
+                return $this->alertError(self::INDEX, 'El tipo de contrato "' . self::PROTECTED_NAME . '" no puede eliminarse.');
+            }
             $item->delete();
             return $this->alertSuccess(self::INDEX, 'Tipo de contrato eliminado: ' . $item->name);
         } catch (\Throwable $th) {

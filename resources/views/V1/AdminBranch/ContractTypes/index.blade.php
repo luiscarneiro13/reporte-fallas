@@ -19,30 +19,34 @@
                 <tr>
                     <td>{{ $item->name }}</td>
                     <td>
-                        <div class="input-group" style="cursor:pointer;">
-                            <div>
-                                <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
-                                <div class="dropdown-menu">
+                        @if ($item->name !== 'Personal fijo')
+                            <div class="input-group" style="cursor:pointer;">
+                                <div>
+                                    <a class="dropdown-toggle btn-sm btn-dark" data-toggle="dropdown"></a>
+                                    <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="{{ route('admin.sucursal.contract.types.edit', $item) }}">
-                                        <i class="fa fa-edit">&nbsp;</i>
-                                        Editar
-                                    </a>
+                                        <a class="dropdown-item" href="{{ route('admin.sucursal.contract.types.edit', $item) }}">
+                                            <i class="fa fa-edit">&nbsp;</i>
+                                            Editar
+                                        </a>
 
-                                    <div class="dropdown-divider"></div>
-                                    <form class="formEliminar"
-                                        action="{{ route('admin.sucursal.contract.types.destroy', $item) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class="dropdown-item" type="submit">
-                                            <i class="fa fa-trash">&nbsp;</i>
-                                            Eliminar
-                                        </button>
-                                    </form>
+                                        <div class="dropdown-divider"></div>
+                                        <form class="formEliminar"
+                                            action="{{ route('admin.sucursal.contract.types.destroy', $item) }}" method="post">
+                                            @csrf
+                                            @method('delete')
+                                            <button class="dropdown-item" type="submit">
+                                                <i class="fa fa-trash">&nbsp;</i>
+                                                Eliminar
+                                            </button>
+                                        </form>
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <small class="text-muted">No se puede editar porque es un indicador</small>
+                        @endif
                     </td>
                 </tr>
             @empty

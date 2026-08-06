@@ -13,6 +13,7 @@ use App\Models\ContractType;
 use App\Models\Employee;
 use App\Models\Project;
 use App\Models\User;
+use App\Services\EmployeeService;
 use App\Services\UserService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
@@ -43,7 +44,23 @@ class EmployeeController extends Controller
         $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
         $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
         $this->middleware('permission:' . $basePermission . ' Eliminar')->only('destroy');
-        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy']);
+        $this->middleware('permission:Indicadores RRHH Ver')->only(['indicators']);
+        $this->middleware('permission:' . $basePermission . ' Ver')->except(['create', 'store', 'edit', 'update', 'destroy', 'indicators']);
+    }
+
+    public function indicators()
+    {
+        $totalActivePermanentEmployees = EmployeeService::totalActivePermanentEmployees();
+        $employeesByContractType = EmployeeService::employeesByContractType();
+        $employeesByProject = EmployeeService::employeesByProject();
+        $employeesByCargo = EmployeeService::employeesByCargo();
+
+        return view('V1.AdminBranch.Employees.indicators', compact(
+            'totalActivePermanentEmployees',
+            'employeesByContractType',
+            'employeesByProject',
+            'employeesByCargo'
+        ));
     }
 
     public function index(Request $request)

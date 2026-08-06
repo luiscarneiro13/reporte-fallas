@@ -370,6 +370,13 @@ return [
             'can' => ['Empleados Ver'],
             'submenu' => [
                 [
+                    'text' => 'Indicadores',
+                    'icon' => 'fas fa-chart-pie',
+                    'active' => ['v1/admin/indicadores-empleados*'],
+                    'route'  => 'admin.sucursal.employees.indicators',
+                    'can' => ['Indicadores RRHH Ver'],
+                ],
+                [
                     'text' => 'Empleados',
                     'icon' => 'fas fa-users',
                     'active' => ['v1/admin/empleados*'],

@@ -97,6 +97,9 @@ class Permisos
         'Proyectos Editar' => [0, 1, 2, 4],
         'Proyectos Eliminar' => [0, 1, 2, 4],
 
+        //Indicadores RRHH ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Indicadores RRHH Ver' => [0, 1, 2, 4],
+
         //Empleados ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
         'Empleados Ver' => [0, 1, 2, 4],
         'Empleados Crear' => [0, 1, 2, 4],

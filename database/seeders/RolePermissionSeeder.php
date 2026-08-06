@@ -27,7 +27,7 @@ class RolePermissionSeeder extends Seeder
 
         // 1. Iteración sobre el mapa de permisos
         foreach (Permisos::PERMISSIONS_MAP as $permissionName => $roleIndexes) {
-            $permission = Permission::firstOrCreate(['name' => $permissionName]);
+            $permission = Permission::firstOrCreate(['name' => $permissionName, 'guard_name' => 'sanctum']);
 
             // 2. Mapeo del índice numérico al nombre del rol
             foreach ($roleIndexes as $index) {

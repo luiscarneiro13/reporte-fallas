@@ -151,6 +151,7 @@ Route::middleware([
         Route::get('/equipos/fallas/{equipo}/imprimir', [EquipmentController::class, 'imp'])->name('equipos-fallas.imp');
         Route::resource('/status-fallas', FaultStatusController::class)->names('admin.sucursal.fault.statuses');
         Route::resource('/status-repuestos', SparePartStatusController::class)->names('admin.sucursal.spare.part.statuses');
+        Route::get('/indicadores-empleados', [EmployeeController::class, 'indicators'])->name('admin.sucursal.employees.indicators');
         Route::resource('/empleados', EmployeeController::class)->names('admin.sucursal.employees');
         Route::get('/empleados/{employee}/incidencias', [EmployeeController::class, 'incidents'])->name('admin.sucursal.employees.incidents');
         Route::get('/empleados/{employee}/excel', [EmployeeController::class, 'exportData'])->name('admin.sucursal.employees.excel');

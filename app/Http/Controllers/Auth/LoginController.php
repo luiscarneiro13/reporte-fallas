@@ -21,7 +21,17 @@ class LoginController extends Controller
         $sucursales = Branch::get()->mapWithKeys(function ($sucursal) {
             return [$sucursal->id => $sucursal->name];
         });
-        return view('auth.login', compact('sucursales'));
+
+        // El hosting compartido (LiteSpeed) cachea a nivel de servidor las páginas GET.
+        // Si /login queda cacheado, todos los visitantes reciben el mismo token @csrf
+        // "congelado" en el HTML, que ya no coincide con su sesión real -> error
+        // "Page Expired" (419) al enviar el formulario. X-LiteSpeed-Cache-Control es el
+        // header que LSCache respeta para excluir la respuesta de su caché de borde.
+        return response()
+            ->view('auth.login', compact('sucursales'))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('X-LiteSpeed-Cache-Control', 'no-cache');
     }
 
     public function store(LoginRequest $request)

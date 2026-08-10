@@ -84,42 +84,39 @@
 
             <div class="row">
                 {{-- ... Otros gráficos sin cambios ... --}}
-                <div class="col-md-6">
-                    <x-pie-chart title="Fallas por área de servicio" type="doughnut" :labels="$failuresByServiceArea['labels']"
-                        :values="$failuresByServiceArea['values']" :show-percent="false" />
+                <div class="col-md-12">
+                    <x-chart minHeight="500px" title="Fallas por área de servicio" type="bar" :labels="$failuresByServiceArea['labels']"
+                        :values="$failuresByServiceArea['values']" :show-percentages="false" />
                 </div>
-                 {{-- ... Otros gráficos sin cambios ... --}}
+                <div class="col-md-12">
+                    <x-chart title="Fallas por usuario" type="bar" :labels="$failuresByReporter['labels']"
+                        :values="$failuresByReporter['values']" :show-percentages="false" />
+                </div>
+
+            </div>
+             {{-- ... Otros gráficos sin cambios ... --}}
+            <div class="row">
                 <div class="col-md-6">
                     <x-pie-chart title="Fallas por proyectos" type="doughnut" :labels="$failuresByProject['labels']"
                         :values="$failuresByProject['values']" :show-percent="false" />
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <x-pie-chart title="Fallas por usuario" type="doughnut" :labels="$failuresByReporter['labels']"
-                        :values="$failuresByReporter['values']" :show-percent="false" />
-                </div>
-            </div>
-             {{-- ... Otros gráficos sin cambios ... --}}
-            <div class="row">
-
                 <div class="col-md-6">
                     <x-pie-chart title="Fallas por estatus" type="doughnut" :labels="$failuresByStatus['labels']"
                         :values="$failuresByStatus['values']" :show-percent="false" />
                 </div>
-
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <x-pie-chart title="Fallas por status de repuestos" type="doughnut" :labels="$failuresBySparePartStatus['labels']"
                         :values="$failuresBySparePartStatus['values']" :show-percent="false" />
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-6">
                     <x-pie-chart title="Fallas abiertas y cerradas" type="doughnut" :labels="$faultsByStatus['labels']"
                         :values="$faultsByStatus['values']" :show-percent="false" />
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <x-pie-chart title="Fallas por división" type="doughnut" :labels="$failuresByDivision['labels']"
                         :values="$failuresByDivision['values']" :show-percent="false" />

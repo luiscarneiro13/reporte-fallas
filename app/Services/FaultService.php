@@ -279,6 +279,9 @@ class FaultService
             ->groupBy('service_area_name')
             ->map(function ($items) {
                 return $items->sum('total');
+            })
+            ->sortByDesc(function ($total) {
+                return $total;
             });
 
         $labels = $failuresByDivision->keys()->toArray();
@@ -345,6 +348,9 @@ class FaultService
             // Usamos map para sumar los totales por reportero
             ->map(function ($items) {
                 return $items->sum('total');
+            })
+            ->sortByDesc(function ($total) {
+                return $total;
             });
 
         $labels = $failuresByReporter->keys()->toArray();

@@ -117,10 +117,32 @@
                 };
             }
 
+            // Plugin: dibuja el valor numérico arriba de cada barra
+            const barValueLabelsPlugin = {
+                afterDatasetsDraw: function(chart) {
+                    if (chartType !== 'bar') return;
+                    const context = chart.ctx;
+                    context.save();
+                    context.font = 'bold 11px sans-serif';
+                    context.fillStyle = '#212529';
+                    context.textAlign = 'center';
+                    context.textBaseline = 'bottom';
+                    chart.data.datasets.forEach(function(dataset, i) {
+                        const meta = chart.getDatasetMeta(i);
+                        meta.data.forEach(function(bar, index) {
+                            const value = dataset.data[index];
+                            context.fillText(value, bar._model.x, bar._model.y - 5);
+                        });
+                    });
+                    context.restore();
+                }
+            };
+
             new Chart(ctx, {
                 type: chartType,
                 data: chartData,
-                options: chartOptions
+                options: chartOptions,
+                plugins: chartType === 'bar' ? [barValueLabelsPlugin] : []
             });
         });
     </script>

@@ -62,7 +62,10 @@ class EmployeeService
             ->groupBy(function ($employee) {
                 return $employee->cargo->name ?? 'Sin cargo';
             })
-            ->map->count();
+            ->map->count()
+            ->sortByDesc(function ($total) {
+                return $total;
+            });
 
         return [
             'labels' => $counts->keys()->toArray(),

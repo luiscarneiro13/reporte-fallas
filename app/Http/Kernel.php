@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class, //Agregado
         'role'       => \Spatie\Permission\Middleware\RoleMiddleware::class, // Opcional, pero recomendado
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class, // Opcional
+        'sanctum.guard' => \App\Http\Middleware\ForceSanctumGuard::class,
     ];
 }

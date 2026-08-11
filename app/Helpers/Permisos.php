@@ -141,5 +141,56 @@ class Permisos
         'Fallas Crear' => [0, 1, 2, 3, 4],
         'Fallas Editar' => [0, 1, 2, 4],
         'Fallas Eliminar' => [0, 1, 2, 4],
+
+        // --- Agregados para la API REST (docs/api-endpoints-spec.md) ---
+
+        //Ejecutores (mismo modelo Employee, executor=1) ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Ejecutores Ver' => [0, 1, 2, 4],
+        'Ejecutores Crear' => [0, 1, 2, 4],
+        'Ejecutores Editar' => [0, 1, 2, 4],
+        'Ejecutores Eliminar' => [0, 1, 2, 4],
+
+        //Propietarios (catálogo global de equipos) ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Propietarios Ver' => [0, 1, 2, 4],
+        'Propietarios Crear' => [0, 1, 2, 4],
+        'Propietarios Editar' => [0, 1, 2, 4],
+        'Propietarios Eliminar' => [0, 1, 2, 4],
+
+        //Marcas ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Marcas Ver' => [0, 1, 2, 4],
+        'Marcas Crear' => [0, 1, 2, 4],
+        'Marcas Editar' => [0, 1, 2, 4],
+        'Marcas Eliminar' => [0, 1, 2, 4],
+
+        //Modelos de Vehiculo ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Modelos de Vehiculo Ver' => [0, 1, 2, 4],
+        'Modelos de Vehiculo Crear' => [0, 1, 2, 4],
+        'Modelos de Vehiculo Editar' => [0, 1, 2, 4],
+        'Modelos de Vehiculo Eliminar' => [0, 1, 2, 4],
+
+        //Tipos de Articulos ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Tipos de Articulos Ver' => [0, 1, 2, 4],
+        'Tipos de Articulos Crear' => [0, 1, 2, 4],
+        'Tipos de Articulos Editar' => [0, 1, 2, 4],
+        'Tipos de Articulos Eliminar' => [0, 1, 2, 4],
+
+        //Servicios ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Servicios Ver' => [0, 1, 2, 4],
+        'Servicios Crear' => [0, 1, 2, 4],
+        'Servicios Editar' => [0, 1, 2, 4],
+        'Servicios Eliminar' => [0, 1, 2, 4],
+
+        //Metodos de Pago ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Metodos de Pago Ver' => [0, 1, 2, 4],
+        'Metodos de Pago Crear' => [0, 1, 2, 4],
+        'Metodos de Pago Editar' => [0, 1, 2, 4],
+        'Metodos de Pago Eliminar' => [0, 1, 2, 4],
+
+        // Configuración global (tax/discount) ['Super Admin' => 0, 'Admin' => 1]
+        'Configuracion Editar' => [0, 1],
+
+        // Tasa diaria (histórico append-only) ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Coordinador' => 4]
+        'Tasa Diaria Ver' => [0, 1, 2, 4],
+        'Tasa Diaria Crear' => [0, 1, 2, 4],
     ];
 }

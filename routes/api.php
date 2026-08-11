@@ -77,6 +77,20 @@ use App\Http\Controllers\Api\V1\Catalog\SupplierController as V1SupplierControll
 use App\Http\Controllers\Api\V1\Catalog\TypeArticleController as V1TypeArticleController;
 
 Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
+    Route::get('health', function () {
+        return response()->json(['success' => true, 'message' => 'OK', 'data' => ['status' => 'ok']]);
+    });
+
+    // TODO: min_supported_version/latest_version son placeholders — ajustar al
+    // esquema de versionado real de la app móvil cuando se defina.
+    Route::get('app/version', function () {
+        return response()->json(['success' => true, 'message' => 'OK', 'data' => [
+            'min_supported_version' => '1.0.0',
+            'latest_version' => '1.0.0',
+            'force_update' => false,
+        ]]);
+    });
+
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login-api');
 
     Route::middleware('auth:sanctum')->group(function () {

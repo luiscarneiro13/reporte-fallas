@@ -147,12 +147,14 @@ Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
             Route::get('tasa-diaria', [V1DailyRateController::class, 'show']);
             Route::post('tasa-diaria', [V1DailyRateController::class, 'store']);
         });
+    });
 
-        // Mantenimiento de un solo uso. La autorización (rol + token extra)
-        // se aplica en el constructor del controlador, no acá, siguiendo la
-        // convención del resto de la API (ver EquipmentUuidBackfillController).
-        Route::prefix('super-admin')->group(function () {
-            Route::get('equipment/backfill-uuid', [EquipmentUuidBackfillController::class, 'backfill']);
-        });
+    // Mantenimiento de un solo uso: sin auth:sanctum a propósito, solo el
+    // token de .env (MAINTENANCE_TOKEN) validado en el constructor del
+    // controlador — para poder dispararlo directo por curl/navegador sin
+    // necesitar loguearse. Retirar esta ruta una vez terminado el backfill
+    // (ver EquipmentUuidBackfillController).
+    Route::prefix('super-admin')->group(function () {
+        Route::get('equipment/backfill-uuid', [EquipmentUuidBackfillController::class, 'backfill']);
     });
 });

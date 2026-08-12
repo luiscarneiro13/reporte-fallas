@@ -14,19 +14,15 @@ use Illuminate\Http\Request;
  * (sin SSH/CLI) — se dispara a mano (curl/navegador), una o varias veces,
  * hasta que la respuesta diga remaining=0.
  *
- * Es de un solo uso: una vez en remaining=0 y hecha la migración que pasa
- * uuid a NOT NULL, retirar esta ruta/controlador (o gatear con un env flag)
- * en vez de dejarla expuesta indefinidamente.
+ * SIN NINGUNA PROTECCIÓN (a pedido explícito): quien tenga la URL puede
+ * ejecutarlo. Es tolerable porque es idempotente y solo toca filas con
+ * uuid nulo (no puede pisar ni duplicar datos), pero por eso mismo es
+ * crítico borrar esta ruta/controlador en cuanto remaining llegue a 0 y se
+ * aplique la migración NOT NULL — no dejarla expuesta indefinidamente.
  */
 class EquipmentUuidBackfillController extends Controller
 {
     use ApiResponse;
-
-    public function __construct()
-    {
-        $this->middleware('role:Super Admin');
-        $this->middleware('maintenance.token');
-    }
 
     public function backfill(Request $request, EquipmentUuidService $uuidService)
     {

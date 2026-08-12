@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\CustomerController as ApiCustomer;
 use App\Http\Controllers\Api\ServiceController as ApiService;
 use App\Http\Controllers\Api\V1\CustomerApiController;
 use App\Http\Controllers\Api\V1\DivisionApiController;
+use App\Http\Controllers\Api\V1\SuperAdmin\EquipmentUuidBackfillController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,6 +146,13 @@ Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
 
             Route::get('tasa-diaria', [V1DailyRateController::class, 'show']);
             Route::post('tasa-diaria', [V1DailyRateController::class, 'store']);
+        });
+
+        // Mantenimiento de un solo uso. La autorización (rol + token extra)
+        // se aplica en el constructor del controlador, no acá, siguiendo la
+        // convención del resto de la API (ver EquipmentUuidBackfillController).
+        Route::prefix('super-admin')->group(function () {
+            Route::get('equipment/backfill-uuid', [EquipmentUuidBackfillController::class, 'backfill']);
         });
     });
 });

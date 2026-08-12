@@ -15,9 +15,14 @@ class Equipment extends Model
 
     protected $table = "equipment";
 
+    protected $casts = [
+        'uuid' => 'string',
+    ];
+
     protected $fillable = [
         'branch_id',
         'project_id',
+        'uuid',
         'internal_code',
         'owner',
         'placa',

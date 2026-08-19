@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\DB;
 class FaultService
 {
 
-    static function employeeReported()
+    /**
+     * $branchId es opcional (default: session('branch')->id) para que la web
+     * siga funcionando sin cambios y la API (stateless, sin sesión) pueda
+     * pasar el branch_id explícito vía BranchHelper::getBranchId() — así
+     * ambas usan literalmente el mismo código y no pueden desincronizarse en
+     * orden/formato de los catálogos.
+     */
+    static function employeeReported($branchId = null)
     {
-        $employees = Employee::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $employees = Employee::where('branch_id', $branchId)
             ->where('external', 0)
             ->select(
                 'id',
@@ -26,9 +35,11 @@ class FaultService
         return $employees;
     }
 
-    static function equipment()
+    static function equipment($branchId = null)
     {
-        $equipment = Equipment::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $equipment = Equipment::where('branch_id', $branchId)
             ->select(
                 'id',
                 DB::raw("CONCAT_WS(' - ',type, internal_code, placa, vehicle_model) AS full_placa")
@@ -39,46 +50,54 @@ class FaultService
         return $equipment;
     }
 
-    static function serviceArea()
+    static function serviceArea($branchId = null)
     {
-        $serviceArea = ServiceArea::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $serviceArea = ServiceArea::where('branch_id', $branchId)
             ->orderBy('name', 'asc')
             ->pluck('name', 'id');
 
         return $serviceArea;
     }
 
-    static function faultStatus()
+    static function faultStatus($branchId = null)
     {
-        $faultStatuses = FaultStatus::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $faultStatuses = FaultStatus::where('branch_id', $branchId)
             ->orderBy('name', 'asc')
             ->pluck('name', 'id');
 
         return $faultStatuses;
     }
 
-    static function sparePartStatuses()
+    static function sparePartStatuses($branchId = null)
     {
-        $sparePartStatuses = SparePartStatus::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $sparePartStatuses = SparePartStatus::where('branch_id', $branchId)
             ->orderBy('name', 'asc')
             ->pluck('name', 'id');
 
         return $sparePartStatuses;
     }
 
-    static function executors()
+    static function executors($branchId = null)
     {
-        return self::executorsByExternalFlag(0);
+        return self::executorsByExternalFlag(0, $branchId);
     }
 
-    static function externalExecutors()
+    static function externalExecutors($branchId = null)
     {
-        return self::executorsByExternalFlag(1);
+        return self::executorsByExternalFlag(1, $branchId);
     }
 
-    private static function executorsByExternalFlag(bool $external)
+    private static function executorsByExternalFlag(bool $external, $branchId = null)
     {
-        $employees = Employee::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $employees = Employee::where('branch_id', $branchId)
             ->where('executor', 1)
             ->where('external', $external)
             ->select(
@@ -99,9 +118,11 @@ class FaultService
         return $result;
     }
 
-    static function projects()
+    static function projects($branchId = null)
     {
-        $projects = Project::where('branch_id', session('branch')->id)
+        $branchId ??= session('branch')->id;
+
+        $projects = Project::where('branch_id', $branchId)
             ->orderBy('name', 'asc')
             ->pluck('name', 'id');
 

@@ -43,6 +43,25 @@ trait ApiResponse
         return response()->json($payload, $code);
     }
 
+    /**
+     * Convierte un catálogo id=>texto (Collection o array asociativo) en un
+     * array ORDENADO de {id, label}. Necesario para cualquier dropdown: un
+     * objeto JSON con claves numéricas ("0","3","9"...) se reordena solo en
+     * orden ascendente al parsearse en JS (V8, Hermes de React Native, etc,
+     * por spec de ECMAScript) sin importar el orden real que mandó el
+     * backend — un array sí preserva el orden siempre.
+     */
+    protected function toOptions(iterable $collection): array
+    {
+        $options = [];
+
+        foreach ($collection as $id => $label) {
+            $options[] = ['id' => (string) $id, 'label' => $label];
+        }
+
+        return $options;
+    }
+
     protected function paginatedResponse(LengthAwarePaginator $paginator, string $message = 'Operación exitosa'): JsonResponse
     {
         return $this->success([

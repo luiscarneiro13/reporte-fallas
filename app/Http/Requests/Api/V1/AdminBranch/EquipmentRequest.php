@@ -27,6 +27,9 @@ class EquipmentRequest extends ApiFormRequest
             'internal_code' => ['nullable', 'string', 'max:20', 'min:3'],
             'color' => ['nullable', 'string', 'max:20', 'min:3'],
             'origin' => ['nullable', 'string', 'max:255', 'min:3'],
+            'model_year' => ['nullable', 'string'],
+            'racda' => ['nullable', 'string', 'max:10'],
+            'active' => ['sometimes', 'boolean'],
             'project_id' => ['nullable'],
             'project_id.*' => ['integer', 'exists:projects,id'],
         ];

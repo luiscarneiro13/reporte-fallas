@@ -6,6 +6,7 @@ use App\Helpers\BranchHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminBranch\EquipmentRequest;
 use App\Models\Equipment;
+use App\Services\EquipmentService;
 use App\Traits\Api\ApiResponse;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
@@ -58,9 +59,50 @@ class EquipmentController extends Controller
             }
         }
 
+        // Filtros propios (independientes de `query`), igual que la pantalla web.
+        if ($internalCode = $request->query('internal_code')) {
+            $query->where('internal_code', 'like', "%{$internalCode}%");
+        }
+
+        if (($projectId = $request->query('project_id')) && $projectId != '0') {
+            $query->whereHas('projects', function ($projectQuery) use ($projectId) {
+                $projectQuery->where('projects.id', $projectId);
+            });
+        }
+
+        $active = $request->query('active');
+        if ($active !== null && $active !== '') {
+            $query->where('active', (bool) $active);
+        }
+
         $this->applySort($query, $request, self::SORTABLE_COLUMNS, 'id', 'desc');
 
         return $this->paginatedResponse($query->paginate(10));
+    }
+
+    /**
+     * Catálogos para el formulario de crear/editar equipo (proyectos, tipos,
+     * años, opciones de RACDA), mismos datos y mismo texto que
+     * V1\AdminBranch\EquipmentController::create()/edit() en la web.
+     */
+    public function createData()
+    {
+        $branchId = BranchHelper::getBranchId();
+
+        if (!$branchId) {
+            return $this->error('No hay una sucursal asociada al usuario autenticado.', 400);
+        }
+
+        return $this->success([
+            'projects' => $this->toOptions(EquipmentService::projectsForForm($branchId)->prepend('Stand by / Sin Proyecto', '0')),
+            'equipment_types' => $this->toOptions(EquipmentService::equipmentTypes($branchId)->prepend('Seleccione', '0')),
+            'model_years' => $this->toOptions(EquipmentService::modelYears()),
+            // OJO: en la web esto es Form::select('racda', ['Si','No','N/A'], ...)
+            // sin claves explícitas — Laravel usa el índice numérico (0,1,2) como
+            // valor real guardado en equipment.racda, NO el texto. Se replica tal
+            // cual para que el dato grabado sea compatible con la web.
+            'racda_options' => $this->toOptions(['0' => 'Si', '1' => 'No', '2' => 'N/A']),
+        ]);
     }
 
     public function show(string $id)
@@ -123,6 +165,11 @@ class EquipmentController extends Controller
         $item->internal_code = $request->input('internal_code');
         $item->color = $request->input('color');
         $item->origin = $request->input('origin');
+        // model_year, racda y active también estaban validados/fillable pero
+        // nunca se asignaban acá — se perdían en cada store/update por la API.
+        $item->model_year = $request->input('model_year');
+        $item->racda = $request->input('racda');
+        $item->active = $request->boolean('active', true);
         $item->branch_id = $branchId;
         $item->save();
 

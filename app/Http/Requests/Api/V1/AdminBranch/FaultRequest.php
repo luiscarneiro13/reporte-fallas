@@ -22,6 +22,10 @@ class FaultRequest extends ApiFormRequest
             $this->merge(['executor_id' => 0]);
         }
 
+        if ($this->has('executor_external_id') && $this->input('executor_external_id') === '0') {
+            $this->merge(['executor_external_id' => 0]);
+        }
+
         // El payload trae la clave 'closed' como bandera de cierre: se reemplaza
         // por la fecha actual del servidor, el cliente no controla la fecha de cierre.
         if ($this->has('closed')) {
@@ -81,10 +85,14 @@ class FaultRequest extends ApiFormRequest
             'scheduled_execution' => ['nullable', 'date'],
             'completed_execution' => ['nullable', 'date'],
             'executor_id' => ['nullable', 'integer'],
+            'executor_external_id' => ['nullable', 'integer'],
             'equipment_maintenance_log' => ['nullable', 'string'],
         ];
 
         if ($this->has('closed')) {
+            // executor_id/executor_external_id quedan nullable también al cerrar
+            // (igual que el FormRequest web): son alternativas entre sí — un cierre
+            // válido puede traer solo ejecutor externo, sin ejecutor interno.
             $rules = array_merge($rules, [
                 'employee_reported_id' => ['required', 'integer', 'exists:employees,id'],
                 'equipment_id' => ['required', 'integer', 'exists:equipment,id'],
@@ -94,7 +102,6 @@ class FaultRequest extends ApiFormRequest
                 'report_date' => ['required', 'date'],
                 'scheduled_execution' => ['required', 'date'],
                 'completed_execution' => ['required', 'date'],
-                'executor_id' => ['required', 'integer', 'min:1'],
                 'equipment_maintenance_log' => ['required', 'string'],
             ]);
         }

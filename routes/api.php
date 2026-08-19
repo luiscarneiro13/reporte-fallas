@@ -108,11 +108,13 @@ Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
             Route::apiResource('empleados', V1EmployeeController::class)->parameters(['empleados' => 'id']);
             Route::apiResource('ejecutores', V1ExecutorController::class)->parameters(['ejecutores' => 'id']);
 
+            Route::get('equipos/crear-datos', [V1EquipmentController::class, 'createData']);
             Route::get('equipos/{id}/historial', [V1EquipmentController::class, 'historial']);
             Route::apiResource('equipos', V1EquipmentController::class)->parameters(['equipos' => 'id']);
             Route::apiResource('tipos-equipo', V1EquipmentTypeController::class)->parameters(['tipos-equipo' => 'id']);
 
             Route::get('fallas/crear-datos', [V1FaultController::class, 'createData']);
+            Route::get('fallas/filtros-datos', [V1FaultController::class, 'filtrosData']);
             Route::apiResource('fallas', V1FaultController::class)->parameters(['fallas' => 'id']);
 
             Route::apiResource('estados-falla', V1FaultStatusController::class)->parameters(['estados-falla' => 'id']);

@@ -5,16 +5,13 @@ namespace App\Http\Controllers\Api\V1\AdminBranch;
 use App\Helpers\BranchHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\AdminBranch\FaultRequest;
-use App\Models\Employee;
-use App\Models\Equipment;
 use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Models\FaultStatus;
 use App\Models\FaultView;
 use App\Mail\CerrarFallaEmail;
 use App\Mail\ReportarFallaEmail;
-use App\Models\ServiceArea;
-use App\Models\SparePartStatus;
+use App\Services\FaultService;
 use App\Traits\Api\ApiResponse;
 use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
@@ -62,17 +59,10 @@ class FaultController extends Controller
         $user = $request->user();
         $isOperator = $user->hasRole('Operador', 'sanctum');
 
-        $equipmentQuery = Equipment::where('branch_id', $branchId);
-        $serviceAreaQuery = ServiceArea::where('branch_id', $branchId);
-        $employeeQuery = Employee::where('branch_id', $branchId)->where('external', 0);
-        $executorQuery = Employee::where('branch_id', $branchId)->where('executor', 1);
-
-        $employeeReported = $employeeQuery->get()
-            ->mapWithKeys(fn ($e) => [$e->id => "{$e->identification_number} - {$e->first_name} {$e->last_name}"]);
-
-        $executors = collect(['0' => 'Seleccione'])
-            ->union($executorQuery->get()->mapWithKeys(fn ($e) => [$e->id => "{$e->identification_number} - {$e->first_name} {$e->last_name}"]));
-
+        // Mismos métodos de FaultService que usa la web (FaultController::create()),
+        // pasando branch_id explícito porque la API es stateless (sin session('branch')).
+        // Así el orden y el texto de cada catálogo quedan literalmente en un solo
+        // lugar — no se pueden volver a desincronizar entre web y API.
         $defaultFaultStatusId = null;
         $defaultEmployeeReportedId = null;
 
@@ -83,20 +73,44 @@ class FaultController extends Controller
             $defaultFaultStatusId = $internalStatus->id;
             $defaultEmployeeReportedId = $user->employees()->first()?->id;
         } else {
-            $faultStatus = FaultStatus::where('branch_id', $branchId)
-                ->where('name', '!=', 'closed')
-                ->pluck('name', 'id');
+            // Solo lleva "Seleccione" cuando NO es Operador — para ese rol el
+            // estatus queda fijo, igual que en FaultController::create() (web).
+            $faultStatus = FaultService::faultStatus($branchId)->prepend('Seleccione', '0');
         }
 
         return $this->success([
-            'equipment' => $equipmentQuery->get()->mapWithKeys(fn ($e) => [$e->id => $e->full_equipment_name]),
-            'service_area' => $serviceAreaQuery->pluck('name', 'id'),
-            'fault_status' => $faultStatus,
-            'spare_part_status' => SparePartStatus::where('branch_id', $branchId)->pluck('name', 'id'),
-            'employee_reported' => $employeeReported,
-            'executors' => $executors,
+            'equipment' => $this->toOptions(FaultService::equipment($branchId)->prepend('Seleccione', '0')),
+            'service_area' => $this->toOptions(FaultService::serviceArea($branchId)->prepend('Seleccione', '0')),
+            'fault_status' => $this->toOptions($faultStatus),
+            'spare_part_status' => $this->toOptions(FaultService::sparePartStatuses($branchId)->prepend('Seleccione', '0')),
+            'employee_reported' => $this->toOptions(FaultService::employeeReported($branchId)->prepend('Seleccione', '0')),
+            'executors_internal' => $this->toOptions(FaultService::executors($branchId)),
+            'executors_external' => $this->toOptions(FaultService::externalExecutors($branchId)),
             'default_fault_status_id' => $defaultFaultStatusId,
             'default_employee_reported_id' => $defaultEmployeeReportedId,
+        ]);
+    }
+
+    /**
+     * Catálogos para la barra de filtros del listado (V1\AdminBranch\FaultController::index,
+     * web). Distinto de createData(): acá el placeholder es "Todos" (no
+     * "Seleccione") y SÍ incluye proyectos — filtros del listado, no campos
+     * de un formulario.
+     */
+    public function filtrosData()
+    {
+        $branchId = BranchHelper::getBranchId();
+
+        if (!$branchId) {
+            return $this->error('No hay una sucursal asociada al usuario autenticado.', 400);
+        }
+
+        return $this->success([
+            'equipment' => $this->toOptions(FaultService::equipment($branchId)->prepend('Todos', '0')),
+            'service_area' => $this->toOptions(FaultService::serviceArea($branchId)->prepend('Todos', '0')),
+            'fault_status' => $this->toOptions(FaultService::faultStatus($branchId)->prepend('Todos', '0')),
+            'spare_part_status' => $this->toOptions(FaultService::sparePartStatuses($branchId)->prepend('Todos', '0')),
+            'projects' => $this->toOptions(FaultService::projects($branchId)->prepend('Todos', '0')),
         ]);
     }
 
@@ -157,7 +171,8 @@ class FaultController extends Controller
                     $q->where('id', ltrim($search, '0') ?: '0')
                         ->orWhere('description', 'like', "%{$search}%")
                         ->orWhere('internal_id', 'like', "%{$search}%")
-                        ->orWhere('internal_code', 'like', "%{$search}%");
+                        ->orWhere('internal_code', 'like', "%{$search}%")
+                        ->orWhere('equipment_name', 'like', "%{$search}%");
                 });
             }
             if ($equipmentName = $request->query('equipment_name')) {
@@ -189,7 +204,9 @@ class FaultController extends Controller
             $query->whereNull('closed_at');
         }
 
-        $this->applySort($query, $request, self::SORTABLE_COLUMNS, 'id', 'desc');
+        // Mismo default que la web (V1\AdminBranch\FaultController::getFilteredFaultsQuery):
+        // sin sort_by explícito, ordena por duration_days desc (las que llevan más tiempo primero).
+        $this->applySort($query, $request, self::SORTABLE_COLUMNS, 'duration_days', 'desc');
 
         $statsBase = (clone $baseQuery);
         $applyFilters($statsBase);

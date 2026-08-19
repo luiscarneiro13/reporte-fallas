@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\EquipmentEditRequest;
 use App\Http\Requests\V1\EquipmentRequest;
 use App\Models\Equipment;
-use App\Models\EquipmentType;
 use App\Models\FaultHistory;
-use App\Models\Project;
+use App\Services\EquipmentService;
 use App\Traits\AlertResponser;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
@@ -54,7 +53,7 @@ class EquipmentController extends Controller
         $sortDir = $result['sort_dir'];
 
         // 3. Datos para el select de filtro por proyecto
-        $projects = Project::where('branch_id', session('branch')->id)->orderBy('name')->pluck('name', 'id')->prepend('Todos', '0');
+        $projects = EquipmentService::projectsForFilter()->prepend('Todos', '0');
 
         // 4. Devolver la vista con los resultados
         return view('V1.AdminBranch.Equipment.index', compact('equipment', 'sortBy', 'sortDir', 'projects'));
@@ -140,11 +139,9 @@ class EquipmentController extends Controller
     public function create()
     {
         $back_url = request()->back_url ?? null;
-        $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
-        $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
-        $modelYears = $this->getModelYears();
-        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name', 'name');
-        $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
+        $projects = EquipmentService::projectsForForm()->prepend('Stand by / Sin Proyecto', '0');
+        $modelYears = EquipmentService::modelYears();
+        $equipmentTypes = EquipmentService::equipmentTypes()->prepend('Seleccione', '0');
         return view('V1.AdminBranch.Equipment.create', compact('back_url', 'projects', 'modelYears', 'equipmentTypes'));
     }
 
@@ -196,8 +193,7 @@ class EquipmentController extends Controller
     public function edit(string $id)
     {
         $back_url = request()->back_url ?? null;
-        $projectsCollection = Project::where('branch_id', session('branch')->id)->pluck('name', 'id');
-        $projects = $projectsCollection->prepend('Stand by / Sin Proyecto', '0');
+        $projects = EquipmentService::projectsForForm()->prepend('Stand by / Sin Proyecto', '0');
         $equipment = Equipment::query()
             ->where('id', $id)
             ->with([
@@ -205,9 +201,8 @@ class EquipmentController extends Controller
                     $projectQuery->select('projects.id', 'name');
                 },
             ])->first();
-        $modelYears = $this->getModelYears();
-        $equipmentTypesCollection = EquipmentType::where('branch_id', session('branch')->id)->pluck('name', 'name');
-        $equipmentTypes = $equipmentTypesCollection->prepend('Seleccione', '0');
+        $modelYears = EquipmentService::modelYears();
+        $equipmentTypes = EquipmentService::equipmentTypes()->prepend('Seleccione', '0');
 
         return view('V1.AdminBranch.Equipment.edit', compact('back_url', 'projects', 'equipment', 'modelYears', 'equipmentTypes'));
     }
@@ -306,30 +301,5 @@ class EquipmentController extends Controller
         } catch (\Throwable $th) {
             return $this->alertError(self::INDEX);
         }
-    }
-
-    function getModelYears(int $startYear = 1940): array
-    {
-        // Obtiene el año actual
-        $endYear = date('Y');
-
-        // 1. Genera el rango de números y lo convierte en una Colección de Laravel.
-        $yearsCollection = collect(range($startYear, $endYear));
-
-        // 2. Invierte la colección para tener los años más nuevos primero.
-        $yearsCollection = $yearsCollection->reverse();
-
-        // 3. Mapea la colección para que el valor (año) se use como clave y valor.
-        // Usamos strval para asegurar que tanto la clave como el valor son strings.
-        $modelYears = $yearsCollection->mapWithKeys(function ($year) {
-            $yearString = strval($year);
-            // Retorna un array [clave => valor]
-            return [$yearString => $yearString];
-        });
-
-        $modelYears->prepend('N/A', '');
-
-        // 4. Retorna el array subyacente de la colección.
-        return $modelYears->all();
     }
 }

@@ -957,14 +957,35 @@ Permisos nuevos agregados a `app/Helpers/Permisos.php` (no existían): `Ejecutor
 *`, `Propietarios *`, `Marcas *`, `Modelos de Vehiculo *`, `Tipos de Articulos *`,
 `Servicios *`, `Metodos de Pago *`, `Configuracion Editar`, `Tasa Diaria Ver/Crear`.
 
+## 8.1.1 Push notifications (Expo) — implementado (2026-08-20)
+
+Igual arquitectura que ironflow (`ExpoPushService` de transporte + `PushNotificationService`
+de negocio, sin SDK de Firebase), con dos desviaciones deliberadas respecto al original:
+
+- Columna `platform` de `push_tokens` es **nullable**: el registro embebido en el
+  login (único camino que usa hoy `app-reporte-fallas`, vía `expo_token` en
+  `POST /login`) no recibe la plataforma real del dispositivo. ironflow hardcodea
+  `'android'` ahí, lo cual es incorrecto para iOS — se prefirió dejar `null` en vez
+  de mentir el dato. El endpoint dedicado `POST /mobile/push-tokens` sí exige
+  `platform` (`required|in:android,ios`).
+- El payload de push no incluye `url` (ironflow apunta a `https://tryironflow.com/...`,
+  dominio que no existe acá): el listener de `app-reporte-fallas` (`App.js`) ya navega
+  solo con `data.type` (`fault_created`/`fault_closed`) + `data.fault_id`.
+
+Endpoints: `GET/POST/DELETE /api/v1/mobile/push-tokens` (`V1\Mobile\PushTokenController`)
+y `POST /api/v1/admin/push/test` (`V1\Admin\PushTestController`, solo Super Admin/Admin),
+igual contrato al documentado en §6.4-6.5. Disparado desde
+`V1\AdminBranch\FaultController::saveOrUpdate()`: `notifyNewFault` solo en alta nueva
+(no en `update`), `notifyClosedFault` en la rama de cierre — ambos envueltos en
+`try/catch` (dentro del propio servicio), no rompen el flujo de creación/cierre si Expo
+falla. Destinatarios: admins/supervisores de la sucursal de la falla (+ el operador que
+la reportó, en el caso de cierre).
+
 ## 8.2 Pendiente / fuera de alcance (decisión explícita, no olvido)
 
 - **Sync offline-first** (`POST /fallas/sync`, `GET /sync/initial-data`) — no
   implementado. Requiere columna `local_id` en `faults` (no existe) y tabla
   `operation_idempotency_keys` (no existe).
-- **Push notifications** (Expo) — no implementado. Requiere tabla `push_tokens`,
-  `ExpoPushService`, `PushNotificationService`. El login tampoco acepta/registra
-  `expo_token` por este motivo.
 - **Namespace Super Admin** (`/api/v1/super-admin/...`: sucursales, usuarios,
   roles/permisos vía API) — no implementado.
 - **Límite de plan por sucursal** (`Subscription`/`Plan`, `max_equipment`) — no

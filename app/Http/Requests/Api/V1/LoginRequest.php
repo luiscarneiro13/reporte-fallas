@@ -9,6 +9,7 @@ class LoginRequest extends ApiFormRequest
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'expo_token' => ['nullable', 'string', 'max:512'],
         ];
     }
 }

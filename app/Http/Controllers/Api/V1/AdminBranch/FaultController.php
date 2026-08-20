@@ -12,6 +12,7 @@ use App\Models\FaultView;
 use App\Mail\CerrarFallaEmail;
 use App\Mail\ReportarFallaEmail;
 use App\Services\FaultService;
+use App\Services\PushNotificationService;
 use App\Traits\Api\ApiResponse;
 use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
@@ -39,7 +40,7 @@ class FaultController extends Controller
         'reported_by_name', 'executor_name',
     ];
 
-    public function __construct()
+    public function __construct(private PushNotificationService $pushService)
     {
         $base = 'Fallas';
         $this->middleware("permission:{$base} Crear")->only(['store']);
@@ -299,6 +300,8 @@ class FaultController extends Controller
                     report($th);
                 }
 
+                $this->pushService->notifyClosedFault($item);
+
                 return $this->success(null, 'Falla cerrada y archivada correctamente.');
             }
 
@@ -310,6 +313,10 @@ class FaultController extends Controller
                 Mail::to(env('EMAIL_FALLAS'))->send(new ReportarFallaEmail($faultView));
             } catch (\Throwable $th) {
                 report($th);
+            }
+
+            if (!$id) {
+                $this->pushService->notifyNewFault($item);
             }
 
             return $this->success($faultView, $id ? 'Falla actualizada' : 'Falla creada', $id ? 200 : 201);

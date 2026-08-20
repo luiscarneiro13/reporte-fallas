@@ -112,6 +112,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Employee::class, 'employee_users')->withTimestamps();
     }
 
+    public function pushTokens()
+    {
+        return $this->hasMany(PushToken::class);
+    }
+
     /**
      * Get the first employee ID associated with the user.
      * Assumes a user is primarily linked to one employee record.

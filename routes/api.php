@@ -64,6 +64,7 @@ use App\Http\Controllers\Api\V1\AdminBranch\OwnerController as V1OwnerController
 use App\Http\Controllers\Api\V1\AdminBranch\ProjectController as V1ProjectController;
 use App\Http\Controllers\Api\V1\AdminBranch\ServiceAreaController as V1ServiceAreaController;
 use App\Http\Controllers\Api\V1\AdminBranch\SparePartStatusController as V1SparePartStatusController;
+use App\Http\Controllers\Api\V1\Admin\PushTestController as V1PushTestController;
 use App\Http\Controllers\Api\V1\Catalog\AdministradoresController as V1AdministradoresController;
 use App\Http\Controllers\Api\V1\Catalog\BrandController as V1BrandController;
 use App\Http\Controllers\Api\V1\Catalog\ConfigurationController as V1ConfigurationController;
@@ -76,6 +77,7 @@ use App\Http\Controllers\Api\V1\Catalog\ServiceController as V1ServiceController
 use App\Http\Controllers\Api\V1\Catalog\SupervisorController as V1SupervisorController;
 use App\Http\Controllers\Api\V1\Catalog\SupplierController as V1SupplierController;
 use App\Http\Controllers\Api\V1\Catalog\TypeArticleController as V1TypeArticleController;
+use App\Http\Controllers\Api\V1\Mobile\PushTokenController as V1PushTokenController;
 
 Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
     Route::get('health', function () {
@@ -148,6 +150,16 @@ Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
 
             Route::get('tasa-diaria', [V1DailyRateController::class, 'show']);
             Route::post('tasa-diaria', [V1DailyRateController::class, 'store']);
+
+            // Push notifications (Expo). El user_id se toma de $request->user()
+            // (Sanctum), nunca del body — ver spec §6.4-6.5.
+            Route::prefix('mobile')->group(function () {
+                Route::get('push-tokens', [V1PushTokenController::class, 'index']);
+                Route::post('push-tokens', [V1PushTokenController::class, 'store']);
+                Route::delete('push-tokens', [V1PushTokenController::class, 'destroy']);
+            });
+
+            Route::post('admin/push/test', [V1PushTestController::class, 'send']);
         });
     });
 

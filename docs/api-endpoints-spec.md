@@ -957,20 +957,49 @@ Permisos nuevos agregados a `app/Helpers/Permisos.php` (no existían): `Ejecutor
 *`, `Propietarios *`, `Marcas *`, `Modelos de Vehiculo *`, `Tipos de Articulos *`,
 `Servicios *`, `Metodos de Pago *`, `Configuracion Editar`, `Tasa Diaria Ver/Crear`.
 
-## 8.1.1 Push notifications (Expo) — implementado (2026-08-20)
+## 8.1.1 Push notifications (Expo) — implementado (2026-08-20, revisado contra el
+código fuente real de ironflow el mismo día)
 
-Igual arquitectura que ironflow (`ExpoPushService` de transporte + `PushNotificationService`
-de negocio, sin SDK de Firebase), con dos desviaciones deliberadas respecto al original:
+Misma arquitectura que ironflow (`ExpoPushService` de transporte + `PushNotificationService`
+de negocio, sin SDK de Firebase). Tras comparar línea por línea contra
+`ironflow/services/laravel`, se igualó texto de título/cuerpo, lista de roles
+destinatarios (`Admin`+`Supervisor`, sin `Super Admin` — igual que el original) y
+tipado de payload (`fault_id`/`equipment_uuid` como string), y se corrigieron 3 bugs
+reales encontrados en el código de ironflow (**no** replicados a propósito):
 
-- Columna `platform` de `push_tokens` es **nullable**: el registro embebido en el
-  login (único camino que usa hoy `app-reporte-fallas`, vía `expo_token` en
-  `POST /login`) no recibe la plataforma real del dispositivo. ironflow hardcodea
-  `'android'` ahí, lo cual es incorrecto para iOS — se prefirió dejar `null` en vez
-  de mentir el dato. El endpoint dedicado `POST /mobile/push-tokens` sí exige
-  `platform` (`required|in:android,ios`).
-- El payload de push no incluye `url` (ironflow apunta a `https://tryironflow.com/...`,
-  dominio que no existe acá): el listener de `app-reporte-fallas` (`App.js`) ya navega
-  solo con `data.type` (`fault_created`/`fault_closed`) + `data.fault_id`.
+1. `ExpoPushService::sendToToken` de ironflow lee `$decoded['data'][0]` asumiendo que
+   Expo responde `data` como array — pero como el request se manda como objeto plano
+   (no envuelto en `[...]`), Expo responde `data` como objeto plano también (verificado
+   en vivo contra `https://exp.host/--/api/v2/push/send`). Esa indexación `[0]` nunca
+   matchea, así que ironflow **nunca detecta errores ni tokens inválidos** en envíos
+   individuales — silenciosamente cuenta todo como éxito. Acá se lee `$body['data']`
+   directo (sin `[0]`), verificado en vivo: detecta `DeviceNotRegistered` y limpia el
+   token correctamente.
+2. `AuthController::login` de ironflow registra el `expo_token` con
+   `PushToken::updateOrCreate(['token' => ...], [...])` **sin** `withTrashed()`. Como
+   `token` es único globalmente y el scope de soft-delete excluye las filas borradas
+   por defecto, el primer logout (que hace soft-delete del token) deja ese `token`
+   "atascado": un login posterior con el mismo `expo_token` intenta un `INSERT` que
+   choca contra el índice único y falla en silencio (atrapado por el `try/catch`) — las
+   push notifications quedan rotas para ese dispositivo hasta que cambie de token. Acá
+   `AuthController::registerExpoToken` usa `withTrashed()->firstOrNew()` +
+   `restore()`, reactivando el registro correctamente.
+3. `PushTestController` de ironflow llama `hasAnyRole(['Super Admin', 'Admin'])` sin
+   guard — irrelevante en ironflow, pero en este proyecto los roles se siembran con
+   `guard_name=sanctum` explícito (ver `ForceSanctumGuard`, spec §2) y además
+   `hasAnyRole()` de Spatie **no acepta un guard como segundo argumento** (a diferencia
+   de `hasRole()`); pasarlo ahí arma un array anidado y se cuela silenciosamente. Acá
+   se usa `hasRole(['Super Admin', 'Admin'], 'sanctum')`, la forma correcta.
+
+El payload sí incluye `url` (deep link), como ironflow — dominio `servicioscasmar.com`.
+Diferencia deliberada en el path: ironflow arma `/equipment/{uuid}` porque su API
+busca equipos por uuid; acá `GET /api/v1/equipos/{id}` (usado por
+`app-reporte-fallas/src/api/equipment.js`) solo busca por id numérico — no existe
+búsqueda por uuid todavía (ver [[reportefallas_equipment_uuid]]). Por eso el path usa
+`/equipment/{id}` (id numérico de `equipment`), no el uuid. `App.js` solo parsea el
+*path* de la URL en el cliente (nunca hace una request HTTP a ese dominio), así que
+el host (`servicioscasmar.com`) no necesita servir una página real ahí — es
+puramente el mismo truco de "URI portadora de un path" que usa ironflow.
 
 Endpoints: `GET/POST/DELETE /api/v1/mobile/push-tokens` (`V1\Mobile\PushTokenController`)
 y `POST /api/v1/admin/push/test` (`V1\Admin\PushTestController`, solo Super Admin/Admin),
@@ -978,8 +1007,11 @@ igual contrato al documentado en §6.4-6.5. Disparado desde
 `V1\AdminBranch\FaultController::saveOrUpdate()`: `notifyNewFault` solo en alta nueva
 (no en `update`), `notifyClosedFault` en la rama de cierre — ambos envueltos en
 `try/catch` (dentro del propio servicio), no rompen el flujo de creación/cierre si Expo
-falla. Destinatarios: admins/supervisores de la sucursal de la falla (+ el operador que
-la reportó, en el caso de cierre).
+falla. A diferencia de ironflow (que llama `notifyClosedFault` antes del `delete()` y
+con las transacciones DB comentadas), acá se llama **después de `DB::commit()`**: como
+este proyecto sí tiene transacciones activas (spec §8.1, corrección deliberada sobre el
+original), notificar antes del commit arriesgaría avisar de un cierre que después se
+revierte.
 
 ## 8.2 Pendiente / fuera de alcance (decisión explícita, no olvido)
 

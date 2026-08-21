@@ -13,6 +13,7 @@ use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Models\FaultStatus;
 use App\Services\FaultService;
+use App\Services\PushNotificationService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
@@ -42,7 +43,7 @@ class FaultController extends Controller
         'duration_days',
     ];
 
-    public function __construct()
+    public function __construct(private PushNotificationService $pushService)
     {
         $basePermission = "Fallas";
         $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
@@ -462,6 +463,8 @@ class FaultController extends Controller
 
                 // DB::commit(); // Comentado
 
+                $this->pushService->notifyClosedFault($item);
+
                 $message = "Falla cerrada y archivada correctamente.";
                 return $this->alertSuccess(self::INDEX, $message);
             } else {
@@ -475,6 +478,10 @@ class FaultController extends Controller
                     Mail::to($recipient)->send(new ReportarFallaEmail($faultView));
                 } catch (\Throwable $th) {
                     //throw $th;
+                }
+
+                if (!$id) {
+                    $this->pushService->notifyNewFault($item);
                 }
 
                 // LÓGICA DE EDICIÓN/CREACIÓN NORMAL

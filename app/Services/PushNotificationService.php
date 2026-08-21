@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Log;
  * Delega el envío real a ExpoPushService (transporte). Nunca lanza excepciones:
  * un fallo de push no debe romper el flujo de creación/cierre de una falla.
  *
- * Replica el comportamiento de App\Services\PushNotificationService de ironflow
- * (mismos roles destinatarios, mismo texto de título/cuerpo, mismo campo `url`
- * de deep link). Diferencia deliberada en el `url`: ironflow arma el path con el
+ * Basado en App\Services\PushNotificationService de ironflow (mismo texto de
+ * título/cuerpo, mismo campo `url` de deep link), con una diferencia deliberada
+ * en los roles destinatarios: acá se incluye también a Coordinador además de
+ * Admin/Supervisor. Diferencia deliberada en el `url`: ironflow arma el path con el
  * `uuid` del equipo (`/equipment/{uuid}`) porque ahí la API busca equipos por
  * uuid; acá GET /api/v1/equipos/{id} (que usa app-reporte-fallas en
  * src/api/equipment.js) solo busca por id numérico — no existe búsqueda por
@@ -32,7 +33,7 @@ class PushNotificationService
     public function notifyNewFault(Fault $fault): void
     {
         try {
-            $userIds = $this->getBranchAdminAndSupervisorIds($fault->branch_id);
+            $userIds = $this->getBranchNotificationRecipientIds($fault->branch_id);
 
             if (empty($userIds)) {
                 return;
@@ -65,7 +66,7 @@ class PushNotificationService
     public function notifyClosedFault(Fault $fault): void
     {
         try {
-            $userIds = $this->getBranchAdminAndSupervisorIds($fault->branch_id);
+            $userIds = $this->getBranchNotificationRecipientIds($fault->branch_id);
 
             if ($fault->employee_reported_id) {
                 $operatorUserIds = DB::table('employee_users')
@@ -129,10 +130,10 @@ class PushNotificationService
     }
 
     /**
-     * Igual a ironflow: solo Admin/Supervisor de la sucursal de la falla
+     * Admin/Supervisor/Coordinador de la sucursal de la falla
      * (guard `sanctum`, ver App\Http\Middleware\ForceSanctumGuard).
      */
-    private function getBranchAdminAndSupervisorIds(int $branchId): array
+    private function getBranchNotificationRecipientIds(int $branchId): array
     {
         return DB::table('users')
             ->join('user_branch', 'user_branch.user_id', '=', 'users.id')
@@ -143,7 +144,7 @@ class PushNotificationService
             ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->where('user_branch.branch_id', $branchId)
             ->where('roles.guard_name', 'sanctum')
-            ->whereIn('roles.name', ['Admin', 'Supervisor'])
+            ->whereIn('roles.name', ['Admin', 'Supervisor', 'Coordinador'])
             ->distinct()
             ->pluck('users.id')
             ->map(fn ($id) => (int) $id)

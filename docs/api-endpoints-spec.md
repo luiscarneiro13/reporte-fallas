@@ -967,6 +967,10 @@ destinatarios (`Admin`+`Supervisor`, sin `Super Admin` — igual que el original
 tipado de payload (`fault_id`/`equipment_uuid` como string), y se corrigieron 3 bugs
 reales encontrados en el código de ironflow (**no** replicados a propósito):
 
+> **Actualización (2026-08-21):** se agregó `Coordinador` a la lista de roles
+> destinatarios (`getBranchNotificationRecipientIds()` en `PushNotificationService`),
+> a pedido de negocio. `Super Admin` se mantiene excluido.
+
 1. `ExpoPushService::sendToToken` de ironflow lee `$decoded['data'][0]` asumiendo que
    Expo responde `data` como array — pero como el request se manda como objeto plano
    (no envuelto en `[...]`), Expo responde `data` como objeto plano también (verificado

@@ -85,6 +85,10 @@ Route::get('/privacidad', function () {
     return view('website.privacidad');
 });
 
+Route::get('/eliminar-cuenta', function () {
+    return view('website.eliminar-cuenta');
+});
+
 Route::get('/sitioweb-v2', function () {
     return view('v2.website.index');
 });

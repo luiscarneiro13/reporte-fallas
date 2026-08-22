@@ -37,10 +37,9 @@
                 </p>
                 <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
                     <li><span class="font-semibold">Identificación:</span> nombre, correo electrónico corporativo, ID de empleado y rol asignado (operador o supervisor).</li>
-                    <li><span class="font-semibold">Datos operativos:</span> reportes de fallas, fotografías adjuntas, estados de equipos, historial de cierres y actualizaciones de fallas.</li>
+                    <li><span class="font-semibold">Datos operativos:</span> reportes de fallas, estados de equipos, historial de cierres y actualizaciones de fallas.</li>
                     <li><span class="font-semibold">Uso y diagnóstico:</span> registros de acceso, informes de errores (crash logs), rendimiento de la app y datos de sincronización (incluida la cola de operaciones pendientes cuando no hay conexión a internet).</li>
                     <li><span class="font-semibold">Notificaciones push:</span> un token de dispositivo utilizado para enviar avisos sobre nuevas fallas o actualizaciones relevantes.</li>
-                    <li><span class="font-semibold">Permisos del dispositivo:</span> cámara (para adjuntar fotos a los reportes) y almacenamiento, según las necesidades operativas de cada reporte.</li>
                 </ul>
             </section>
 

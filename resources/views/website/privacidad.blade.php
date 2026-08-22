@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Política de Privacidad | Servicios Generales Casmar</title>
+    <title>Política de Privacidad | Casmar</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -14,75 +14,82 @@
 
         <div class="bg-white shadow-sm rounded-xl border border-gray-200 p-8 md:p-12">
 
-            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-8">
-                POLÍTICA DE PRIVACIDAD PARA LA APLICACIÓN INTERNA SERVICIOS GENERALES CASMAR
+            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">
+                Política de Privacidad — Casmar (App de Reporte de Fallas)
             </h1>
+            <p class="text-sm text-gray-500 mb-8">
+                Última actualización: 22/08/2026
+            </p>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">1. INFORMACIÓN GENERAL</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">1. Información general</h2>
                 <p class="text-gray-700 leading-relaxed">
-                    La presente Política de Privacidad describe cómo Servicios Generales Casmar ("la Empresa") recopila,
-                    utiliza y protege la información en el marco del uso de la aplicación móvil Servicios Generales Casmar
-                    ("la Aplicación"). La Aplicación es de uso exclusivo y estrictamente interno para el personal
-                    autorizado de la Empresa.
+                    La presente Política de Privacidad describe cómo la aplicación Casmar recopila, utiliza y protege la
+                    información de sus usuarios. Es una aplicación móvil interna destinada exclusivamente al personal
+                    autorizado (operadores y supervisores) para el reporte, seguimiento y cierre de fallas de equipos.
                 </p>
             </section>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">2. DATOS QUE RECOPILAMOS</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">2. Datos recopilados</h2>
                 <p class="text-gray-700 leading-relaxed mb-3">
-                    La Aplicación puede recopilar y procesar los siguientes tipos de información únicamente para fines
-                    laborales e institucionales:
+                    La aplicación obtiene las siguientes categorías de información:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-                    <li><span class="font-semibold">Identificación del usuario:</span> Nombre, correo electrónico corporativo y/o ID de empleado.</li>
-                    <li><span class="font-semibold">Datos de uso y diagnóstico:</span> Registros de acceso, informes de fallos (crash logs) y rendimiento de la app.</li>
-                    <li><span class="font-semibold">Permisos del dispositivo:</span> [Mencionar permisos específicos si aplica: p. ej., Ubicación para fichaje/control de entregas, Cámara para escaneo de códigos/documentos, Almacenamiento, etc.].</li>
+                    <li><span class="font-semibold">Identificación:</span> nombre, correo electrónico corporativo, ID de empleado y rol asignado (operador o supervisor).</li>
+                    <li><span class="font-semibold">Datos operativos:</span> reportes de fallas, fotografías adjuntas, estados de equipos, historial de cierres y actualizaciones de fallas.</li>
+                    <li><span class="font-semibold">Uso y diagnóstico:</span> registros de acceso, informes de errores (crash logs), rendimiento de la app y datos de sincronización (incluida la cola de operaciones pendientes cuando no hay conexión a internet).</li>
+                    <li><span class="font-semibold">Notificaciones push:</span> un token de dispositivo utilizado para enviar avisos sobre nuevas fallas o actualizaciones relevantes.</li>
+                    <li><span class="font-semibold">Permisos del dispositivo:</span> cámara (para adjuntar fotos a los reportes) y almacenamiento, según las necesidades operativas de cada reporte.</li>
                 </ul>
             </section>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">3. FINALIDAD DEL TRATAMIENTO DE DATOS</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">3. Finalidad del tratamiento</h2>
                 <p class="text-gray-700 leading-relaxed mb-3">
-                    Los datos recopilados se utilizan exclusivamente para:
+                    Los datos se utilizan para:
                 </p>
                 <ul class="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-                    <li>Autenticar y validar la identidad del empleado/usuario autorizado.</li>
-                    <li>Facilitar las funciones operativas y laborales propias de la Aplicación.</li>
+                    <li>Autenticar usuarios y gestionar sus roles y permisos dentro de la app.</li>
+                    <li>Registrar, sincronizar y dar seguimiento a los reportes de fallas de equipos, incluso cuando fueron creados sin conexión a internet.</li>
+                    <li>Enviar notificaciones push relevantes sobre el estado de las fallas o equipos.</li>
                     <li>Garantizar la seguridad de los sistemas de la Empresa y prevenir accesos no autorizados.</li>
-                    <li>Mejorar el rendimiento y corregir errores técnicos de la Aplicación.</li>
+                    <li>Mejorar el rendimiento técnico y corregir errores de la aplicación.</li>
                 </ul>
             </section>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">4. ALMACENAMIENTO Y SEGURIDAD DE LA INFORMACIÓN</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">4. Almacenamiento y seguridad</h2>
                 <p class="text-gray-700 leading-relaxed">
-                    La información recolectada se almacena en los servidores seguros de la Empresa / de nuestro proveedor
-                    de servicios en la nube con medidas de seguridad técnicas y organizativas adecuadas. No vendemos,
-                    alquilamos ni comercializamos datos personales a terceros.
+                    La información se resguarda en servidores seguros de la Empresa y/o de nuestro proveedor de servicios
+                    en la nube, con medidas de seguridad técnicas y organizativas adecuadas. Los datos generados sin
+                    conexión se almacenan temporalmente en el dispositivo del usuario hasta que se sincronizan con el
+                    servidor. No se comercializa ni se comparte información personal con terceros ajenos a la operación
+                    de la Empresa.
                 </p>
             </section>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">5. ACCESO Y DERECHOS</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">5. Derechos y acceso</h2>
                 <p class="text-gray-700 leading-relaxed">
-                    Al ser una herramienta de trabajo interna, el acceso está restringido a usuarios habilitados por el
-                    Departamento de TI o Recursos Humanos. Para cualquier consulta o solicitud sobre sus datos
-                    corporativos, el usuario puede contactar a [CORREO DE SOPORTE DE TI].
+                    El acceso a los datos está limitado a usuarios habilitados por TI o Recursos Humanos, según su rol
+                    dentro de la aplicación. Cualquier consulta sobre el tratamiento de datos personales, solicitud de
+                    acceso, corrección o eliminación puede dirigirse a:
+                </p>
+                <p class="text-gray-700 leading-relaxed mt-3">
+                    <span class="font-semibold">Correo de contacto:</span>
+                    <a href="mailto:carneiroluis2@gmail.com" class="text-blue-600 hover:underline">carneiroluis2@gmail.com</a>
                 </p>
             </section>
 
             <section class="mb-8">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">6. CAMBIOS EN ESTA POLÍTICA</h2>
+                <h2 class="text-lg font-bold text-gray-800 mb-3">6. Cambios en esta política</h2>
                 <p class="text-gray-700 leading-relaxed">
                     La Empresa se reserva el derecho de actualizar esta Política de Privacidad conforme evolucionen las
-                    funcionalidades de la Aplicación o los requisitos legales.
+                    funcionalidades de la aplicación o los requisitos legales aplicables. Se notificará a los usuarios
+                    sobre cambios significativos.
                 </p>
             </section>
-
-            <div class="pt-6 border-t border-gray-200 text-sm text-gray-500">
-                Última actualización: 22/08/2026
-            </div>
 
         </div>
 

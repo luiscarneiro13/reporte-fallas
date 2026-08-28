@@ -124,9 +124,11 @@ class PushNotificationService
     {
         $equipment = $fault->equipment;
 
-        return $equipment?->placa
-            ?? $equipment?->internal_code
-            ?? ('Equipo #' . $fault->equipment_id);
+        if (!$equipment) {
+            return 'Equipo #' . $fault->equipment_id;
+        }
+
+        return $equipment->internal_code ?? 'Sin código';
     }
 
     /**

@@ -205,8 +205,13 @@ class FaultController extends Controller
             $query->whereNull('closed_at');
         }
 
-        // Mismo default que la web (V1\AdminBranch\FaultController::getFilteredFaultsQuery):
-        // sin sort_by explícito, ordena por duration_days desc (las que llevan más tiempo primero).
+        // Agrupar visualmente por equipo: mismo criterio primario que la web
+        // (V1\AdminBranch\FaultController::getFilteredFaultsQuery) — las fallas
+        // de un mismo equipo quedan consecutivas en la respuesta.
+        $query->orderBy('equipment_name');
+
+        // Mismo default que la web: sin sort_by explícito, ordena por
+        // duration_days desc (las que llevan más tiempo primero) dentro de cada equipo.
         $this->applySort($query, $request, self::SORTABLE_COLUMNS, 'duration_days', 'desc');
 
         $statsBase = (clone $baseQuery);

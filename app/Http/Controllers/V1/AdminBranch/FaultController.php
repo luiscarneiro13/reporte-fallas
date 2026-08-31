@@ -251,7 +251,11 @@ class FaultController extends Controller
             });
         }
 
-        // 12. Aplicar ordenamiento dinámico
+        // 12. Agrupar visualmente por equipo: siempre es el criterio de orden
+        // primario, antes del ordenamiento dinámico elegido por el usuario.
+        $faultsQuery->orderBy('equipment_name');
+
+        // 13. Aplicar ordenamiento dinámico (secundario, dentro de cada equipo)
         [$sortBy, $sortDir] = $this->applySort(
             $faultsQuery,
             $request,

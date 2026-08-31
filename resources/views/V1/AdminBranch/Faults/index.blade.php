@@ -12,7 +12,6 @@
         $headers = [
             ['label' => 'ID', 'field' => 'id'],
             ['label' => 'Código interno', 'field' => 'internal_code'],
-            ['label' => 'Equipo', 'field' => 'equipment_name'],
             ['label' => 'Descripción', 'field' => 'description'],
             ['label' => 'Status de falla', 'field' => 'fault_status_name'],
             ['label' => 'Status de repuesto', 'field' => 'spare_part_status_name'],
@@ -26,11 +25,20 @@
         :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses"  :projects="$projects" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId"
         :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
+            @php $currentEquipmentName = null; @endphp
             @forelse ($faults as $item)
+                @if ($item->equipment_name !== $currentEquipmentName)
+                    @php $currentEquipmentName = $item->equipment_name; @endphp
+                    <tr class="table-secondary">
+                        <td colspan="{{ count($headers) }}">
+                            <i class="fas fa-truck-pickup mr-2"></i>
+                            <strong>{{ $currentEquipmentName }}</strong>
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <td>{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }} </td>
                     <td>{{ $item->internal_code }}</td>
-                    <td>{{ $item->equipment_name }}</td>
                     {{-- <td>{{ Str::limit($item->description, 20, '...') }}</td> --}}
                     <td>{{ $item->description }}</td>
                     <td>{{ $item->fault_status_name }}</td>

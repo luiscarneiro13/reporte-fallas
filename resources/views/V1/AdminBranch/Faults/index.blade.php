@@ -25,14 +25,14 @@
         :faultStatus="$faultStatus" :sparePartStatuses="$sparePartStatuses"  :projects="$projects" :searchEquipmentName="$searchEquipmentName" :equipmentId="$equipmentId"
         :sortBy="$sortBy ?? null" :sortDir="$sortDir ?? 'asc'">
         <x-slot name="body">
-            @php $currentEquipmentName = null; @endphp
+            @php $currentEquipmentId = null; @endphp
             @forelse ($faults as $item)
-                @if ($item->equipment_name !== $currentEquipmentName)
-                    @php $currentEquipmentName = $item->equipment_name; @endphp
+                @if ($item->equipment_id !== $currentEquipmentId)
+                    @php $currentEquipmentId = $item->equipment_id; @endphp
                     <tr class="table-secondary">
                         <td colspan="{{ count($headers) }}">
                             <i class="fas fa-truck-pickup mr-2"></i>
-                            <strong>{{ $currentEquipmentName }}</strong>
+                            <strong>{{ $item->internal_code ?? 'Sin código' }} - {{ $item->equipment_name }}</strong>
                         </td>
                     </tr>
                 @endif

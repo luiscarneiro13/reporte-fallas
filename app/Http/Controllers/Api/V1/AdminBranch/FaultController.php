@@ -9,8 +9,7 @@ use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Models\FaultStatus;
 use App\Models\FaultView;
-use App\Mail\CerrarFallaEmail;
-use App\Mail\ReportarFallaEmail;
+use App\Services\FaultMailService;
 use App\Services\FaultService;
 use App\Services\PushNotificationService;
 use App\Traits\Api\ApiResponse;
@@ -18,7 +17,6 @@ use App\Traits\DateTransformerTrait;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Spec §6.2.7. Índice/show leen de la vista v_faults_base (modelo FaultView);
@@ -40,8 +38,10 @@ class FaultController extends Controller
         'reported_by_name', 'executor_name',
     ];
 
-    public function __construct(private PushNotificationService $pushService)
-    {
+    public function __construct(
+        private PushNotificationService $pushService,
+        private FaultMailService $faultMail
+    ) {
         $base = 'Fallas';
         $this->middleware("permission:{$base} Crear")->only(['store']);
         $this->middleware("permission:{$base} Editar")->only(['update']);
@@ -299,11 +299,7 @@ class FaultController extends Controller
 
                 DB::commit();
 
-                try {
-                    Mail::to(env('EMAIL_FALLAS'))->send(new CerrarFallaEmail($historyRecord));
-                } catch (\Throwable $th) {
-                    report($th);
-                }
+                $this->faultMail->sendClosed($historyRecord, $branchId);
 
                 $this->pushService->notifyClosedFault($item);
 
@@ -314,11 +310,7 @@ class FaultController extends Controller
 
             $faultView = FaultView::find($item->id);
 
-            try {
-                Mail::to(env('EMAIL_FALLAS'))->send(new ReportarFallaEmail($faultView));
-            } catch (\Throwable $th) {
-                report($th);
-            }
+            $this->faultMail->sendReported($faultView, $branchId);
 
             if (!$id) {
                 $this->pushService->notifyNewFault($item);

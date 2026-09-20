@@ -131,4 +131,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Destinatario de los correos de fallas
+    |--------------------------------------------------------------------------
+    |
+    | Mismo valor que EMAIL_FALLAS, expuesto como config para que
+    | FaultMailService no dependa de env() en tiempo de ejecución (env() suelto
+    | devuelve null si alguna vez se ejecuta `config:cache`).
+    |
+    */
+
+    'fault_notifications_to' => env('EMAIL_FALLAS'),
+
 ];

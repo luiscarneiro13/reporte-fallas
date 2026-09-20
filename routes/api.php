@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\CustomerController as ApiCustomer;
 use App\Http\Controllers\Api\ServiceController as ApiService;
 use App\Http\Controllers\Api\V1\CustomerApiController;
 use App\Http\Controllers\Api\V1\DivisionApiController;
+use App\Http\Controllers\Api\V1\SuperAdmin\DemoAccountProvisionController;
 use App\Http\Controllers\Api\V1\SuperAdmin\EquipmentUuidBackfillController;
 
 /*
@@ -163,12 +164,18 @@ Route::prefix('v1')->middleware('sanctum.guard')->group(function () {
         });
     });
 
-    // Mantenimiento de un solo uso: sin auth:sanctum a propósito, solo el
-    // token de .env (MAINTENANCE_TOKEN) validado en el constructor del
-    // controlador — para poder dispararlo directo por curl/navegador sin
-    // necesitar loguearse. Retirar esta ruta una vez terminado el backfill
-    // (ver EquipmentUuidBackfillController).
+    // Mantenimiento: sin auth:sanctum a propósito, para poder dispararlo
+    // directo por curl sin necesitar loguearse (el hosting es compartido y no
+    // hay acceso a artisan/CLI).
+    //
+    // OJO: backfill-uuid NO valida ningún token (ver el docblock de
+    // EquipmentUuidBackfillController); es tolerable porque solo rellena uuids
+    // nulos, pero hay que retirar esa ruta cuando remaining llegue a 0.
+    // provision-demo-accounts SÍ exige DEMO_PROVISION_TOKEN, porque crea
+    // usuarios sobre la base de producción (ver docs/demo-accounts.md).
     Route::prefix('super-admin')->group(function () {
         Route::get('equipment/backfill-uuid', [EquipmentUuidBackfillController::class, 'backfill']);
+        Route::post('provision-demo-accounts', DemoAccountProvisionController::class)
+            ->middleware('throttle:6,1');
     });
 });

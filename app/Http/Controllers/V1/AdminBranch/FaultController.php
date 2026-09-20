@@ -5,14 +5,13 @@ namespace App\Http\Controllers\V1\AdminBranch;
 use App\Exports\FaultsExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\FaultRequest;
-use App\Mail\ReportarFallaEmail;
-use App\Mail\CerrarFallaEmail;
 use App\Models\Division;
 use App\Models\Equipment;
 use App\Models\Fault;
 use App\Models\FaultHistory;
 use App\Models\FaultStatus;
 use App\Services\FaultService;
+use App\Services\FaultMailService;
 use App\Services\PushNotificationService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
@@ -21,7 +20,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\FaultView;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class FaultController extends Controller
@@ -43,8 +41,10 @@ class FaultController extends Controller
         'duration_days',
     ];
 
-    public function __construct(private PushNotificationService $pushService)
-    {
+    public function __construct(
+        private PushNotificationService $pushService,
+        private FaultMailService $faultMail
+    ) {
         $basePermission = "Fallas";
         $this->middleware('permission:' . $basePermission . ' Crear')->only(['create', 'store']);
         $this->middleware('permission:' . $basePermission . ' Editar')->only(['edit', 'update']);
@@ -423,22 +423,15 @@ class FaultController extends Controller
                 // Asumiendo que el modelo de la vista es 'FaultView'.
                 $historyRecord = FaultView::find($item->id);
 
-                // Se envía el correo
-                try {
-                    // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
-                    $recipient = env('EMAIL_FALLAS');
-
-                    // 2. Envía el correo
-                    Mail::to($recipient)->send(new CerrarFallaEmail($historyRecord));
-                } catch (\Throwable $th) {
-                    //throw $th;
-                }
-
-                // Verificación de seguridad
+                // Verificación de seguridad (antes de notificar: no tiene sentido
+                // avisar del cierre de una falla que no se va a poder archivar).
                 if (!$historyRecord) {
                     // DB::rollBack(); // Comentado
                     return $this->alertError(self::INDEX, 'Error al obtener datos de la vista para archivar.');
                 }
+
+                // Se envía el correo (omitido para sucursales demo, ver FaultMailService)
+                $this->faultMail->sendClosed($historyRecord, $item->branch_id);
 
                 // para ver si los nombres desnormalizados (reported_by_name, equipment_name, etc.)
                 // están presentes después del save.
@@ -473,16 +466,8 @@ class FaultController extends Controller
                 return $this->alertSuccess(self::INDEX, $message);
             } else {
 
-                // Se envía el correo
-                try {
-                    // $recipient = 'mantenimiento@servicioscasmar.com'; // Cambia esto por tu dirección para probar
-                    $recipient = env('EMAIL_FALLAS');
-
-                    // 2. Envía el correo
-                    Mail::to($recipient)->send(new ReportarFallaEmail($faultView));
-                } catch (\Throwable $th) {
-                    //throw $th;
-                }
+                // Se envía el correo (omitido para sucursales demo, ver FaultMailService)
+                $this->faultMail->sendReported($faultView, $item->branch_id);
 
                 if (!$id) {
                     $this->pushService->notifyNewFault($item);

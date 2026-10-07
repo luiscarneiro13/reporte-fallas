@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Fault;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 /**
  * Capa de negocio: decide a quién y qué notificar para cada evento de dominio.
@@ -45,7 +46,10 @@ class PushNotificationService
                 'equipment_uuid' => (string) $fault->equipment?->uuid,
                 'url' => (string) $this->deepLinkUrl($fault),
                 'title' => 'Nueva falla reportada',
-                'body' => "Se reportó una falla en el equipo {$this->equipmentName($fault)}",
+                'body' => $this->withDetail(
+                    "Se reportó una falla en el equipo {$this->equipmentName($fault)}",
+                    $fault->description
+                ),
             ]);
 
             Log::info('PushNotificationService: fault_created', [
@@ -88,7 +92,10 @@ class PushNotificationService
                 'equipment_uuid' => (string) $fault->equipment?->uuid,
                 'url' => (string) $this->deepLinkUrl($fault),
                 'title' => 'Falla cerrada',
-                'body' => "La falla del equipo {$this->equipmentName($fault)} ha sido cerrada y archivada",
+                'body' => $this->withDetail(
+                    "La falla del equipo {$this->equipmentName($fault)} ha sido cerrada y archivada",
+                    $fault->equipment_maintenance_log
+                ),
             ]);
 
             Log::info('PushNotificationService: fault_closed', [
@@ -118,6 +125,13 @@ class PushNotificationService
         }
 
         return self::DEEP_LINK_BASE_URL . '/equipment/' . $fault->equipment_id;
+    }
+
+    private function withDetail(string $summary, ?string $detail): string
+    {
+        $detail = Str::limit(Str::squish((string) $detail), 150);
+
+        return $detail === '' ? $summary : "{$summary}: {$detail}";
     }
 
     private function equipmentName(Fault $fault): string

@@ -105,6 +105,13 @@ class FaultCreateOperatorTest extends TestCase
         ], $overrides);
     }
 
+    public function test_operador_tiene_permiso_para_ver_equipos(): void
+    {
+        $role = Role::where('name', 'Operador')->firstOrFail();
+
+        $this->assertTrue($role->hasPermissionTo('Equipos Ver'));
+    }
+
     public function test_operador_ve_unicamente_el_status_por_programacion_interna_preseleccionado(): void
     {
         $this->actingAsOperador();

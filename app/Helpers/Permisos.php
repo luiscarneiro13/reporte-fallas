@@ -125,7 +125,7 @@ class Permisos
         'Proveedores Eliminar' => [0, 1, 2, 4],
 
         //Equipos ['Super Admin' => 0, 'Admin' => 1, 'Supervisor' => 2, 'Operador' => 3, 'Coordinador' => 4]
-        'Equipos Ver' => [0, 1, 2, 4],
+        'Equipos Ver' => [0, 1, 2, 3, 4],
         'Equipos Crear' => [0, 1, 2, 4],
         'Equipos Editar' => [0, 1, 2, 4],
         'Equipos Eliminar' => [0, 1, 2, 4],

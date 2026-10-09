@@ -53,7 +53,7 @@
                                         <a class="dropdown-item"
                                             href="{{ route('admin.sucursal.equipment.show', [
                                                 'equipo' => $item,
-                                                'back_url' => request()->url(),
+                                                'back_url' => request()->fullUrl(),
                                             ]) }}">
                                             <i class="fas fa-history">&nbsp;</i>
                                             Histtórico de fallas

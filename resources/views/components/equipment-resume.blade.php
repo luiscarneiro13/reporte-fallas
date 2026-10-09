@@ -28,9 +28,25 @@
 
                 <x-input-custom name="query" id="searchInput" class="col-md-2" label="Búsqueda" noMarginTop />
 
+                @php
+                    $hasFilters = request()->filled('query')
+                        || request()->filled('internal_code')
+                        || (request()->has('project_id') && request('project_id') != '0')
+                        || request()->filled('active');
+                @endphp
+
                 <div class="col-md-1 mt-3 mt-md-0">
                     <button type="button" id="searchButton" class="btn btn-primary btn-block h-100">
                         <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                {{-- Botón Quitar Filtros --}}
+                <div class="col-md-1 mt-3 mt-md-0 ml-2">
+                    <button type="button" id="clearFiltersButton"
+                        class="btn btn-secondary btn-block h-100 {{ $hasFilters ? '' : 'invisible' }}"
+                        title="Quitar Filtros">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
@@ -176,7 +192,8 @@
             });
 
             document.getElementById('clearFiltersButton')?.addEventListener('click', function() {
-                window.location.href = window.location.pathname;
+                // clear_filters pide al backend olvidar el estado guardado del listado
+                window.location.href = window.location.pathname + '?clear_filters=1';
             });
 
             @if (isset($titlePrint))

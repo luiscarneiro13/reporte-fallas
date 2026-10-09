@@ -34,6 +34,15 @@
                 </h3>
             </div>
 
+            @can('Fallas Crear')
+                <div class="my-3">
+                    <a href="{{ route('admin.sucursal.faults.create', ['equipment_id' => $equipment->id, 'back_url' => url()->full()]) }}"
+                        class="btn btn-danger">
+                        <i class="fas fa-flag mr-1"></i>
+                        Reportar Falla
+                    </a>
+                </div>
+            @endcan
 
             @php
                 $headers = [

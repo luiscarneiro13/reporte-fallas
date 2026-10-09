@@ -31,8 +31,19 @@
                     @php $currentEquipmentId = $item->equipment_id; @endphp
                     <tr class="table-secondary">
                         <td colspan="{{ count($headers) }}">
-                            <i class="fas fa-truck-pickup mr-2"></i>
-                            <strong>{{ $item->internal_code ?? 'Sin código' }} - {{ $item->equipment_name }}</strong>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-truck-pickup mr-2"></i>
+                                    <strong>{{ $item->internal_code ?? 'Sin código' }} - {{ $item->equipment_name }}</strong>
+                                </div>
+                                @can('Fallas Crear')
+                                    <a href="{{ route('admin.sucursal.faults.create', ['equipment_id' => $item->equipment_id, 'back_url' => url()->full()]) }}"
+                                        class="btn btn-sm btn-outline-danger" title="Reportar falla adicional">
+                                        <i class="fas fa-plus-circle mr-1"></i>
+                                        Reportar Falla
+                                    </a>
+                                @endcan
+                            </div>
                         </td>
                     </tr>
                 @endif

@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\FaultHistory;
 use App\Services\EquipmentService;
 use App\Traits\AlertResponser;
+use App\Traits\ListState;
 use App\Traits\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -18,6 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class EquipmentController extends Controller
 {
     use AlertResponser;
+    use ListState;
     use Sortable;
 
     const INDEX = "admin.sucursal.equipment.index";
@@ -44,6 +46,12 @@ class EquipmentController extends Controller
 
     public function index(Request $request)
     {
+        // 0. Persistir/restaurar estado del listado (filtros, orden y página)
+        $restore = $this->restoreListState($request, 'equipment', self::INDEX);
+        if ($restore) {
+            return $restore;
+        }
+
         // 1. Obtener la consulta de equipos ya filtrada
         $result = $this->getFilteredEquipmentQuery($request);
 

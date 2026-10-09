@@ -35,7 +35,7 @@
                                 btnAddUrl="{{ route('admin.sucursal.employees.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select required label="Equipo" name="equipment_id" :items="$equipment" class="col-md-4"
-                                classControl="select2 form-control"
+                                :selected="request('equipment_id')" classControl="select2 form-control"
                                 btnAddUrl="{{ route('admin.sucursal.equipment.create', ['back_url' => url()->full()]) }}" />
 
                             <x-select required label="Area de servicio" name="service_area_id" :items="$serviceArea"
@@ -90,6 +90,12 @@
 
                     <x-adminlte-button class="btn-sm" type="submit" label="Guardar" theme="primary"
                         icon="fas fa-lg fa-save" />
+
+                    <button type="submit" name="add_another" value="1" class="btn btn-sm btn-outline-primary ml-3"
+                        title="Guardar y reportar otra falla del mismo equipo">
+                        <i class="fas fa-plus-circle mr-1"></i>
+                        Guardar y reportar otra
+                    </button>
                 </div>
 
             </div>

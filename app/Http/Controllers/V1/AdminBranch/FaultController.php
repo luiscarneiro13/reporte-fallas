@@ -15,6 +15,7 @@ use App\Services\FaultMailService;
 use App\Services\PushNotificationService;
 use App\Traits\AlertResponser;
 use App\Traits\DateTransformerTrait;
+use App\Traits\ListState;
 use App\Traits\Sortable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class FaultController extends Controller
 {
     use AlertResponser;
     use DateTransformerTrait;
+    use ListState;
     use Sortable;
 
     const INDEX = "admin.sucursal.faults.index";
@@ -54,6 +56,13 @@ class FaultController extends Controller
 
     public function index(Request $request)
     {
+
+        // --- 0. PERSISTENCIA DE ESTADO DEL LISTADO (filtros, orden y página) ---
+        // La clave va por sucursal para no cruzar estados al cambiar de branch.
+        $restore = $this->restoreListState($request, 'faults', self::INDEX);
+        if ($restore) {
+            return $restore;
+        }
 
         // --- 1. CAPTURA DE PARÁMETROS (NECESARIO PARA COMPACT Y RESTAURAR ESTADO DE FILTROS) ---
         // Estas variables DEBEN existir en el scope de 'index' para que compact() funcione.
@@ -482,6 +491,16 @@ class FaultController extends Controller
                 // Redirección normal
                 if ($request->ajax()) {
                     return response()->json(['success' => true, 'data' => $item]);
+                }
+
+                // "Guardar y reportar otra": volver al formulario con el equipo preseleccionado
+                if (!$id && $request->boolean('add_another')) {
+                    $params = ['equipment_id' => $item->equipment_id];
+                    if (request()->back_url) {
+                        $params['back_url'] = request()->back_url;
+                    }
+                    return redirect()->route('admin.sucursal.faults.create', $params)
+                        ->with(['state' => 'success', 'message' => $message]);
                 }
 
                 if (request()->back_url) {

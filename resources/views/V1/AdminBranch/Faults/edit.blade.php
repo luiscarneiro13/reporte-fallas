@@ -110,6 +110,16 @@
 
 
                 <div class="row mt-5">
+                    @if ($isClosing)
+                        @can('Fallas Crear')
+                            <a href="{{ route('admin.sucursal.faults.create', ['equipment_id' => $fault->equipment_id, 'back_url' => url()->full()]) }}"
+                                class="btn btn-sm btn-danger mr-3">
+                                <i class="fas fa-flag mr-1"></i>
+                                Reportar otra falla
+                            </a>
+                        @endcan
+                    @endif
+
                     <a href="{{ request()->back_url ?? route('admin.sucursal.faults.index') }}"
                         class="btn-sm mr-3 btn-default" type="submit" icon="fas fa-lg fa-save">Cancelar</a>
 

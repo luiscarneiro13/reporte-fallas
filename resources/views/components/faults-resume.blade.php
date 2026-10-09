@@ -392,8 +392,8 @@
 
             // Lógica del Botón "Quitar Filtro"
             document.getElementById('clearFiltersButton')?.addEventListener('click', function() {
-                // Redirige a la URL base sin parámetros de consulta
-                window.location.href = window.location.pathname;
+                // clear_filters pide al backend olvidar el estado guardado del listado
+                window.location.href = window.location.pathname + '?clear_filters=1';
             });
 
             // --- Evento de Teclado (Enter) ---

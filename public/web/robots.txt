@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://servicioscasmar.com/sitemap.xml

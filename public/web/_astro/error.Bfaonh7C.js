@@ -1,0 +1,1 @@
+import{u as e}from"./Observer.BObWF600.js";function t(){e.matchMedia().add(`all`,()=>{})}export{t};

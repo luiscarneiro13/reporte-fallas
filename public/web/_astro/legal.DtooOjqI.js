@@ -1,0 +1,1 @@
+import{u as e}from"./Observer.BObWF600.js";import{t}from"./ScrollTrigger.xOajrjDs.js";e.registerPlugin(t);function n(){let t=e.matchMedia();t.add(`all`,()=>{}),t.add(`(orientation: landscape)`,()=>{}),t.add(`(orientation: portrait)`,()=>{})}export{n as t};

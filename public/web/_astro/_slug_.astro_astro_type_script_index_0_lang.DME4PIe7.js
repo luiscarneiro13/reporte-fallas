@@ -1,0 +1,1 @@
+import{u as e}from"./Observer.BObWF600.js";import{t}from"./ScrollTrigger.xOajrjDs.js";import{t as n}from"./scrollsmooth.CveccOdz.js";e.registerPlugin(t);function r(){let t=e.matchMedia();t.add(`all`,()=>{}),t.add(`(orientation: landscape)`,()=>{}),t.add(`(orientation: portrait)`,()=>{})}window.addEventListener(`DOMContentLoaded`,()=>{new n,r()});

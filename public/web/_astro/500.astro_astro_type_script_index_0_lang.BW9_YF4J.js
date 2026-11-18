@@ -1,0 +1,1 @@
+import{t as e}from"./scrollsmooth.CveccOdz.js";import{t}from"./error.Bfaonh7C.js";window.addEventListener(`DOMContentLoaded`,()=>{new e,t()});

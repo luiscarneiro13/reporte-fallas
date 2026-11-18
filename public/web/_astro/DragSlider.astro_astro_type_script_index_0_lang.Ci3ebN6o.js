@@ -1,0 +1,1 @@
+import{t as e}from"./drag-slider.D1kTlcWI.js";window.addEventListener(`DOMContentLoaded`,()=>{document.querySelectorAll(`.drag-slider:not([data-drag-slider-manual])`).forEach(t=>{e(t.querySelector(`[data-drag-slider]`),{nav:t.querySelector(`[data-slider-nav]`)})})});

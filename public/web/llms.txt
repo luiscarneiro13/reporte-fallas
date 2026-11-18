@@ -1,0 +1,46 @@
+# Casmar
+
+> Servicios integrales para la industria petrolera en la Faja Petrolífera del Orinoco: pruebas de producción a pozos, niveles de fluidos, logística, construcción y obras civiles, agua, hielo y catering. Más de 10 años de trayectoria, sistema de calidad ISO 9001.
+
+## Pages
+
+- [Casmar](https://servicioscasmar.com/): Pruebas de producción a pozos, logística, construcción y obras civiles, agua, hielo y catering en la Faja Petrolífera del Orinoco. Más de 10 años y calidad ISO 9001.
+- [Contacto y cotizaciones](https://servicioscasmar.com/contacto): Solicita una cotización de servicios petroleros. Escríbenos o llámanos: base administrativa en El Tigre, estado Anzoátegui, Venezuela.
+- [Nosotros](https://servicioscasmar.com/nosotros): Más de 10 años como aliado estratégico de la industria petrolera en la Faja del Orinoco. Misión, visión, valores y políticas de calidad, seguridad y ambiente.
+- [Noticias y novedades](https://servicioscasmar.com/noticias): Seguridad, ambiente y novedades de Casmar: adiestramientos, jornadas ambientales, planta de agua y hielo y certificación ISO 9001.
+- [Política de privacidad](https://servicioscasmar.com/politica-de-privacidad): Política de privacidad de Servicios Generales CASMAR, C.A.: qué datos recopilamos, para qué los usamos, cuánto los conservamos y cómo ejercer tus derechos.
+- [Proyectos petroleros](https://servicioscasmar.com/proyectos): Oleoductos, pruebas de producción, niveles de fluidos y transporte para Petropiar, Petrocedeño, PDVSA y más. Operaciones con personal y equipos propios.
+- [Servicios petroleros](https://servicioscasmar.com/servicios): Pruebas de producción a pozo, niveles con Echometer, camiones vacuum, izamiento, construcción y obras civiles, agua, hielo y catering para la industria petrolera.
+- [Términos y condiciones](https://servicioscasmar.com/terminos-y-condiciones): Términos y condiciones de uso del sitio de Servicios Generales CASMAR, C.A.: cotizaciones, uso permitido, propiedad intelectual, responsabilidad y ley aplicable.
+
+## Services
+
+- Pruebas de producción a pozo (Well Testing): Separadores de prueba portátiles de baja y alta capacidad con equipamiento certificado y personal calificado para evaluar con precisión el comportamiento productivo de pozos y yacimientos.
+- Servicios logísticos transversales: Flota de camiones vacuum, izamiento de carga, transporte de carga pesada con Low-Boys y bateas, servicios de soldadura y maquinaria pesada con certificaciones y permisos ambientales vigentes.
+- Construcción y obras civiles: Ingeniería, procura y construcción de infraestructura e instalaciones de superficie: tendido de tuberías y líneas de flujo, movimiento de tierra y vialidad, conexión de pozos e infraestructura eléctrica bajo normas API, ASME y AWS.
+- Suministro de agua y hielo: Agua potable y hielo de planta propia, con control directo del filtrado, purificación, envasado y procesamiento bajo normas de inocuidad e higiene.
+- Servicio de catering: Alimentación corporativa e industrial para campamentos, frentes de trabajo y sedes administrativas, con menús balanceados y estándares de inocuidad alimentaria.
+- Toma de niveles de fluidos y cartas dinagráficas con Echometer: Diagnóstico en boca de pozo con ecosondas Echometer de última generación para interpretar el comportamiento de los sistemas de bombeo de pozos petroleros.
+
+## Projects
+
+- [Atma Oil-Saber](https://servicioscasmar.com/proyectos/atma-oil-saber): servicios transversales
+- [Petropiar](https://servicioscasmar.com/proyectos/petropiar): oleoductos y facilidades de producción
+- [Petrojunín](https://servicioscasmar.com/proyectos/petrojunin): bombas de transferencia y oleoductos
+- [Petrocedeño](https://servicioscasmar.com/proyectos/petrocedeno): reemplazo de oleoducto principal de 26”
+- [Ypergas](https://servicioscasmar.com/proyectos/ypergas): pruebas de producción a pozos productores
+- [ACE](https://servicioscasmar.com/proyectos/ace): pruebas de producción y medición de niveles
+- [PDVSA Petróleo](https://servicioscasmar.com/proyectos/pdvsa-petroleo): pruebas, oleoductos y niveles
+
+## News
+
+- [Fortalecemos las competencias de nuestro equipo en el manejo seguro de materiales peligrosos](https://servicioscasmar.com/noticias/adiestramiento-materiales-peligrosos)
+- [Casmar estrena planta propia de agua potable y hielo](https://servicioscasmar.com/noticias/planta-agua-potable-y-hielo)
+- [Jornada de plantación en riberas del río Caris: preservar nuestros pulmones y producir oxígeno](https://servicioscasmar.com/noticias/jornada-de-plantacion-rio-caris)
+- [Casmar avanza hacia la excelencia operativa con la implementación de la norma ISO 9001:2015](https://servicioscasmar.com/noticias/casmar-implementa-iso-9001)
+
+## Contact
+
+- Servicios Generales CASMAR, C.A., Carrera 17 sur cruce con Av. Wiston Churchill, Pueblo Nuevo Sur, El Tigre, Anzoátegui, Venezuela
+- Teléfonos: +584128764363, +584143849015
+- Correos: info@servicioscasmar.com, servicioscasmar@gmail.com

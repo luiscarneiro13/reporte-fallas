@@ -1,4 +1,35 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # 1. Si alguien escribe /public/... en la URL, redirigir quitando "public"
+    RewriteCond %{THE_REQUEST} \s/public/([^\s?]*) [NC]
+    RewriteRule ^ /%1 [L,NE,R=301]
+
+    # ---- Sitio estatico /web ----
+    # Estas redirecciones se hacen aqui (con la URL original) para que
+    # public/web/.htaccess no tenga que redirigir usando la ruta interna /public/web
+
+    # 2. Forzar HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^web(/.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+    # 3. Quitar www
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^web(/.*)?$ https://%1%{REQUEST_URI} [L,NE,R=301]
+
+    # 4. Quitar index.html de las URLs dentro de /web (ej. /web/nosotros/index.html -> /web/nosotros/)
+    RewriteCond %{THE_REQUEST} \s/+(web/(?:.*/)?)index\.html[\s?] [NC]
+    RewriteRule ^ /%1 [L,NE,R=301]
+
+    # 5. /web -> /web/
+    RewriteRule ^web$ /web/ [L,R=301]
+
+    # 6. /web/carpeta -> /web/carpeta/ (si la carpeta existe dentro de public/web)
+    RewriteCond %{REQUEST_FILENAME} ^(.*/)web/(.*[^/])$
+    RewriteCond %1public/web/%2 -d
+    RewriteRule ^web/ %{REQUEST_URI}/ [L,NE,R=301]
+
+    # 7. Enviar todo a la carpeta public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

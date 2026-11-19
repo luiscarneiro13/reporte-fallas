@@ -63,13 +63,33 @@ use Illuminate\Support\Facades\Mail;
 */
 
 Route::get('/clear-cache', function () {
-    Artisan::call('cache:clear');
-    Artisan::call('config:cache');
-    Artisan::call('config:clear');
-    Artisan::call('route:cache');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    return 'Application cache cleared';
+    // 1. Borrar archivos físicos de caché de bootstrap/cache y vistas compiladas
+    foreach (glob(base_path('bootstrap/cache/*.php')) ?: [] as $file) {
+        @unlink($file);
+    }
+    foreach (glob(storage_path('framework/views/*.php')) ?: [] as $file) {
+        @unlink($file);
+    }
+
+    // 2. Limpiar todas las cachés de Laravel (sin volver a ejecutar route:cache ni config:cache)
+    try {
+        Artisan::call('optimize:clear');
+    } catch (\Throwable $e) {
+        // Ignorar si algún driver falla; los archivos físicos ya fueron eliminados
+    }
+
+    // 3. Limpiar OPcache de PHP en el hosting compartido
+    clearstatcache(true);
+    if (function_exists('opcache_reset')) {
+        @opcache_reset();
+    }
+
+    // 4. Ordenar al navegador que borre su propia caché del dominio
+    return response('Caché del servidor, OPcache y caché del navegador eliminadas correctamente.')
+        ->header('Clear-Site-Data', '"cache"')
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', '0');
 });
 
 
@@ -90,9 +110,11 @@ Route::get('/eliminar-cuenta', function () {
 });
 
 Route::get('/sitioweb-v2', function () {
-    return redirect()->away('https://servicioscasmar.com/web', 302)
+    return redirect()->away('https://servicioscasmar.com/web/', 302)
+        ->header('Clear-Site-Data', '"cache"')
         ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-        ->header('Pragma', 'no-cache');
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', '0');
 });
 
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
@@ -103,12 +125,11 @@ Route::get('/logout', function () {
 
 Route::get('/', function () {
     // return view('v2.website.index');
-    return redirect()->away('https://servicioscasmar.com/web', 302)
+    return redirect()->away('https://servicioscasmar.com/web/', 302)
+        ->header('Clear-Site-Data', '"cache"')
         ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-        ->header('Pragma', 'no-cache');
-    // return redirect()->away('https://servicioscasmar.com/web', 302)
-    //     ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
-    //     ->header('Pragma', 'no-cache');
+        ->header('Pragma', 'no-cache')
+        ->header('Expires', '0');
 });
 
 Route::middleware([

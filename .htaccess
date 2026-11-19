@@ -1,9 +1,10 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # 1. Si alguien escribe /public/... en la URL, redirigir quitando "public"
+    # 1. Si alguien entra a /public/... (por caché vieja del navegador),
+    # redirigir quitando "public" y ordenar al navegador borrar su caché (CLEAR_CACHE)
     RewriteCond %{THE_REQUEST} \s/public/([^\s?]*) [NC]
-    RewriteRule ^ /%1 [L,NE,R=301]
+    RewriteRule ^ /%1 [L,NE,R=302,E=CLEAR_CACHE:1]
 
     # ---- Sitio estatico /web ----
     # Estas redirecciones se hacen aqui (con la URL original) para que
@@ -32,4 +33,19 @@
 
     # 7. Enviar todo a la carpeta public/
     RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Si venía de /public/..., forzar al navegador a vaciar toda su caché del dominio
+    Header always set Clear-Site-Data "\"cache\"" env=CLEAR_CACHE
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0" env=CLEAR_CACHE
+    Header always set Pragma "no-cache" env=CLEAR_CACHE
+    Header always set Expires "0" env=CLEAR_CACHE
+
+    # Evitar que los navegadores guarden en caché los archivos HTML
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
 </IfModule>
